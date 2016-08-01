@@ -1,4 +1,5 @@
 # rawr
+[![Build Status](https://travis-ci.org/Aurora0001/rawr.svg?branch=master)](https://travis-ci.org/Aurora0001/rawr)
 [![Gitter](https://badges.gitter.im/Aurora0001/rawr.svg)](https://gitter.im/Aurora0001/rawr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Documentation](https://img.shields.io/badge/documentation-available-green.svg)](https://aurora0001.github.io/rawr/doc/rawr/index.html)
 
