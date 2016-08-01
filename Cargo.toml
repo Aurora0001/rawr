@@ -2,6 +2,10 @@
 name = "rawr"
 version = "0.1.0"
 authors = ["Aurora0001 <aurora01@safe-mail.net>"]
+license = "MIT"
+documentation = "https://aurora0001.github.io/rawr/doc/rawr/index.html"
+repository = "https://github.com/Aurora0001/rawr"
+description = "Rust API Wrapper for Reddit"
 
 [dependencies]
 hyper = "0.9.10"
