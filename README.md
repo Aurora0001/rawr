@@ -11,7 +11,7 @@ to do this simply and effectively.
 react to new posts.
 
 ## Examples
-
+```rust
     extern crate rawr;
     use rawr::prelude::*;
     
@@ -29,3 +29,4 @@ react to new posts.
             println!("{}", post.title());
         }
     }
+```
