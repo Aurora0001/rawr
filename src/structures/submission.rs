@@ -155,7 +155,7 @@ impl<'a> Submission<'a> {
     /// use rawr::prelude::*;
     /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
     /// let sub = client.subreddit("all");
-    /// let listing = sub.hot(ListingOptions::default()).expect("Could not fetch listing!");
+    /// let mut listing = sub.hot(ListingOptions::default()).expect("Could not fetch listing!");
     /// let post = listing.nth(0).unwrap();
     /// for comment in post.reply_stream() {
     ///     println!("New comment received!");
