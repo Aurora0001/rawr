@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `rawr` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, rawr">
+
+    <title>rawr - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'rawr', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>rawr</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/rawr/src/lib.rs.html#1-235' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'>
+<h1 id='rawr---rust-api-wrapper-for-reddit' class='section-header'><a href='#rawr---rust-api-wrapper-for-reddit'>rawr - Rust API Wrapper for Reddit</a></h1>
+<p>This crate provides simple yet powerful access to the Reddit API.</p>
+
+<h2 id='quick-start' class='section-header'><a href='#quick-start'>Quick Start</a></h2>
+<p>This section will teach you the basics of <code>rawr</code>, so you can get started with your project
+easily.</p>
+
+<h3 id='creating-a-client' class='section-header'><a href='#creating-a-client'>Creating a Client</a></h3>
+<p>To create a client to access the Reddit API, you can use the <code>RedditClient</code> class. All you need
+to do is pass in the user agent when creating the client to have anonymous access. In order
+to post or reply, you need to log in (which will be explained soon!).</p>
+
+<p>As well as passing in a user agent, you need to pass in an <em>authenticator</em>, which handles
+logging in and proving who you are to Reddit. For now, we&#39;ll log in anonymously with
+<code>AnonymousAuthenticator</code>. You&#39;ll definitely want to take a look at the
+<a href="./auth/index.html">auth</a> module documentation to find out how to log in to an account.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rawr</span>::<span class='ident'>client</span>::<span class='ident'>RedditClient</span>;
+<span class='kw'>use</span> <span class='ident'>rawr</span>::<span class='ident'>auth</span>::<span class='ident'>AnonymousAuthenticator</span>;
+<span class='kw'>let</span> <span class='ident'>client</span> <span class='op'>=</span> <span class='ident'>RedditClient</span>::<span class='ident'>new</span>(<span class='string'>&quot;my user agent&quot;</span>, <span class='ident'>AnonymousAuthenticator</span>::<span class='ident'>new</span>());</pre>
+
+<p>It is important that you pick a good user agent. The ideal format is
+<code>platform:program:version (by /u/yourname)</code>, e.g. <code>linux:rawr:v0.0.1 (by /u/Aurora0001)</code>.</p>
+
+<h3 id='getting-a-list-of-posts' class='section-header'><a href='#getting-a-list-of-posts'>Getting a List of Posts</a></h3>
+<p>First, you&#39;ll need to select the subreddit that you want to get a listing from. For our
+example, we&#39;ll use /r/all. To get that subreddit, we can do this:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='ident'>client</span> <span class='op'>=</span> <span class='ident'>RedditClient</span>::<span class='ident'>new</span>(<span class='string'>&quot;?:rawr:doc-tests&quot;</span>, <span class='ident'>AnonymousAuthenticator</span>::<span class='ident'>new</span>());
+<span class='kw'>let</span> <span class='ident'>all</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>subreddit</span>(<span class='string'>&quot;all&quot;</span>);</pre>
+
+<p>Once we have the subreddit object, we can get the post list. There are several listing types
+provided by Reddit:
+- Hot - the default sort, which shows the &#39;best&#39; posts at this moment.
+- New - posts ordered from newest to oldest.
+- Rising - posts gaining in popularity (usually, this is quite a short listing and only has
+  10-20 items)</p>
+
+<p>There are also &#39;time-scoped&#39; listings that require a timespan as well. This is essentially
+the same as the &#39;links from: all time&#39; dropdown.
+- Controversial - posts that have received lots of upvotes and downvotes.
+- Top - posts that have the highest score overall.</p>
+
+<p>Here&#39;s an example of using the <code>hot</code> listing:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rawr</span>::<span class='ident'>options</span>::<span class='ident'>ListingOptions</span>;
+<span class='kw'>let</span> <span class='ident'>listing</span> <span class='op'>=</span> <span class='ident'>all</span>.<span class='ident'>hot</span>(<span class='ident'>ListingOptions</span>::<span class='ident'>default</span>()).<span class='ident'>expect</span>(<span class='string'>&quot;Request unsuccessful&quot;</span>);</pre>
+
+<p><em>Why do I need the <code>expect</code> call?</em> Since it is possible for a request to the API to fail,
+most of the API wrapper returns <code>Result&lt;_, APIError&gt;</code> where <code>_</code> is the actual value from the
+API. This allows you to handle the error gracefully if you want, but for our examples
+we will always use <code>expect</code> to simplify the examples.</p>
+
+<p>The <code>ListingOptions</code> object is used to configure various options such as the amount of posts
+to fetch in each request and the anchor. For more information, see the documentation for
+<code>ListingOptions</code>.</p>
+
+<h3 id='using-the-post-listing' class='section-header'><a href='#using-the-post-listing'>Using the Post Listing</a></h3>
+<p>The <code>Listing</code> objects implement <code>Iterator</code>, which means it&#39;s really convenient to loop through
+multiple posts. You can just use a for loop, like this:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='ident'>listing</span> <span class='op'>=</span> <span class='ident'>all</span>.<span class='ident'>hot</span>(<span class='ident'>ListingOptions</span>::<span class='ident'>default</span>()).<span class='ident'>expect</span>(<span class='string'>&quot;Could not fetch posts&quot;</span>);
+<span class='kw'>for</span> <span class='ident'>post</span> <span class='kw'>in</span> <span class='ident'>listing</span> {
+    <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;{}&quot;</span>, <span class='ident'>post</span>.<span class='ident'>title</span>());
+}</pre>
+
+<h3 id='getting-replies' class='section-header'><a href='#getting-replies'>Getting Replies</a></h3>
+<p>If you&#39;re interested in the replies to a post, you can get them using the <code>replies()</code> method.
+<code>replies()</code> returns a <code>CommentList</code>, which acts a lot like a <code>Listing</code> in that it will
+automatically fetch more comments as needed. However, unlike post listings, the comments
+section is threaded, so you can get the <code>replies()</code> to a comment as well.</p>
+
+<p>Here&#39;s how to get the first comment (if available) for every post in the /r/all/hot
+listing:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rawr</span>::<span class='ident'>traits</span>::{<span class='ident'>Commentable</span>, <span class='ident'>Content</span>};
+<span class='kw'>let</span> <span class='ident'>all</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>subreddit</span>(<span class='string'>&quot;all&quot;</span>);
+<span class='kw'>for</span> <span class='ident'>post</span> <span class='kw'>in</span> <span class='ident'>all</span>.<span class='ident'>hot</span>(<span class='ident'>ListingOptions</span>::<span class='ident'>default</span>()).<span class='ident'>expect</span>(<span class='string'>&quot;Request failed&quot;</span>) {
+    <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>comment</span>) <span class='op'>=</span> <span class='ident'>post</span>.<span class='ident'>replies</span>().<span class='ident'>expect</span>(<span class='string'>&quot;Could not get replies&quot;</span>).<span class='ident'>next</span>() {
+        <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;{}&quot;</span>, <span class='ident'>comment</span>.<span class='ident'>author</span>().<span class='ident'>name</span>);
+    }
+}</pre>
+
+<p><em>&#39;What were those traits about?&#39;</em>, I hear you say. The <code>Commentable</code> trait provides
+functions to work with comments and manipulate them. The <code>Commentable</code> trait is implemented
+in both the <code>Comment</code> struct and the <code>Submission</code> struct, because you can comment on either.
+This also explains why you can get the <code>replies()</code> for a <code>Comment</code> using the same interface.</p>
+
+<p>The <code>Content</code> trait is a little bit different. Things that implement <code>Content</code> were created by
+a user and exist in a subreddit (so they&#39;re either submissions or comments). You can use this
+trait to delete posts, get the author or get the parent subreddit.</p>
+
+<h3 id='replying' class='section-header'><a href='#replying'>Replying</a></h3>
+<p>The <code>Commentable</code> trait also allows your client to reply to anything that implements it.
+You can reply like this:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='ident'>all</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>subreddit</span>(<span class='string'>&quot;all&quot;</span>);
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>listing</span> <span class='op'>=</span> <span class='ident'>all</span>.<span class='ident'>hot</span>(<span class='ident'>ListingOptions</span>::<span class='ident'>default</span>()).<span class='ident'>expect</span>(<span class='string'>&quot;Request failed&quot;</span>);
+<span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>top_post</span>) <span class='op'>=</span> <span class='ident'>listing</span>.<span class='ident'>next</span>() {
+    <span class='ident'>top_post</span>.<span class='ident'>reply</span>(<span class='string'>&quot;This is cool... I think. I&#39;m a bot.&quot;</span>).<span class='ident'>expect</span>(<span class='string'>&quot;Posting failed!&quot;</span>);
+}</pre>
+
+<p>Most actions in the API return a <code>Result</code> so you can handle any errors that occur. In this
+example, we just use <code>expect()</code>, but real code should handle this more gracefully, otherwise
+the code may panic. Be prepared to accept HTTP 5xx errors if reddit is having trouble with
+their servers; this will be returned to you as a <code>APIError::HTTPError</code> with the error
+status in the enum variant.</p>
+
+<h3 id='posting-a-thread' class='section-header'><a href='#posting-a-thread'>Posting a Thread</a></h3>
+<p>Reddit has two types of submissions: link posts and self posts. Link posts are hyperlinked
+to their URL, but have no body text. Self posts have a body but don&#39;t link anywhere. Both
+earn karma.</p>
+
+<p>To post a link post, you can use the <code>submit_link()</code> method. First, you need to create a
+<code>LinkPost</code> object that can configure your post, like this:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rawr</span>::<span class='ident'>options</span>::<span class='ident'>LinkPost</span>;
+<span class='kw'>let</span> <span class='ident'>post</span> <span class='op'>=</span> <span class='ident'>LinkPost</span>::<span class='ident'>new</span>(<span class='string'>&quot;title&quot;</span>, <span class='string'>&quot;https://example.com&quot;</span>);</pre>
+
+<p>If that link has been posted previously in the subreddit, you need to mark it as a repost, like
+this:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='ident'>post</span> <span class='op'>=</span> <span class='ident'>LinkPost</span>::<span class='ident'>new</span>(<span class='string'>&quot;title&quot;</span>, <span class='string'>&quot;https://example.com&quot;</span>).<span class='ident'>resubmit</span>();</pre>
+
+<p>You can then submit it, like this:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rawr</span>::<span class='ident'>options</span>::<span class='ident'>LinkPost</span>;
+<span class='kw'>let</span> <span class='ident'>programming</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>subreddit</span>(<span class='string'>&quot;programming&quot;</span>);
+<span class='kw'>let</span> <span class='ident'>post</span> <span class='op'>=</span> <span class='ident'>LinkPost</span>::<span class='ident'>new</span>(<span class='string'>&quot;I love Rust!&quot;</span>, <span class='string'>&quot;https://rust-lang.org&quot;</span>);
+<span class='ident'>programming</span>.<span class='ident'>submit_link</span>(<span class='ident'>post</span>).<span class='ident'>expect</span>(<span class='string'>&quot;Could not submit link!&quot;</span>);</pre>
+
+<p>Submitting a self post is largely the same, but the <code>resubmit</code> function is not available
+on the <code>SelfPost</code> struct. Example:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rawr</span>::<span class='ident'>options</span>::<span class='ident'>SelfPost</span>;
+<span class='kw'>let</span> <span class='ident'>programming</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>subreddit</span>(<span class='string'>&quot;programming&quot;</span>);
+<span class='kw'>let</span> <span class='ident'>post</span> <span class='op'>=</span> <span class='ident'>SelfPost</span>::<span class='ident'>new</span>(<span class='string'>&quot;I love Rust!&quot;</span>, <span class='string'>&quot;It&#39;s great! **Wow**!&quot;</span>);
+<span class='ident'>programming</span>.<span class='ident'>submit_text</span>(<span class='ident'>post</span>).<span class='ident'>expect</span>(<span class='string'>&quot;Could not submit link!&quot;</span>);</pre>
+
+<h1 id='more-advanced-features' class='section-header'><a href='#more-advanced-features'>More Advanced Features</a></h1>
+<p><code>rawr</code> also supports:
+- Getting a user by name (see <code>RedditClient.user(&quot;name&quot;)</code>)
+- Setting user flairs (see the <code>user</code> module)
+- Setting post flairs (see <code>Submission.flair</code>)
+- Getting &#39;about&#39; information (see <code>Subreddit.about()</code>)</p>
+
+<h1 id='not-yet-implemented' class='section-header'><a href='#not-yet-implemented'>Not Yet Implemented</a></h1>
+<ul>
+<li>Multireddits</li>
+<li>Live Threads</li>
+</ul>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='auth/index.html'
+                                  title='rawr::auth'>auth</a></td>
+                           <td class='docblock short'>
+                                <p>Whenever you create a <code>RedditClient</code>, you need to provide an <code>Authenticator</code> that can
+log in for you and send credentials with every request. Reddit&#39;s API provides multiple
+ways to authenticate, and it&#39;s important that you use the correct one for your application
+so that you only take passwords where necessary.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='client/index.html'
+                                  title='rawr::client'>client</a></td>
+                           <td class='docblock short'>
+                                <p>A client that represents one connection to the Reddit API. This can log in to one account
+or remain anonymous, and performs all interactions with the Reddit API.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='errors/index.html'
+                                  title='rawr::errors'>errors</a></td>
+                           <td class='docblock short'>
+                                <p>Error types used to signal problems with requests.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='options/index.html'
+                                  title='rawr::options'>options</a></td>
+                           <td class='docblock short'>
+                                <p>Configuration options for API requests.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='prelude/index.html'
+                                  title='rawr::prelude'>prelude</a></td>
+                           <td class='docblock short'>
+                                <p>Basic <code>rawr</code> structures to import with <code>use rawr::prelude::*</code>;</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='responses/index.html'
+                                  title='rawr::responses'>responses</a></td>
+                           <td class='docblock short'>
+                                <p>Deserialized API responses.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='structures/index.html'
+                                  title='rawr::structures'>structures</a></td>
+                           <td class='docblock short'>
+                                <p>Reddit structures such as submissions, comments and subreddits.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='traits/index.html'
+                                  title='rawr::traits'>traits</a></td>
+                           <td class='docblock short'>
+                                <p>Traits for common API functionality.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "rawr";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

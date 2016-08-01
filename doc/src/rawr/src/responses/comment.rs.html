@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/responses/comment.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
+
+    <title>comment.rs.html -- source</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+</pre><pre class='rust '>
+<span class='kw'>use</span> <span class='ident'>serde_json</span>::<span class='ident'>Value</span>;
+<span class='kw'>use</span> <span class='ident'>responses</span>::{<span class='ident'>BasicThing</span>, <span class='ident'>ThingList</span>};
+<span class='kw'>use</span> <span class='ident'>responses</span>::<span class='ident'>listing</span>::<span class='ident'>ListingData</span>;
+
+<span class='doccomment'>/// The &#39;listing&#39; format for comments.</span>
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>CommentListing</span> <span class='op'>=</span> <span class='ident'>BasicThing</span><span class='op'>&lt;</span><span class='ident'>ListingData</span><span class='op'>&lt;</span><span class='ident'>Value</span><span class='op'>&gt;&gt;</span>;
+
+<span class='doccomment'>/// A deserializable structure representing a comment. This is created when the client returns</span>
+<span class='doccomment'>/// JSON representing a comment and this is wrapped in a `models::comment::Comment` for</span>
+<span class='doccomment'>/// ease-of-use.</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Deserialize</span>, <span class='ident'>Debug</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Comment</span> {
+    <span class='doccomment'>/// The Reddit ID for the subreddit where this was posted, **including the leading `t5_`**.</span>
+    <span class='kw'>pub</span> <span class='ident'>subreddit_id</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// Contains the name of the moderator who banned this, if the logged-in user is a moderator</span>
+    <span class='doccomment'>/// of this subreddit and this is banned.</span>
+    <span class='kw'>pub</span> <span class='ident'>banned_by</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class='doccomment'>/// The reason for the post removal, if you are a moderator **and** this post has been</span>
+    <span class='doccomment'>/// removed.</span>
+    <span class='kw'>pub</span> <span class='ident'>removal_reason</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class='doccomment'>/// The ID (including kind) of the parent post (i.e. the link post or self post).</span>
+    <span class='kw'>pub</span> <span class='ident'>link_id</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// This is `Some(true)` if the logged-in user has upvoted this submission, `Some(false)` if</span>
+    <span class='doccomment'>/// the user has downvoted this submission or `None` if the user has not voted.</span>
+    <span class='kw'>pub</span> <span class='ident'>likes</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>bool</span><span class='op'>&gt;</span>,
+    <span class='doccomment'>/// A listing of replies to this comment. Do not access this directly - use the functions</span>
+    <span class='doccomment'>/// of `Comment` instead.</span>
+    <span class='kw'>pub</span> <span class='ident'>replies</span>: <span class='ident'>Value</span>,
+    <span class='comment'>// TODO: skipped user_reports</span>
+    <span class='doccomment'>/// True if the logged-in user has saved this submission.</span>
+    <span class='kw'>pub</span> <span class='ident'>saved</span>: <span class='ident'>bool</span>,
+    <span class='doccomment'>/// The ID of the post in base-36 form, as used in Reddit&#39;s links.</span>
+    <span class='kw'>pub</span> <span class='ident'>id</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// The amount of times that a user has been gilded (gifted Reddit Gold).</span>
+    <span class='kw'>pub</span> <span class='ident'>gilded</span>: <span class='ident'>u64</span>,
+    <span class='doccomment'>/// This is `true` if Reddit has archived the submission (usually done after 6 months).</span>
+    <span class='doccomment'>/// Archived submissions cannot be voted or commented upon.</span>
+    <span class='kw'>pub</span> <span class='ident'>archived</span>: <span class='ident'>bool</span>,
+    <span class='comment'>// TODO: skipped report_reasons</span>
+    <span class='doccomment'>/// The name of the author of the submission (not including the leading `/u/`)</span>
+    <span class='kw'>pub</span> <span class='ident'>author</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// The overall points score of this post, as shown on the upvote counter. This is the</span>
+    <span class='doccomment'>/// same as upvotes - downvotes (however, this figure may be fuzzed by Reddit, and may not</span>
+    <span class='doccomment'>/// be exact)</span>
+    <span class='kw'>pub</span> <span class='ident'>score</span>: <span class='ident'>i64</span>,
+    <span class='doccomment'>/// This contains the name of the user who approved this submission. This is `None` unless</span>
+    <span class='doccomment'>/// you are a mod of the subreddit **and** a user has approved this post.</span>
+    <span class='kw'>pub</span> <span class='ident'>approved_by</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class='comment'>// TODO: skipped controversiality</span>
+    <span class='doccomment'>/// The main post text.</span>
+    <span class='kw'>pub</span> <span class='ident'>body</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// This is `false` if the submission is not edited and is the edit timestamp if it is edited.</span>
+    <span class='doccomment'>/// Access through the functions of `Submission` instead.</span>
+    <span class='kw'>pub</span> <span class='ident'>edited</span>: <span class='ident'>Value</span>,
+    <span class='doccomment'>/// The CSS class set for the author&#39;s flair (if available). If there is no flair, this is</span>
+    <span class='doccomment'>/// `None`.</span>
+    <span class='kw'>pub</span> <span class='ident'>author_flair_css_class</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class='doccomment'>/// The number of downvotes (fuzzed; see `score` for further explanation)</span>
+    <span class='kw'>pub</span> <span class='ident'>downs</span>: <span class='ident'>i64</span>,
+    <span class='doccomment'>/// The number of upvotes (fuzzed; see `score` for further explanation)</span>
+    <span class='kw'>pub</span> <span class='ident'>ups</span>: <span class='ident'>i64</span>,
+    <span class='doccomment'>/// Contains the HTML of the post body.</span>
+    <span class='kw'>pub</span> <span class='ident'>body_html</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// The subreddit that this submission was posted in (not including `/r/`)</span>
+    <span class='kw'>pub</span> <span class='ident'>subreddit</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// The full &#39;Thing ID&#39;, consisting of a &#39;kind&#39; and a base-36 identifier. The valid kinds are:</span>
+    <span class='doccomment'>/// - t1_ - Comment</span>
+    <span class='doccomment'>/// - t2_ - Account</span>
+    <span class='doccomment'>/// - t3_ - Link</span>
+    <span class='doccomment'>/// - t4_ - Message</span>
+    <span class='doccomment'>/// - t5_ - Subreddit</span>
+    <span class='doccomment'>/// - t6_ - Award</span>
+    <span class='doccomment'>/// - t8_ - PromoCampaign</span>
+    <span class='kw'>pub</span> <span class='ident'>name</span>: <span class='ident'>String</span>,
+    <span class='doccomment'>/// `true` if the score should not be displayed.</span>
+    <span class='kw'>pub</span> <span class='ident'>score_hidden</span>: <span class='ident'>bool</span>,
+    <span class='doccomment'>/// This is `true` if this submission is stickied (an &#39;annoucement&#39; thread)</span>
+    <span class='kw'>pub</span> <span class='ident'>stickied</span>: <span class='ident'>bool</span>,
+    <span class='doccomment'>/// A timestamp of the time when the post was created, in the logged-in user&#39;s **local**</span>
+    <span class='doccomment'>/// time.</span>
+    <span class='kw'>pub</span> <span class='ident'>created</span>: <span class='ident'>i64</span>,
+    <span class='doccomment'>/// The text of the author&#39;s flair, if present. Can be an empty string if the flair is present</span>
+    <span class='doccomment'>/// but contains no text.</span>
+    <span class='kw'>pub</span> <span class='ident'>author_flair_text</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class='doccomment'>/// A timestamp of the time when the post was created, in **UTC**.</span>
+    <span class='kw'>pub</span> <span class='ident'>created_utc</span>: <span class='ident'>i64</span>,
+    <span class='doccomment'>/// Indicates whether the user has used a special flag for themselves, e.g. [M] or [A].</span>
+    <span class='doccomment'>/// Possible values:</span>
+    <span class='doccomment'>/// - None - Normal user</span>
+    <span class='doccomment'>/// - Some(&quot;moderator&quot;) - [M]</span>
+    <span class='doccomment'>/// - Some(&quot;admin&quot;) - [A]</span>
+    <span class='doccomment'>/// - Some(&quot;special&quot;) - other special &#39;distinguishes&#39; e.g. [Δ]</span>
+    <span class='kw'>pub</span> <span class='ident'>distinguished</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class='kw'>pub</span> <span class='ident'>num_reports</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>u64</span><span class='op'>&gt;</span>, <span class='comment'>// TODO: skipped mod_reports</span>
+    <span class='kw'>pub</span> <span class='ident'>parent_id</span>: <span class='ident'>String</span>
+}
+
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Deserialize</span>, <span class='ident'>Debug</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>More</span> {
+    <span class='kw'>pub</span> <span class='ident'>count</span>: <span class='ident'>u64</span>,
+    <span class='kw'>pub</span> <span class='ident'>parent_id</span>: <span class='ident'>String</span>,
+    <span class='kw'>pub</span> <span class='ident'>children</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>
+}
+
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Deserialize</span>, <span class='ident'>Debug</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>MoreComments</span> {
+    <span class='kw'>pub</span> <span class='ident'>json</span>: <span class='ident'>MoreCommentsInner</span>
+}
+
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Deserialize</span>, <span class='ident'>Debug</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>MoreCommentsInner</span> {
+    <span class='kw'>pub</span> <span class='ident'>errors</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Value</span><span class='op'>&gt;</span>,
+    <span class='kw'>pub</span> <span class='ident'>data</span>: <span class='ident'>ThingList</span>
+}
+</pre>
+</section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../../";
+        window.currentCrate = "rawr";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../../jquery.js"></script>
+    <script src="../../../../main.js"></script>
+    
+    <script defer src="../../../../search-index.js"></script>
+</body>
+</html>
