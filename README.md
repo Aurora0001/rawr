@@ -16,21 +16,21 @@ react to new posts.
 
 ## Examples
 ```rust
-    extern crate rawr;
-    use rawr::prelude::*;
+extern crate rawr;
+use rawr::prelude::*;
     
-    fn main() {
-        // Creates a new client to access the reddit API. You need to set a user agent so Reddit knows
-        // who is using this client.
-        let client = RedditClient::new("your user agent here", AnonymousAuthenticator::new());
-        // Access the subreddit /r/rust.
-        let subreddit = client.subreddit("rust");
-        // Gets the hot listing of /r/rust. If the API request fails, we will panic with `expect`.
-        let hot_listing = subreddit.hot(ListingOptions::default()).expect("Could not fetch post listing!");
-        // Iterates through the top 50 posts of /r/rust. If you do not `take(n)`, this iterator will
-        // continue forever!
-        for post in hot_listing.take(50) {
-            println!("{}", post.title());
-        }
+fn main() {
+    // Creates a new client to access the reddit API. You need to set a user agent so Reddit knows
+    // who is using this client.
+    let client = RedditClient::new("your user agent here", AnonymousAuthenticator::new());
+    // Access the subreddit /r/rust.
+    let subreddit = client.subreddit("rust");
+    // Gets the hot listing of /r/rust. If the API request fails, we will panic with `expect`.
+    let mut hot_listing = subreddit.hot(ListingOptions::default()).expect("Could not fetch post listing!");
+    // Iterates through the top 50 posts of /r/rust. If you do not `take(n)`, this iterator will
+    // continue forever!
+    for post in hot_listing.take(50) {
+        println!("{}", post.title());
     }
+}
 ```
