@@ -226,7 +226,7 @@ impl RedditClient {
                 ' ' => res.push('+'),
                 '*' | '-' | '.' | '0'...'9' | 'A'...'Z' | '_' | 'a'...'z' => res.push(character),
                 _ => {
-                    for val in character.encode_utf8() {
+                    for val in character.to_string().as_bytes() {
                         res = res + &format!("%{:X}", val);
                     }
                 }

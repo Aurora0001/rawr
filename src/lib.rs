@@ -1,5 +1,3 @@
-#![feature(custom_derive, plugin, unicode, vec_deque_contains)]
-#![plugin(serde_macros)]
 #![warn(missing_docs)]
 
 //! # rawr - Rust API Wrapper for Reddit
