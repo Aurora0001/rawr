@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/Aurora0001/rawr.svg?branch=master)](https://travis-ci.org/Aurora0001/rawr)
 [![Gitter](https://badges.gitter.im/Aurora0001/rawr.svg)](https://gitter.im/Aurora0001/rawr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Documentation](https://img.shields.io/badge/documentation-available-green.svg)](https://aurora0001.github.io/rawr/doc/rawr/index.html)
+[![Crates.io](https://img.shields.io/badge/crates.io-0.1.0-blue.svg)](https://crates.io/crates/rawr)
 
 Welcome to rawr, the **R**ust **A**PI **W**rapper for **R**eddit. This library provides simple, pain-free access to the Reddit API 
 in Rust. If you want to create a Reddit bot, scrape data from the API or create a web application powered by Reddit's API, rawr can help
