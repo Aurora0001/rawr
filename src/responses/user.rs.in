@@ -1,5 +1,3 @@
-//! Responses from user-related API endpoints such as `about` data.
-
 use responses::BasicThing;
 /// API response for /user/username/about
 pub type UserAbout = BasicThing<UserAboutData>;

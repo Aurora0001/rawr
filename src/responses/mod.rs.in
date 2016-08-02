@@ -1,4 +1,3 @@
-#![allow(missing_docs)]
 pub mod listing;
 pub mod auth;
 pub mod comment;
