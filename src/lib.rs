@@ -1,4 +1,4 @@
-#![warn(missing_docs)]
+#![deny(missing_docs)]
 
 //! # rawr - Rust API Wrapper for Reddit
 //! This crate provides simple yet powerful access to the Reddit API.

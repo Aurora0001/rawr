@@ -1,7 +1,10 @@
 use structures::submission::FlairList;
+use structures::comment_list::CommentList;
+use structures::listing::Listing;
 use client::RedditClient;
 use responses::FlairSelectorResponse;
 use responses::user::{UserAbout as _UserAbout, UserAboutData};
+use responses::listing::{Listing as _Listing};
 use traits::Created;
 use errors::APIError;
 
@@ -56,6 +59,25 @@ impl<'a> User<'a> {
         self.client.post_success(&url, &body, false)
     }
 
+    /// Gets a list of *submissions* that the specified user has submitted. This endpoint is a
+    /// listing and will continue yielding items until every item has been exhausted.
+    /// # Examples
+    /// ```
+    /// use rawr::prelude::*;
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let user = client.user("Aurora0001");
+    /// let submissions = user.submissions().expect("Could not fetch!");
+    /// let mut i = 0;
+    /// for submission in submissions.take(5) {
+    ///     i += 1;
+    /// }
+    /// assert_eq!(i, 5);
+    /// ```
+    pub fn submissions(&self) -> Result<Listing, APIError> {
+        let url = format!("/user/{}/submitted?", self.name);
+        self.client.get_json::<_Listing>(&url, false)
+            .and_then(|res| Ok(Listing::new(self.client, url, res.data)))
+    }
     // TODO: implement comment, overview, gilded listings etc.
 }
 
