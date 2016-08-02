@@ -51,16 +51,19 @@ use errors::APIError;
 pub struct Listing<'a> {
     client: &'a RedditClient,
     query_stem: String,
-    data: listing::ListingData<listing::Submission>
+    data: listing::ListingData<listing::Submission>,
 }
 
 impl<'a> Listing<'a> {
     /// Internal method. Use other functions that return Listings, such as `Subreddit.hot()`.
-    pub fn new(client: &RedditClient, query_stem: String, data: listing::ListingData<listing::Submission>) -> Listing {
+    pub fn new(client: &RedditClient,
+               query_stem: String,
+               data: listing::ListingData<listing::Submission>)
+               -> Listing {
         Listing {
             client: client,
             query_stem: query_stem,
-            data: data
+            data: data,
         }
     }
 }
@@ -84,10 +87,13 @@ impl<'a> Listing<'a> {
         match self.after() {
             Some(after_id) => {
                 let url = format!("{}&after={}", self.query_stem, after_id);
-                self.client.get_json::<listing::Listing>(&url, false)
-                    .and_then(|res| Ok(Listing::new(self.client, self.query_stem.to_owned(), res.data)))
-            },
-            None => Err(APIError::ExhaustedListing)
+                self.client
+                    .get_json::<listing::Listing>(&url, false)
+                    .and_then(|res| {
+                        Ok(Listing::new(self.client, self.query_stem.to_owned(), res.data))
+                    })
+            }
+            None => Err(APIError::ExhaustedListing),
         }
     }
 }
@@ -123,7 +129,7 @@ pub struct PostStream<'a> {
     client: &'a RedditClient,
     set: VecDeque<String>,
     current_iter: Option<IntoIter<Submission<'a>>>,
-    url: String
+    url: String,
 }
 
 impl<'a> PostStream<'a> {
@@ -133,7 +139,7 @@ impl<'a> PostStream<'a> {
             set: VecDeque::new(),
             current_iter: None,
             client: client,
-            url: url
+            url: url,
         }
     }
 }
@@ -172,9 +178,13 @@ impl<'a> Iterator for PostStream<'a> {
             thread::sleep(Duration::new(5, 0));
             let req: Result<listing::Listing, APIError> = self.client.get_json(&self.url, false);
             let current_iter = if let Ok(res) = req {
-                Some(res.data.children.into_iter().map(|i| {
-                    Submission::new(self.client, i.data)
-                }).rev().collect::<Vec<Submission<'a>>>().into_iter())
+                Some(res.data
+                    .children
+                    .into_iter()
+                    .map(|i| Submission::new(self.client, i.data))
+                    .rev()
+                    .collect::<Vec<Submission<'a>>>()
+                    .into_iter())
             } else {
                 None
             };

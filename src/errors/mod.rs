@@ -18,7 +18,7 @@ pub enum APIError {
     HyperError(hyper::Error),
     /// Occurs if JSON deserialization fails. This will always be a bug, so please report it
     /// if it does occur, but the error type is provided so you can fail gracefully.
-    JSONError(serde_json::Error)
+    JSONError(serde_json::Error),
 }
 
 impl Display for APIError {
@@ -32,8 +32,10 @@ impl Error for APIError {
         match *self {
             APIError::HTTPError(_) => "The API returned a non-success error code",
             APIError::HyperError(_) => "An error occurred while processing the HTTP response",
-            APIError::JSONError(_) => "The JSON sent by Reddit did not match what rawr was expecting",
-            _ => "This error should not have occurred. Please file a bug"
+            APIError::JSONError(_) => {
+                "The JSON sent by Reddit did not match what rawr was expecting"
+            }
+            _ => "This error should not have occurred. Please file a bug",
         }
     }
 }

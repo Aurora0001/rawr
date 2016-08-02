@@ -38,14 +38,18 @@ pub struct CommentList<'a> {
     comment_hashes: HashMap<String, usize>,
     more: Vec<More>,
     link_id: String,
-    parent: String
+    parent: String,
 }
 
 impl<'a> CommentList<'a> {
     /// Creates a `CommentList` by storing all comments in the `CommentList.comments` list
     /// and all 'more' items in the `CommentList.more` list. Do not use this method - instead, use
     /// `Submission.replies()` or `Comment.replies()`.
-    pub fn new(client: &'a RedditClient, link_id: String, parent: String, comment_list: Vec<BasicThing<Value>>) -> CommentList<'a> {
+    pub fn new(client: &'a RedditClient,
+               link_id: String,
+               parent: String,
+               comment_list: Vec<BasicThing<Value>>)
+               -> CommentList<'a> {
         let mut new_items = vec![];
         let mut new_mores = vec![];
         let mut hashes = HashMap::new();
@@ -69,7 +73,7 @@ impl<'a> CommentList<'a> {
             more: new_mores,
             comment_hashes: hashes,
             link_id: link_id,
-            parent: parent
+            parent: parent,
         }
     }
 
@@ -81,7 +85,7 @@ impl<'a> CommentList<'a> {
             parent: String::new(),
             comments: vec![],
             more: vec![],
-            comment_hashes: HashMap::new()
+            comment_hashes: HashMap::new(),
         }
     }
 
@@ -93,32 +97,42 @@ impl<'a> CommentList<'a> {
     }
 
     fn fetch_more(&mut self, more_item: More) -> CommentList<'a> {
-        let params = format!("api_type=json&link_id={}&children={}", &self.link_id, &more_item.children.join(","));
+        let params = format!("api_type=json&link_id={}&children={}",
+                             &self.link_id,
+                             &more_item.children.join(","));
         let url = "/api/morechildren";
-        self.client.ensure_authenticated(|| {
-            let mut res = try!(self.client.post(url, false).body(&params).send());
-            if res.status.is_success() {
-                // The "data" attribute is sometimes not present, so we have to unwrap it all
-                // manually
-                let mut result_str = String::new();
-                res.read_to_string(&mut result_str).unwrap();
-                let mut new_listing: Value = from_str(&result_str).unwrap();
-                let mut new_listing = new_listing.as_object_mut().unwrap();
-                let mut json = new_listing.remove("json").unwrap();
-                let mut json = json.as_object_mut().unwrap();
-                let data = json.remove("data");
-                if let Some(mut data) = data {
-                    let mut things = data.as_object_mut().unwrap();
-                    let things = things.remove("things").unwrap();
-                    let things: Vec<BasicThing<Value>> = from_value(things).unwrap();
-                    Ok(CommentList::new(self.client, self.link_id.to_owned(), self.parent.to_owned(), things))
+        self.client
+            .ensure_authenticated(|| {
+                let mut res = try!(self.client.post(url, false).body(&params).send());
+                if res.status.is_success() {
+                    // The "data" attribute is sometimes not present, so we have to unwrap it all
+                    // manually
+                    let mut result_str = String::new();
+                    res.read_to_string(&mut result_str).unwrap();
+                    let mut new_listing: Value = from_str(&result_str).unwrap();
+                    let mut new_listing = new_listing.as_object_mut().unwrap();
+                    let mut json = new_listing.remove("json").unwrap();
+                    let mut json = json.as_object_mut().unwrap();
+                    let data = json.remove("data");
+                    if let Some(mut data) = data {
+                        let mut things = data.as_object_mut().unwrap();
+                        let things = things.remove("things").unwrap();
+                        let things: Vec<BasicThing<Value>> = from_value(things).unwrap();
+                        Ok(CommentList::new(self.client,
+                                            self.link_id.to_owned(),
+                                            self.parent.to_owned(),
+                                            things))
+                    } else {
+                        Ok(CommentList::new(self.client,
+                                            self.link_id.to_owned(),
+                                            self.parent.to_owned(),
+                                            vec![]))
+                    }
                 } else {
-                    Ok(CommentList::new(self.client, self.link_id.to_owned(), self.parent.to_owned(), vec![]))
+                    Err(APIError::HTTPError(res.status))
                 }
-            } else {
-                Err(APIError::HTTPError(res.status))
-            }
-        }).unwrap()
+            })
+            .unwrap()
     }
 
     fn merge_more_comments(&mut self, list: CommentList<'a>) {
@@ -128,7 +142,9 @@ impl<'a> CommentList<'a> {
         }
     }
 
-    fn merge_comment(&mut self, mut item: Comment<'a>, mut orphanage: &mut HashMap<String, Vec<Comment<'a>>>) {
+    fn merge_comment(&mut self,
+                     mut item: Comment<'a>,
+                     mut orphanage: &mut HashMap<String, Vec<Comment<'a>>>) {
         {
             if item.parent() == self.parent {
                 self.add_reply(item);
@@ -192,7 +208,7 @@ pub struct CommentStream<'a> {
     set: VecDeque<String>,
     current_iter: Option<IntoIter<Comment<'a>>>,
     id: String,
-    link_name: String
+    link_name: String,
 }
 
 impl<'a> CommentStream<'a> {
@@ -203,7 +219,7 @@ impl<'a> CommentStream<'a> {
             current_iter: None,
             client: client,
             link_name: link_name,
-            id: id
+            id: id,
         }
     }
 }
@@ -243,8 +259,15 @@ impl<'a> Iterator for CommentStream<'a> {
             let url = format!("/comments/{}?sort=new", self.id);
             let req: Result<listing::CommentResponse, APIError> = self.client.get_json(&url, false);
             if let Ok(req) = req {
-                let current_iter = CommentList::new(self.client, self.link_name.to_owned(), self.link_name.to_owned(), req.1.data.children)
-                    .take(5).collect::<Vec<Comment>>().into_iter().rev().collect::<Vec<Comment>>();
+                let current_iter = CommentList::new(self.client,
+                                                    self.link_name.to_owned(),
+                                                    self.link_name.to_owned(),
+                                                    req.1.data.children)
+                    .take(5)
+                    .collect::<Vec<Comment>>()
+                    .into_iter()
+                    .rev()
+                    .collect::<Vec<Comment>>();
                 self.current_iter = Some(current_iter.into_iter());
             }
             self.next()

@@ -130,19 +130,22 @@ pub struct PasswordAuthenticator {
     client_id: String,
     client_secret: String,
     username: String,
-    password: String
+    password: String,
 }
 
 impl Authenticator for PasswordAuthenticator {
     fn login(&mut self, client: &Client, user_agent: &str) -> Result<(), APIError> {
         let url = "https://www.reddit.com/api/v1/access_token";
-        let body = format!("grant_type=password&username={}&password={}", &self.username, &self.password);
-        let access_req = client.post(url).header(Authorization(
-            Basic {
+        let body = format!("grant_type=password&username={}&password={}",
+                           &self.username,
+                           &self.password);
+        let access_req = client.post(url)
+            .header(Authorization(Basic {
                 username: self.client_id.to_owned(),
-                password: Some(self.client_secret.to_owned())
-            }
-        )).header(UserAgent(user_agent.to_owned())).body(&body);
+                password: Some(self.client_secret.to_owned()),
+            }))
+            .header(UserAgent(user_agent.to_owned()))
+            .body(&body);
 
         let mut result = access_req.send().unwrap();
 
@@ -160,12 +163,13 @@ impl Authenticator for PasswordAuthenticator {
     fn logout(&mut self, client: &Client, user_agent: &str) -> Result<(), APIError> {
         let url = "https://www.reddit.com/api/v1/revoke_token";
         let body = format!("token={}", &self.access_token.to_owned().unwrap());
-        let req = client.post(url).header(Authorization(
-            Basic {
+        let req = client.post(url)
+            .header(Authorization(Basic {
                 username: self.client_id.to_owned(),
-                password: Some(self.client_secret.to_owned())
-            }
-        )).header(UserAgent(user_agent.to_owned())).body(&body);
+                password: Some(self.client_secret.to_owned()),
+            }))
+            .header(UserAgent(user_agent.to_owned()))
+            .body(&body);
         let res = req.send().unwrap();
         if !res.status.is_success() {
             Err(APIError::HTTPError(res.status))
@@ -181,11 +185,7 @@ impl Authenticator for PasswordAuthenticator {
     fn headers(&self) -> Headers {
         let mut headers = Headers::new();
         if let Some(ref token) = self.access_token {
-            headers.set(Authorization(
-                Bearer {
-                    token: token.to_owned()
-                }
-            ));
+            headers.set(Authorization(Bearer { token: token.to_owned() }));
         }
         headers
     }
@@ -199,13 +199,17 @@ impl PasswordAuthenticator {
     /// Creates a new `PasswordAuthenticator`. If you do not have a client ID and secret (or do
     /// not know what these are), you need to fetch one using the instructions in the module
     /// documentation.
-    pub fn new(client_id: &str, client_secret: &str, username: &str, password: &str) -> Arc<Mutex<Box<Authenticator + Send>>> {
+    pub fn new(client_id: &str,
+               client_secret: &str,
+               username: &str,
+               password: &str)
+               -> Arc<Mutex<Box<Authenticator + Send>>> {
         Arc::new(Mutex::new(Box::new(PasswordAuthenticator {
             client_id: client_id.to_owned(),
             client_secret: client_secret.to_owned(),
             username: username.to_owned(),
             password: password.to_owned(),
-            access_token: None
+            access_token: None,
         })))
     }
 }

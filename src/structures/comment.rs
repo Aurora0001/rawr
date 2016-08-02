@@ -12,7 +12,7 @@ use errors::APIError;
 pub struct Comment<'a> {
     data: _Comment,
     client: &'a RedditClient,
-    replies: CommentList<'a>
+    replies: CommentList<'a>,
 }
 
 impl<'a> Votable for Comment<'a> {
@@ -60,7 +60,9 @@ impl<'a> Editable for Comment<'a> {
     }
 
     fn edit(&mut self, text: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&text={}&thing_id={}", self.client.url_escape(text.to_owned()), self.data.name);
+        let body = format!("api_type=json&text={}&thing_id={}",
+                           self.client.url_escape(text.to_owned()),
+                           self.data.name);
         let res = self.client.post_success("/api/editusertext", &body, false);
         if let Ok(()) = res {
             // TODO: should we update body_html?
@@ -107,11 +109,14 @@ impl<'a> Content for Comment<'a> {
 
 impl<'a> Commentable<'a> for Comment<'a> {
     fn reply_count(&self) -> u64 {
-        panic!("There is no effective way of getting the number of comment replies. You may have to manually count with `replies().len()`, which may take some time.");
+        panic!("There is no effective way of getting the number of comment replies. You may have \
+                to manually count with `replies().len()`, which may take some time.");
     }
 
     fn reply(&self, text: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&text={}&thing_id={}", self.client.url_escape(text.to_owned()), self.name());
+        let body = format!("api_type=json&text={}&thing_id={}",
+                           self.client.url_escape(text.to_owned()),
+                           self.name());
         self.client.post_success("/api/comment", &body, false)
     }
 
@@ -127,7 +132,10 @@ impl<'a> Comment<'a> {
         let comments = if data.replies.is_object() {
             // TODO: avoid cloning here
             let listing = from_value::<CommentListing>(data.replies.clone()).unwrap();
-            CommentList::new(client, data.link_id.to_owned(), data.name.to_owned(), listing.data.children)
+            CommentList::new(client,
+                             data.link_id.to_owned(),
+                             data.name.to_owned(),
+                             listing.data.children)
         } else {
             CommentList::empty(client)
         };
@@ -135,7 +143,7 @@ impl<'a> Comment<'a> {
         Comment {
             client: client,
             data: data,
-            replies: comments
+            replies: comments,
         }
     }
 
@@ -158,7 +166,9 @@ impl<'a> Comment<'a> {
 
 impl<'a> Reportable for Comment<'a> {
     fn report(&self, reason: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&thing_id={}&reason={}", self.data.name, self.client.url_escape(reason.to_owned()));
+        let body = format!("api_type=json&thing_id={}&reason={}",
+                           self.data.name,
+                           self.client.url_escape(reason.to_owned()));
         self.client.post_success("/api/report", &body, false)
     }
 

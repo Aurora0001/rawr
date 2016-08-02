@@ -15,7 +15,7 @@ use traits::{Created, Commentable, Content, Editable, PageListing};
 /// A representation of a private message from Reddit.
 pub struct Message<'a> {
     client: &'a RedditClient,
-    data: MessageData
+    data: MessageData,
 }
 
 impl<'a> Message<'a> {
@@ -24,7 +24,7 @@ impl<'a> Message<'a> {
     pub fn new(client: &RedditClient, data: MessageData) -> Message {
         Message {
             client: client,
-            data: data
+            data: data,
         }
     }
 
@@ -37,15 +37,19 @@ impl<'a> Message<'a> {
 
 impl<'a> Commentable<'a> for Message<'a> {
     fn reply_count(&self) -> u64 {
-        panic!("The Reddit API does not appear to return the reply count to messages, so this function is unavailable.");
+        panic!("The Reddit API does not appear to return the reply count to messages, so this \
+                function is unavailable.");
     }
 
     fn replies(self) -> Result<CommentList<'a>, APIError> {
-        panic!("The Reddit API does not seem to return replies to messages as expected, so this function is unavailable.");
+        panic!("The Reddit API does not seem to return replies to messages as expected, so this \
+                function is unavailable.");
     }
 
     fn reply(&self, text: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&text={}&thing_id={}", self.client.url_escape(text.to_owned()), self.name());
+        let body = format!("api_type=json&text={}&thing_id={}",
+                           self.client.url_escape(text.to_owned()),
+                           self.name());
         self.client.post_success("/api/comment", &body, false)
     }
 }
@@ -99,7 +103,9 @@ impl<'a> Editable for Message<'a> {
     }
 
     fn edit(&mut self, text: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&text={}&thing_id={}", self.client.url_escape(text.to_owned()), self.data.name);
+        let body = format!("api_type=json&text={}&thing_id={}",
+                           self.client.url_escape(text.to_owned()),
+                           self.data.name);
         let res = self.client.post_success("/api/editusertext", &body, false);
         if let Ok(()) = res {
             // TODO: should we update body_html?
@@ -119,33 +125,31 @@ impl<'a> Editable for Message<'a> {
 
 /// A helper struct which allows access to the inbox, unread messages and other message queues.
 pub struct MessageInterface<'a> {
-    client: &'a RedditClient
+    client: &'a RedditClient,
 }
 
 impl<'a> MessageInterface<'a> {
     /// Internal method. Use `RedditClient.messages()` instead.
     pub fn new(client: &RedditClient) -> MessageInterface {
-        MessageInterface {
-            client: client
-        }
+        MessageInterface { client: client }
     }
 
     /// Gets a list of all received messages that have not been deleted.
     pub fn inbox(&self, opts: ListingOptions) -> Result<MessageListing<'a>, APIError> {
         let uri = format!("/message/inbox?limit={}", opts.batch);
         let full_uri = format!("{}&{}", uri, opts.anchor);
-        self.client.get_json::<_MessageListing>(&full_uri, false).and_then(|res| {
-            Ok(MessageListing::new(self.client, uri, res.data))
-        })
+        self.client
+            .get_json::<_MessageListing>(&full_uri, false)
+            .and_then(|res| Ok(MessageListing::new(self.client, uri, res.data)))
     }
 
     /// Gets all messages that have **not** been marked as read.
     pub fn unread(&self, opts: ListingOptions) -> Result<MessageListing<'a>, APIError> {
         let uri = format!("/message/unread?limit={}", opts.batch);
         let full_uri = format!("{}&{}", uri, opts.anchor);
-        self.client.get_json::<_MessageListing>(&full_uri, false).and_then(|res| {
-            Ok(MessageListing::new(self.client, uri, res.data))
-        })
+        self.client
+            .get_json::<_MessageListing>(&full_uri, false)
+            .and_then(|res| Ok(MessageListing::new(self.client, uri, res.data)))
     }
 
     /// Gets a `MessageStream` of unread posts, marking each one as read after yielding it from
@@ -171,17 +175,20 @@ impl<'a> MessageInterface<'a> {
 pub struct MessageListing<'a> {
     client: &'a RedditClient,
     query_stem: String,
-    data: listing::ListingData<MessageData>
+    data: listing::ListingData<MessageData>,
 }
 
 impl<'a> MessageListing<'a> {
     /// Internal method. Use `RedditClient.messages()` and request one of the message listings
     /// (e.g. `inbox(LISTING_OPTIONS)`).
-    pub fn new(client: &RedditClient, query_stem: String, data: listing::ListingData<MessageData>) -> MessageListing {
+    pub fn new(client: &RedditClient,
+               query_stem: String,
+               data: listing::ListingData<MessageData>)
+               -> MessageListing {
         MessageListing {
             client: client,
             query_stem: query_stem,
-            data: data
+            data: data,
         }
     }
 }
@@ -205,10 +212,13 @@ impl<'a> MessageListing<'a> {
         match self.after() {
             Some(after_id) => {
                 let url = format!("{}&after={}", self.query_stem, after_id);
-                self.client.get_json::<_MessageListing>(&url, false)
-                    .and_then(|res| Ok(MessageListing::new(self.client, self.query_stem.to_owned(), res.data)))
-            },
-            None => Err(APIError::ExhaustedListing)
+                self.client
+                    .get_json::<_MessageListing>(&url, false)
+                    .and_then(|res| {
+                        Ok(MessageListing::new(self.client, self.query_stem.to_owned(), res.data))
+                    })
+            }
+            None => Err(APIError::ExhaustedListing),
         }
     }
 }
@@ -237,7 +247,7 @@ impl<'a> Iterator for MessageListing<'a> {
 pub struct MessageStream<'a> {
     client: &'a RedditClient,
     current_iter: Option<IntoIter<Message<'a>>>,
-    url: String
+    url: String,
 }
 
 impl<'a> MessageStream<'a> {
@@ -246,7 +256,7 @@ impl<'a> MessageStream<'a> {
         MessageStream {
             current_iter: None,
             client: client,
-            url: url
+            url: url,
         }
     }
 }
@@ -263,7 +273,7 @@ impl<'a> Iterator for MessageStream<'a> {
                     // Loops until post is marked as read.
                     if res.mark_read().is_ok() {
                         thread::sleep(Duration::new(5, 0));
-                        break
+                        break;
                     }
                 }
                 self.current_iter = Some(iter);
@@ -275,9 +285,13 @@ impl<'a> Iterator for MessageStream<'a> {
             thread::sleep(Duration::new(5, 0));
             let req: Result<_MessageListing, APIError> = self.client.get_json(&self.url, false);
             let current_iter = if let Ok(res) = req {
-                Some(res.data.children.into_iter().map(|i| {
-                    Message::new(self.client, i.data)
-                }).rev().collect::<Vec<Message<'a>>>().into_iter())
+                Some(res.data
+                    .children
+                    .into_iter()
+                    .map(|i| Message::new(self.client, i.data))
+                    .rev()
+                    .collect::<Vec<Message<'a>>>()
+                    .into_iter())
             } else {
                 None
             };

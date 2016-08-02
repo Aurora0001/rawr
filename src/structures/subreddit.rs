@@ -27,9 +27,9 @@ impl<'a> Subreddit<'a> {
         // on.
         let uri = format!("/r/{}/{}limit={}", self.name, ty, opts.batch);
         let full_uri = format!("{}&{}", uri, opts.anchor);
-        self.client.get_json::<listing::Listing>(&full_uri, false).and_then(|res| {
-            Ok(Listing::new(self.client, uri, res.data))
-        })
+        self.client
+            .get_json::<listing::Listing>(&full_uri, false)
+            .and_then(|res| Ok(Listing::new(self.client, uri, res.data)))
     }
 
     /// Creates a `Subreddit` from a client and the subreddit's name. Do not use this directly -
@@ -37,7 +37,7 @@ impl<'a> Subreddit<'a> {
     pub fn create_new(client: &'a RedditClient, name: &str) -> Subreddit<'a> {
         Subreddit {
             client: client,
-            name: name.to_owned()
+            name: name.to_owned(),
         }
     }
 
@@ -127,7 +127,10 @@ impl<'a> Subreddit<'a> {
     /// Gets a listing of the controversial feed for this subreddit. Also requires a time filter (
     /// `rawr::options::TimeFilter`) which is equivalent to the "links from: all time" dropdown
     /// on the website.
-    pub fn controversial(&self, opts: ListingOptions, time: TimeFilter) -> Result<Listing, APIError> {
+    pub fn controversial(&self,
+                         opts: ListingOptions,
+                         time: TimeFilter)
+                         -> Result<Listing, APIError> {
         let path = format!("controversial?{}&", time);
         self.get_feed(&path, opts)
     }
@@ -151,8 +154,12 @@ impl<'a> Subreddit<'a> {
     /// sub.submit_link(post).expect("Posting failed!");
     /// ```
     pub fn submit_link(&self, post: LinkPost) -> Result<(), APIError> {
-        let body = format!("api_type=json&extension=json&kind=link&resubmit={}&sendreplies=true&sr={}&title={}&url={}",
-            post.resubmit, self.name, self.client.url_escape(post.title.to_owned()), self.client.url_escape(post.link.to_owned()));
+        let body = format!("api_type=json&extension=json&kind=link&resubmit={}&sendreplies=true&\
+                            sr={}&title={}&url={}",
+                           post.resubmit,
+                           self.name,
+                           self.client.url_escape(post.title.to_owned()),
+                           self.client.url_escape(post.link.to_owned()));
         self.client.post_success("/api/submit", &body, false)
     }
 
@@ -169,8 +176,11 @@ impl<'a> Subreddit<'a> {
     /// sub.submit_text(post).expect("Posting failed!");
     /// ```
     pub fn submit_text(&self, post: SelfPost) -> Result<(), APIError> {
-        let body = format!("api_type=json&extension=json&kind=self&sendreplies=true&sr={}&title={}&text={}",
-            self.name, self.client.url_escape(post.title), self.client.url_escape(post.text));
+        let body = format!("api_type=json&extension=json&kind=self&sendreplies=true&sr={}\
+                            &title={}&text={}",
+                           self.name,
+                           self.client.url_escape(post.title),
+                           self.client.url_escape(post.text));
         self.client.post_success("/api/submit", &body, false)
     }
 
@@ -187,14 +197,15 @@ impl<'a> Subreddit<'a> {
     /// ```
     pub fn about(&self) -> Result<SubredditAbout, APIError> {
         let url = format!("/r/{}/about", self.name);
-        self.client.get_json::<listing::SubredditAbout>(&url, false)
+        self.client
+            .get_json::<listing::SubredditAbout>(&url, false)
             .and_then(|res| Ok(SubredditAbout::new(res.data)))
     }
 }
 
 /// Information about a subreddit such as subscribers, sidebar text and active users.
 pub struct SubredditAbout {
-    data: listing::SubredditAboutData
+    data: listing::SubredditAboutData,
 }
 
 impl Created for SubredditAbout {
@@ -211,9 +222,7 @@ impl SubredditAbout {
     /// Creates a new `SubredditAbout` instance. Use `Subreddit.about()` instead to get
     /// information about a subreddit.
     pub fn new(data: listing::SubredditAboutData) -> SubredditAbout {
-        SubredditAbout {
-            data: data
-        }
+        SubredditAbout { data: data }
     }
 
     /// The number of subscribers to this subreddit.

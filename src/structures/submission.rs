@@ -69,7 +69,9 @@ impl<'a> Editable for Submission<'a> {
     }
 
     fn edit(&mut self, text: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&text={}&thing_id={}", self.client.url_escape(text.to_owned()), self.data.name);
+        let body = format!("api_type=json&text={}&thing_id={}",
+                           self.client.url_escape(text.to_owned()),
+                           self.data.name);
         let res = self.client.post_success("/api/editusertext", &body, false);
         if let Ok(()) = res {
             // TODO: should we update selftext_html?
@@ -126,15 +128,23 @@ impl<'a> Commentable<'a> for Submission<'a> {
 
     fn reply(&self, text: &str) -> Result<(), APIError> {
         // TODO: url escape properly
-        let body = format!("api_type=json&text={}&thing_id={}", self.client.url_escape(text.to_owned()), self.name());
+        let body = format!("api_type=json&text={}&thing_id={}",
+                           self.client.url_escape(text.to_owned()),
+                           self.name());
         self.client.post_success("/api/comment", &body, false)
     }
 
     fn replies(self) -> Result<CommentList<'a>, APIError> {
         // TODO: sort type
         let url = format!("/comments/{}", self.data.id);
-        self.client.get_json::<listing::CommentResponse>(&url, false)
-            .and_then(|res| Ok(CommentList::new(self.client, self.data.name.to_owned(), self.data.name.to_owned(), res.1.data.children)))
+        self.client
+            .get_json::<listing::CommentResponse>(&url, false)
+            .and_then(|res| {
+                Ok(CommentList::new(self.client,
+                                    self.data.name.to_owned(),
+                                    self.data.name.to_owned(),
+                                    res.1.data.children))
+            })
     }
 }
 
@@ -143,7 +153,7 @@ impl<'a> Submission<'a> {
     pub fn new(client: &RedditClient, data: listing::Submission) -> Submission {
         Submission {
             client: client,
-            data: data
+            data: data,
         }
     }
 
@@ -245,7 +255,7 @@ impl<'a> Stickable for Submission<'a> {
     }
 }
 
-impl<'a> Lockable for Submission<'a>  {
+impl<'a> Lockable for Submission<'a> {
     fn locked(&self) -> bool {
         self.data.locked
     }
@@ -275,7 +285,9 @@ impl<'a> Lockable for Submission<'a>  {
 
 impl<'a> Reportable for Submission<'a> {
     fn report(&self, reason: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&thing_id={}&reason={}", self.data.name, self.client.url_escape(reason.to_owned()));
+        let body = format!("api_type=json&thing_id={}&reason={}",
+                           self.data.name,
+                           self.client.url_escape(reason.to_owned()));
         self.client.post_success("/api/report", &body, false)
     }
 
@@ -320,12 +332,15 @@ impl<'a> Flairable for Submission<'a> {
     fn flair_options(&self) -> Result<FlairList, APIError> {
         let body = format!("link={}", self.data.name);
         let url = format!("/r/{}/api/flairselector", self.data.subreddit);
-        self.client.post_json::<FlairSelectorResponse>(&url, &body, false)
+        self.client
+            .post_json::<FlairSelectorResponse>(&url, &body, false)
             .and_then(|res| Ok(FlairList::new(res.choices)))
     }
 
     fn flair(&self, template: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&link={}&flair_template_id={}", self.data.name, template);
+        let body = format!("api_type=json&link={}&flair_template_id={}",
+                           self.data.name,
+                           template);
         let url = format!("/r/{}/api/selectflair", self.data.subreddit);
         self.client.post_success(&url, &body, false)
     }
@@ -363,15 +378,13 @@ impl<'a> Visible for Submission<'a> {
 /// `FlairList.flairs`, which is a list of `FlairChoice` objects.
 pub struct FlairList {
     /// The list of flairs available.
-    pub flairs: Vec<FlairChoice>
+    pub flairs: Vec<FlairChoice>,
 }
 
 impl FlairList {
     /// Creates a `FlairList` from a vector of `FlairChoice` objects.
     pub fn new(choices: Vec<FlairChoice>) -> FlairList {
-        FlairList {
-            flairs: choices
-        }
+        FlairList { flairs: choices }
     }
 
     /// Finds the flair with the specified text, consuming the `FlairList`.
@@ -397,7 +410,6 @@ impl FlairList {
 
         None
     }
-
 }
 
 /// A lazy object representing a submission. Used by the `Client.get_by_id()` method until the
@@ -405,7 +417,7 @@ impl FlairList {
 /// yet). The `LazySubmission` object is consumed when performing either of these actions.
 pub struct LazySubmission<'a> {
     id: String,
-    client: &'a RedditClient
+    client: &'a RedditClient,
 }
 
 impl<'a> LazySubmission<'a> {
@@ -413,7 +425,7 @@ impl<'a> LazySubmission<'a> {
     pub fn new(client: &'a RedditClient, id: &str) -> LazySubmission<'a> {
         LazySubmission {
             client: client,
-            id: id.to_owned()
+            id: id.to_owned(),
         }
     }
 
@@ -421,7 +433,8 @@ impl<'a> LazySubmission<'a> {
     /// creation time.
     pub fn get(self) -> Result<Submission<'a>, APIError> {
         let url = format!("/by_id/{}", self.id);
-        let listing = self.client.get_json::<listing::Listing>(&url, false)
+        let listing = self.client
+            .get_json::<listing::Listing>(&url, false)
             .and_then(|res| Ok(Listing::new(self.client, url, res.data)));
         Ok(try!(listing).nth(0).unwrap())
     }
@@ -429,7 +442,13 @@ impl<'a> LazySubmission<'a> {
     /// Fetches a `CommentList` with replies to this submission.
     pub fn replies(self) -> Result<CommentList<'a>, APIError> {
         let url = format!("/comments/{}", self.id.split('_').nth(1).unwrap());
-        self.client.get_json::<listing::CommentResponse>(&url, false)
-            .and_then(|res| Ok(CommentList::new(self.client, self.id.to_owned(), self.id.to_owned(), res.1.data.children)))
+        self.client
+            .get_json::<listing::CommentResponse>(&url, false)
+            .and_then(|res| {
+                Ok(CommentList::new(self.client,
+                                    self.id.to_owned(),
+                                    self.id.to_owned(),
+                                    res.1.data.children))
+            })
     }
 }

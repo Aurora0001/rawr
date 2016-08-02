@@ -1,10 +1,9 @@
 use structures::submission::FlairList;
-use structures::comment_list::CommentList;
 use structures::listing::Listing;
 use client::RedditClient;
 use responses::FlairSelectorResponse;
 use responses::user::{UserAbout as _UserAbout, UserAboutData};
-use responses::listing::{Listing as _Listing};
+use responses::listing::Listing as _Listing;
 use traits::Created;
 use errors::APIError;
 
@@ -12,7 +11,7 @@ use errors::APIError;
 pub struct User<'a> {
     client: &'a RedditClient,
     /// The name of the user that this struct represents.
-    pub name: String
+    pub name: String,
 }
 
 impl<'a> User<'a> {
@@ -20,7 +19,7 @@ impl<'a> User<'a> {
     pub fn new(client: &'a RedditClient, name: &str) -> User<'a> {
         User {
             client: client,
-            name: name.to_owned()
+            name: name.to_owned(),
         }
     }
     /// Gets information about this user.
@@ -44,7 +43,8 @@ impl<'a> User<'a> {
     pub fn flair_options(&self, subreddit: &str) -> Result<FlairList, APIError> {
         let body = format!("user={}", self.name);
         let url = format!("/r/{}/api/flairselector", subreddit);
-        self.client.post_json::<FlairSelectorResponse>(&url, &body, false)
+        self.client
+            .post_json::<FlairSelectorResponse>(&url, &body, false)
             .and_then(|res| Ok(FlairList::new(res.choices)))
     }
 
@@ -54,7 +54,9 @@ impl<'a> User<'a> {
     /// template ID of the flair with the specified text.
     /// - iterate through the `FlairList`, and get the `FlairChoice.flair_template_id` value.
     pub fn flair(&self, subreddit: &str, template: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&user={}&flair_template_id={}", self.name, template);
+        let body = format!("api_type=json&user={}&flair_template_id={}",
+                           self.name,
+                           template);
         let url = format!("/r/{}/api/selectflair", subreddit);
         self.client.post_success(&url, &body, false)
     }
@@ -75,7 +77,8 @@ impl<'a> User<'a> {
     /// ```
     pub fn submissions(&self) -> Result<Listing, APIError> {
         let url = format!("/user/{}/submitted?", self.name);
-        self.client.get_json::<_Listing>(&url, false)
+        self.client
+            .get_json::<_Listing>(&url, false)
             .and_then(|res| Ok(Listing::new(self.client, url, res.data)))
     }
     // TODO: implement comment, overview, gilded listings etc.
@@ -83,7 +86,7 @@ impl<'a> User<'a> {
 
 /// Information about a user from /r/username/about, such as karma and ID.
 pub struct UserAbout {
-    data: UserAboutData
+    data: UserAboutData,
 }
 
 impl UserAbout {
@@ -91,9 +94,7 @@ impl UserAbout {
     pub fn new(client: &RedditClient, name: String) -> Result<UserAbout, APIError> {
         let url = format!("/user/{}/about", name);
         client.get_json::<_UserAbout>(&url, false)
-        .and_then(|res| Ok(UserAbout {
-            data: res.data
-        }))
+            .and_then(|res| Ok(UserAbout { data: res.data }))
     }
 
     /// Gets the user's link karma (including self post karma as of July 19th, 2016).

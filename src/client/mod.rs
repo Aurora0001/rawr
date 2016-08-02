@@ -52,13 +52,15 @@ pub struct RedditClient {
     pub client: Client,
     user_agent: String,
     authenticator: Arc<Mutex<Box<Authenticator + Send>>>,
-    auto_logout: bool
+    auto_logout: bool,
 }
 
 
 impl RedditClient {
     /// Creates an instance of the `RedditClient` using the provided user agent.
-    pub fn new(user_agent: &str, authenticator: Arc<Mutex<Box<Authenticator + Send>>>) -> RedditClient {
+    pub fn new(user_agent: &str,
+               authenticator: Arc<Mutex<Box<Authenticator + Send>>>)
+               -> RedditClient {
         // Connection pooling is problematic if there are pauses/sleeps in the program, so we
         // choose to disable it by using a non-pooling connector.
         let client = Client::with_connector(DefaultConnector::default());
@@ -67,10 +69,12 @@ impl RedditClient {
             client: client,
             user_agent: user_agent.to_owned(),
             authenticator: authenticator,
-            auto_logout: true
+            auto_logout: true,
         };
 
-        this.get_authenticator().login(&this.client, &this.user_agent).expect("Authentication failed. Did you use the correct username/password?");
+        this.get_authenticator()
+            .login(&this.client, &this.user_agent)
+            .expect("Authentication failed. Did you use the correct username/password?");
         this
     }
 
@@ -94,14 +98,16 @@ impl RedditClient {
     /// Runs the lambda passed in. Refreshes the access token if it fails due to an HTTP 401
     /// Unauthorized error, then reruns the lambda. If the lambda fails twice, or fails due to
     /// a different error, the error is returned.
-    pub fn ensure_authenticated<F, T>(&self, lambda: F) -> Result<T, APIError> where F: Fn() -> Result<T, APIError> {
+    pub fn ensure_authenticated<F, T>(&self, lambda: F) -> Result<T, APIError>
+        where F: Fn() -> Result<T, APIError>
+    {
         let res = lambda();
         match res {
             Err(APIError::HTTPError(Unauthorized)) => {
                 try!(self.get_authenticator().refresh_token(&self.client, &self.user_agent));
                 lambda()
-            },
-            _ => res
+            }
+            _ => res,
         }
     }
 
@@ -123,12 +129,18 @@ impl RedditClient {
     }
 
     /// Creates a full URL using the correct access point (API or OAuth) from the stem.
-    pub fn build_url(&self, dest: &str, oauth_required: bool, authenticator: &mut MutexGuard<Box<Authenticator + Send + 'static>>) -> String {
+    pub fn build_url(&self,
+                     dest: &str,
+                     oauth_required: bool,
+                     authenticator: &mut MutexGuard<Box<Authenticator + Send + 'static>>)
+                     -> String {
         let oauth_supported = authenticator.oauth();
         let stem = if oauth_required || oauth_supported {
             // All endpoints support OAuth, but some do not support the regular endpoint. If we are
             // required to use it or support it, we will use it.
-            assert!(oauth_supported, "OAuth is required to use this endpoint, but your authenticator does not support it.");
+            assert!(oauth_supported,
+                    "OAuth is required to use this endpoint, but your authenticator does not \
+                     support it.");
             "https://oauth.reddit.com"
         } else {
             "https://api.reddit.com"
@@ -151,7 +163,8 @@ impl RedditClient {
     /// Sends a GET request with the specified parameters, and returns the resulting
     /// deserialized object.
     pub fn get_json<T>(&self, dest: &str, oauth_required: bool) -> Result<T, APIError>
-        where T: Deserialize {
+        where T: Deserialize
+    {
         self.ensure_authenticated(|| {
             let mut response = try!(self.get(dest, oauth_required).send());
             if response.status.is_success() {
@@ -180,7 +193,8 @@ impl RedditClient {
     /// Sends a post request with the specified parameters, and converts the resulting JSON
     /// into a deserialized object.
     pub fn post_json<T>(&self, dest: &str, body: &str, oauth_required: bool) -> Result<T, APIError>
-        where T: Deserialize {
+        where T: Deserialize
+    {
         self.ensure_authenticated(|| {
             let mut response = try!(self.post(dest, oauth_required).body(body).send());
             if response.status.is_success() {
@@ -196,7 +210,11 @@ impl RedditClient {
 
     /// Sends a post request with the specified parameters, and ensures that the response
     /// has a success header (HTTP 2xx).
-    pub fn post_success(&self, dest: &str, body: &str, oauth_required: bool) -> Result<(), APIError> {
+    pub fn post_success(&self,
+                        dest: &str,
+                        body: &str,
+                        oauth_required: bool)
+                        -> Result<(), APIError> {
         self.ensure_authenticated(|| {
             let response = try!(self.post(dest, oauth_required).body(body).send());
             if response.status.is_success() {

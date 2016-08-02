@@ -5,7 +5,7 @@ pub struct ListingOptions {
     /// The maximum amount of posts to fetch in one request.
     pub batch: u8,
     /// See `ListingAnchor` for explanation of this property.
-    pub anchor: ListingAnchor
+    pub anchor: ListingAnchor,
 }
 
 impl Display for ListingOptions {
@@ -20,7 +20,7 @@ impl ListingOptions {
     pub fn default() -> ListingOptions {
         ListingOptions {
             batch: 25,
-            anchor: ListingAnchor::None
+            anchor: ListingAnchor::None,
         }
     }
 }
@@ -34,7 +34,7 @@ pub enum ListingAnchor {
     /// the top queue.
     Before(String),
     /// Use no anchor.
-    None
+    None,
 }
 
 impl Display for ListingAnchor {
@@ -42,7 +42,7 @@ impl Display for ListingAnchor {
         match *self {
             ListingAnchor::Before(ref pos) => write!(f, "before={}", pos),
             ListingAnchor::After(ref pos) => write!(f, "after={}", pos),
-            ListingAnchor::None => Ok(())
+            ListingAnchor::None => Ok(()),
         }
     }
 }
@@ -80,7 +80,7 @@ pub struct LinkPost {
     /// resubmission or the API will raise an error. See `LinkPost::resubmit()` for an example.
     pub link: String,
     /// True if resubmitting this link is intended.
-    pub resubmit: bool
+    pub resubmit: bool,
 }
 
 impl LinkPost {
@@ -90,7 +90,7 @@ impl LinkPost {
         LinkPost {
             title: title.to_owned(),
             link: link.to_owned(),
-            resubmit: false
+            resubmit: false,
         }
     }
 
@@ -112,7 +112,7 @@ pub struct SelfPost {
     /// The title of the link post to create
     pub title: String,
     /// The markdown post body.
-    pub text: String
+    pub text: String,
 }
 
 impl SelfPost {
@@ -121,7 +121,7 @@ impl SelfPost {
     pub fn new(title: &str, text: &str) -> SelfPost {
         SelfPost {
             title: title.to_owned(),
-            text: text.to_owned()
+            text: text.to_owned(),
         }
     }
 }
