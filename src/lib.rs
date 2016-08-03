@@ -196,6 +196,8 @@
 //! # Not Yet Implemented
 //! - Multireddits
 //! - Live Threads
+//!
+//! Want to help? Take a look at the issue tracker!
 
 extern crate serde;
 extern crate serde_json;
