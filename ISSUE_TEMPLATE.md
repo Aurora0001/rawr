@@ -1,6 +1,5 @@
 # Reporting an Issue
-Firstly, thank you for using rawr and taking the time to report an issue - it really does help if you can provide a bug report that
-is easy to follow! Make sure you add the following details in your bug report so that it's easy to reproduce your problem.
+Firstly, thank you for using rawr and taking the time to report an issue - it really does help if you can provide a bug report that is easy to follow! Make sure you add the following details in your bug report so that it's easy to reproduce your problem.
 
 ## Template
 <Delete everything above and including this line!>
