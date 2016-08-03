@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-2390' class='srclink' href='../../../src/rawr/src/responses/comment.rs.html#12-96' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-1843' class='srclink' href='../../../src/rawr/src/responses/mod.rs.out.html#3642-3723' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Comment {
     pub subreddit_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     pub banned_by: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
@@ -81,58 +81,59 @@
 }</pre><div class='docblock'><p>A deserializable structure representing a comment. This is created when the client returns
 JSON representing a comment and this is wrapped in a <code>models::comment::Comment</code> for
 ease-of-use.</p>
-</div><h2 class='fields'>Fields</h2><span id='structfield.subreddit_id' class='structfield'><code>subreddit_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The Reddit ID for the subreddit where this was posted, <strong>including the leading <code>t5_</code></strong>.</p>
-</div><span id='structfield.banned_by' class='structfield'><code>banned_by: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>Contains the name of the moderator who banned this, if the logged-in user is a moderator
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.subreddit_id'><code>subreddit_id</code></td><td><div class='docblock'><p>The Reddit ID for the subreddit where this was posted, <strong>including the leading <code>t5_</code></strong>.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.banned_by'><code>banned_by</code></td><td><div class='docblock'><p>Contains the name of the moderator who banned this, if the logged-in user is a moderator
 of this subreddit and this is banned.</p>
-</div><span id='structfield.removal_reason' class='structfield'><code>removal_reason: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>The reason for the post removal, if you are a moderator <strong>and</strong> this post has been
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.removal_reason'><code>removal_reason</code></td><td><div class='docblock'><p>The reason for the post removal, if you are a moderator <strong>and</strong> this post has been
 removed.</p>
-</div><span id='structfield.link_id' class='structfield'><code>link_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The ID (including kind) of the parent post (i.e. the link post or self post).</p>
-</div><span id='structfield.likes' class='structfield'><code>likes: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>This is <code>Some(true)</code> if the logged-in user has upvoted this submission, <code>Some(false)</code> if
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.link_id'><code>link_id</code></td><td><div class='docblock'><p>The ID (including kind) of the parent post (i.e. the link post or self post).</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.likes'><code>likes</code></td><td><div class='docblock'><p>This is <code>Some(true)</code> if the logged-in user has upvoted this submission, <code>Some(false)</code> if
 the user has downvoted this submission or <code>None</code> if the user has not voted.</p>
-</div><span id='structfield.replies' class='structfield'><code>replies: Value</code>
-                           </span><span class='stab '></span><div class='docblock'><p>A listing of replies to this comment. Do not access this directly - use the functions
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.replies'><code>replies</code></td><td><div class='docblock'><p>A listing of replies to this comment. Do not access this directly - use the functions
 of <code>Comment</code> instead.</p>
-</div><span id='structfield.saved' class='structfield'><code>saved: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>True if the logged-in user has saved this submission.</p>
-</div><span id='structfield.id' class='structfield'><code>id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The ID of the post in base-36 form, as used in Reddit&#39;s links.</p>
-</div><span id='structfield.gilded' class='structfield'><code>gilded: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The amount of times that a user has been gilded (gifted Reddit Gold).</p>
-</div><span id='structfield.archived' class='structfield'><code>archived: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>This is <code>true</code> if Reddit has archived the submission (usually done after 6 months).
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.saved'><code>saved</code></td><td><div class='docblock'><p>True if the logged-in user has saved this submission.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.id'><code>id</code></td><td><div class='docblock'><p>The ID of the post in base-36 form, as used in Reddit&#39;s links.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.gilded'><code>gilded</code></td><td><div class='docblock'><p>The amount of times that a user has been gilded (gifted Reddit Gold).</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.archived'><code>archived</code></td><td><div class='docblock'><p>This is <code>true</code> if Reddit has archived the submission (usually done after 6 months).
 Archived submissions cannot be voted or commented upon.</p>
-</div><span id='structfield.author' class='structfield'><code>author: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The name of the author of the submission (not including the leading <code>/u/</code>)</p>
-</div><span id='structfield.score' class='structfield'><code>score: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The overall points score of this post, as shown on the upvote counter. This is the
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.author'><code>author</code></td><td><div class='docblock'><p>The name of the author of the submission (not including the leading <code>/u/</code>)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.score'><code>score</code></td><td><div class='docblock'><p>The overall points score of this post, as shown on the upvote counter. This is the
 same as upvotes - downvotes (however, this figure may be fuzzed by Reddit, and may not
 be exact)</p>
-</div><span id='structfield.approved_by' class='structfield'><code>approved_by: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>This contains the name of the user who approved this submission. This is <code>None</code> unless
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.approved_by'><code>approved_by</code></td><td><div class='docblock'><p>This contains the name of the user who approved this submission. This is <code>None</code> unless
 you are a mod of the subreddit <strong>and</strong> a user has approved this post.</p>
-</div><span id='structfield.body' class='structfield'><code>body: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The main post text.</p>
-</div><span id='structfield.edited' class='structfield'><code>edited: Value</code>
-                           </span><span class='stab '></span><div class='docblock'><p>This is <code>false</code> if the submission is not edited and is the edit timestamp if it is edited.
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.body'><code>body</code></td><td><div class='docblock'><p>The main post text.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.edited'><code>edited</code></td><td><div class='docblock'><p>This is <code>false</code> if the submission is not edited and is the edit timestamp if it is edited.
 Access through the functions of <code>Submission</code> instead.</p>
-</div><span id='structfield.author_flair_css_class' class='structfield'><code>author_flair_css_class: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>The CSS class set for the author&#39;s flair (if available). If there is no flair, this is
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.author_flair_css_class'><code>author_flair_css_class</code></td><td><div class='docblock'><p>The CSS class set for the author&#39;s flair (if available). If there is no flair, this is
 <code>None</code>.</p>
-</div><span id='structfield.downs' class='structfield'><code>downs: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The number of downvotes (fuzzed; see <code>score</code> for further explanation)</p>
-</div><span id='structfield.ups' class='structfield'><code>ups: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The number of upvotes (fuzzed; see <code>score</code> for further explanation)</p>
-</div><span id='structfield.body_html' class='structfield'><code>body_html: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>Contains the HTML of the post body.</p>
-</div><span id='structfield.subreddit' class='structfield'><code>subreddit: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The subreddit that this submission was posted in (not including <code>/r/</code>)</p>
-</div><span id='structfield.name' class='structfield'><code>name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The full &#39;Thing ID&#39;, consisting of a &#39;kind&#39; and a base-36 identifier. The valid kinds are:
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.downs'><code>downs</code></td><td><div class='docblock'><p>The number of downvotes (fuzzed; see <code>score</code> for further explanation)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.ups'><code>ups</code></td><td><div class='docblock'><p>The number of upvotes (fuzzed; see <code>score</code> for further explanation)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.body_html'><code>body_html</code></td><td><div class='docblock'><p>Contains the HTML of the post body.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.subreddit'><code>subreddit</code></td><td><div class='docblock'><p>The subreddit that this submission was posted in (not including <code>/r/</code>)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.name'><code>name</code></td><td><div class='docblock'><p>The full &#39;Thing ID&#39;, consisting of a &#39;kind&#39; and a base-36 identifier. The valid kinds are:
 - t1_ - Comment
 - t2_ - Account
 - t3_ - Link
@@ -140,28 +141,28 @@ Access through the functions of <code>Submission</code> instead.</p>
 - t5_ - Subreddit
 - t6_ - Award
 - t8_ - PromoCampaign</p>
-</div><span id='structfield.score_hidden' class='structfield'><code>score_hidden: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p><code>true</code> if the score should not be displayed.</p>
-</div><span id='structfield.stickied' class='structfield'><code>stickied: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>This is <code>true</code> if this submission is stickied (an &#39;annoucement&#39; thread)</p>
-</div><span id='structfield.created' class='structfield'><code>created: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>A timestamp of the time when the post was created, in the logged-in user&#39;s <strong>local</strong>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.score_hidden'><code>score_hidden</code></td><td><div class='docblock'><p><code>true</code> if the score should not be displayed.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.stickied'><code>stickied</code></td><td><div class='docblock'><p>This is <code>true</code> if this submission is stickied (an &#39;annoucement&#39; thread)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.created'><code>created</code></td><td><div class='docblock'><p>A timestamp of the time when the post was created, in the logged-in user&#39;s <strong>local</strong>
 time.</p>
-</div><span id='structfield.author_flair_text' class='structfield'><code>author_flair_text: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>The text of the author&#39;s flair, if present. Can be an empty string if the flair is present
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.author_flair_text'><code>author_flair_text</code></td><td><div class='docblock'><p>The text of the author&#39;s flair, if present. Can be an empty string if the flair is present
 but contains no text.</p>
-</div><span id='structfield.created_utc' class='structfield'><code>created_utc: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>A timestamp of the time when the post was created, in <strong>UTC</strong>.</p>
-</div><span id='structfield.distinguished' class='structfield'><code>distinguished: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>Indicates whether the user has used a special flag for themselves, e.g. [M] or [A].
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.created_utc'><code>created_utc</code></td><td><div class='docblock'><p>A timestamp of the time when the post was created, in <strong>UTC</strong>.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.distinguished'><code>distinguished</code></td><td><div class='docblock'><p>Indicates whether the user has used a special flag for themselves, e.g. [M] or [A].
 Possible values:
 - None - Normal user
 - Some(&quot;moderator&quot;) - [M]
 - Some(&quot;admin&quot;) - [A]
 - Some(&quot;special&quot;) - other special &#39;distinguishes&#39; e.g. [Δ]</p>
-</div><span id='structfield.num_reports' class='structfield'><code>num_reports: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>&gt;</code>
-                           </span><span class='stab '></span><span id='structfield.parent_id' class='structfield'><code>parent_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../../rawr/responses/comment/struct.Comment.html' title='rawr::responses::comment::Comment'>Comment</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1837' class='srclink' href='../../../src/rawr/src/responses/comment.rs.html#11' title='goto source code'>[src]</a></span></h3>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.num_reports'><code>num_reports</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.parent_id'><code>parent_id</code></td><td></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../../rawr/responses/comment/struct.Comment.html' title='rawr::responses::comment::Comment'>Comment</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1873' class='srclink' href='../../../src/rawr/src/responses/mod.rs.out.html#3641' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
 <div class='docblock'><p>Formats the value using the given formatter.</p>
 </div></div></section>

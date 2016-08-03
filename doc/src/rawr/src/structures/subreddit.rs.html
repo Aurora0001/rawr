@@ -281,6 +281,15 @@
 <span id="237">237</span>
 <span id="238">238</span>
 <span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>unknown_lints</span>, <span class='ident'>wrong_self_convention</span>, <span class='ident'>new_ret_no_self</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>client</span>::<span class='ident'>RedditClient</span>;
@@ -309,11 +318,11 @@
     <span class='kw'>fn</span> <span class='ident'>get_feed</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>ty</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>opts</span>: <span class='ident'>ListingOptions</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Listing</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
         <span class='comment'>// We do not include the after/before parameter here so the pagination can adjust it later</span>
         <span class='comment'>// on.</span>
-        <span class='kw'>let</span> <span class='ident'>uri</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/r/{}/{}limit={}&quot;</span>, <span class='self'>self</span>.<span class='ident'>name</span>, <span class='ident'>ty</span>, <span class='ident'>opts</span>.<span class='ident'>batch</span>);
+        <span class='kw'>let</span> <span class='ident'>uri</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/r/{}/{}limit={}&amp;raw_json=1&quot;</span>, <span class='self'>self</span>.<span class='ident'>name</span>, <span class='ident'>ty</span>, <span class='ident'>opts</span>.<span class='ident'>batch</span>);
         <span class='kw'>let</span> <span class='ident'>full_uri</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&amp;{}&quot;</span>, <span class='ident'>uri</span>, <span class='ident'>opts</span>.<span class='ident'>anchor</span>);
-        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Listing</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>full_uri</span>, <span class='bool-val'>false</span>).<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> {
-            <span class='prelude-val'>Ok</span>(<span class='ident'>Listing</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='ident'>uri</span>, <span class='ident'>res</span>.<span class='ident'>data</span>))
-        })
+        <span class='self'>self</span>.<span class='ident'>client</span>
+            .<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Listing</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>full_uri</span>, <span class='boolvalue'>false</span>)
+            .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> <span class='prelude-val'>Ok</span>(<span class='ident'>Listing</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='ident'>uri</span>, <span class='ident'>res</span>.<span class='ident'>data</span>)))
     }
 
     <span class='doccomment'>/// Creates a `Subreddit` from a client and the subreddit&#39;s name. Do not use this directly -</span>
@@ -321,7 +330,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>create_new</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RedditClient</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>Subreddit</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='ident'>Subreddit</span> {
             <span class='ident'>client</span>: <span class='ident'>client</span>,
-            <span class='ident'>name</span>: <span class='ident'>name</span>.<span class='ident'>to_owned</span>()
+            <span class='ident'>name</span>: <span class='ident'>name</span>.<span class='ident'>to_owned</span>(),
         }
     }
 
@@ -411,7 +420,10 @@
     <span class='doccomment'>/// Gets a listing of the controversial feed for this subreddit. Also requires a time filter (</span>
     <span class='doccomment'>/// `rawr::options::TimeFilter`) which is equivalent to the &quot;links from: all time&quot; dropdown</span>
     <span class='doccomment'>/// on the website.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>controversial</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>opts</span>: <span class='ident'>ListingOptions</span>, <span class='ident'>time</span>: <span class='ident'>TimeFilter</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Listing</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>controversial</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>,
+                         <span class='ident'>opts</span>: <span class='ident'>ListingOptions</span>,
+                         <span class='ident'>time</span>: <span class='ident'>TimeFilter</span>)
+                         <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Listing</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>path</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;controversial?{}&amp;&quot;</span>, <span class='ident'>time</span>);
         <span class='self'>self</span>.<span class='ident'>get_feed</span>(<span class='kw-2'>&amp;</span><span class='ident'>path</span>, <span class='ident'>opts</span>)
     }
@@ -435,9 +447,13 @@
     <span class='doccomment'>/// sub.submit_link(post).expect(&quot;Posting failed!&quot;);</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>submit_link</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>post</span>: <span class='ident'>LinkPost</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>APIError</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>body</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_type=json&amp;extension=json&amp;kind=link&amp;resubmit={}&amp;sendreplies=true&amp;sr={}&amp;title={}&amp;url={}&quot;</span>,
-            <span class='ident'>post</span>.<span class='ident'>resubmit</span>, <span class='self'>self</span>.<span class='ident'>name</span>, <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>title</span>.<span class='ident'>to_owned</span>()), <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>link</span>.<span class='ident'>to_owned</span>()));
-        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>post_success</span>(<span class='string'>&quot;/api/submit&quot;</span>, <span class='kw-2'>&amp;</span><span class='ident'>body</span>, <span class='bool-val'>false</span>)
+        <span class='kw'>let</span> <span class='ident'>body</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_type=json&amp;extension=json&amp;kind=link&amp;resubmit={}&amp;sendreplies=true&amp;\
+                            sr={}&amp;title={}&amp;url={}&quot;</span>,
+                           <span class='ident'>post</span>.<span class='ident'>resubmit</span>,
+                           <span class='self'>self</span>.<span class='ident'>name</span>,
+                           <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>title</span>.<span class='ident'>to_owned</span>()),
+                           <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>link</span>.<span class='ident'>to_owned</span>()));
+        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>post_success</span>(<span class='string'>&quot;/api/submit&quot;</span>, <span class='kw-2'>&amp;</span><span class='ident'>body</span>, <span class='boolvalue'>false</span>)
     }
 
     <span class='doccomment'>/// Submits a text post (self post) to this subreddit using the specified title and body.</span>
@@ -453,9 +469,12 @@
     <span class='doccomment'>/// sub.submit_text(post).expect(&quot;Posting failed!&quot;);</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>submit_text</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>post</span>: <span class='ident'>SelfPost</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>APIError</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>body</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_type=json&amp;extension=json&amp;kind=self&amp;sendreplies=true&amp;sr={}&amp;title={}&amp;text={}&quot;</span>,
-            <span class='self'>self</span>.<span class='ident'>name</span>, <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>title</span>), <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>text</span>));
-        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>post_success</span>(<span class='string'>&quot;/api/submit&quot;</span>, <span class='kw-2'>&amp;</span><span class='ident'>body</span>, <span class='bool-val'>false</span>)
+        <span class='kw'>let</span> <span class='ident'>body</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_type=json&amp;extension=json&amp;kind=self&amp;sendreplies=true&amp;sr={}\
+                            &amp;title={}&amp;text={}&quot;</span>,
+                           <span class='self'>self</span>.<span class='ident'>name</span>,
+                           <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>title</span>),
+                           <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>url_escape</span>(<span class='ident'>post</span>.<span class='ident'>text</span>));
+        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>post_success</span>(<span class='string'>&quot;/api/submit&quot;</span>, <span class='kw-2'>&amp;</span><span class='ident'>body</span>, <span class='boolvalue'>false</span>)
     }
 
     <span class='doccomment'>/// Fetches information about a subreddit such as subscribers, active users and sidebar</span>
@@ -470,15 +489,16 @@
     <span class='doccomment'>/// assert_eq!(learn_programming.display_name(), &quot;learnprogramming&quot;);</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>about</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>SubredditAbout</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/r/{}/about&quot;</span>, <span class='self'>self</span>.<span class='ident'>name</span>);
-        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>SubredditAbout</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='bool-val'>false</span>)
+        <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/r/{}/about?raw_json=1&quot;</span>, <span class='self'>self</span>.<span class='ident'>name</span>);
+        <span class='self'>self</span>.<span class='ident'>client</span>
+            .<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>SubredditAbout</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='boolvalue'>false</span>)
             .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> <span class='prelude-val'>Ok</span>(<span class='ident'>SubredditAbout</span>::<span class='ident'>new</span>(<span class='ident'>res</span>.<span class='ident'>data</span>)))
     }
 }
 
 <span class='doccomment'>/// Information about a subreddit such as subscribers, sidebar text and active users.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SubredditAbout</span> {
-    <span class='ident'>data</span>: <span class='ident'>listing</span>::<span class='ident'>SubredditAboutData</span>
+    <span class='ident'>data</span>: <span class='ident'>listing</span>::<span class='ident'>SubredditAboutData</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>Created</span> <span class='kw'>for</span> <span class='ident'>SubredditAbout</span> {
@@ -495,9 +515,7 @@
     <span class='doccomment'>/// Creates a new `SubredditAbout` instance. Use `Subreddit.about()` instead to get</span>
     <span class='doccomment'>/// information about a subreddit.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>data</span>: <span class='ident'>listing</span>::<span class='ident'>SubredditAboutData</span>) <span class='op'>-&gt;</span> <span class='ident'>SubredditAbout</span> {
-        <span class='ident'>SubredditAbout</span> {
-            <span class='ident'>data</span>: <span class='ident'>data</span>
-        }
+        <span class='ident'>SubredditAbout</span> { <span class='ident'>data</span>: <span class='ident'>data</span> }
     }
 
     <span class='doccomment'>/// The number of subscribers to this subreddit.</span>

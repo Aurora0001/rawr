@@ -177,7 +177,7 @@
     <span class='doccomment'>/// The maximum amount of posts to fetch in one request.</span>
     <span class='kw'>pub</span> <span class='ident'>batch</span>: <span class='ident'>u8</span>,
     <span class='doccomment'>/// See `ListingAnchor` for explanation of this property.</span>
-    <span class='kw'>pub</span> <span class='ident'>anchor</span>: <span class='ident'>ListingAnchor</span>
+    <span class='kw'>pub</span> <span class='ident'>anchor</span>: <span class='ident'>ListingAnchor</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>ListingOptions</span> {
@@ -192,7 +192,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>default</span>() <span class='op'>-&gt;</span> <span class='ident'>ListingOptions</span> {
         <span class='ident'>ListingOptions</span> {
             <span class='ident'>batch</span>: <span class='number'>25</span>,
-            <span class='ident'>anchor</span>: <span class='ident'>ListingAnchor</span>::<span class='prelude-val'>None</span>
+            <span class='ident'>anchor</span>: <span class='ident'>ListingAnchor</span>::<span class='prelude-val'>None</span>,
         }
     }
 }
@@ -206,7 +206,7 @@
     <span class='doccomment'>/// the top queue.</span>
     <span class='ident'>Before</span>(<span class='ident'>String</span>),
     <span class='doccomment'>/// Use no anchor.</span>
-    <span class='prelude-val'>None</span>
+    <span class='prelude-val'>None</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>ListingAnchor</span> {
@@ -214,7 +214,7 @@
         <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
             <span class='ident'>ListingAnchor</span>::<span class='ident'>Before</span>(<span class='kw-2'>ref</span> <span class='ident'>pos</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;before={}&quot;</span>, <span class='ident'>pos</span>),
             <span class='ident'>ListingAnchor</span>::<span class='ident'>After</span>(<span class='kw-2'>ref</span> <span class='ident'>pos</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;after={}&quot;</span>, <span class='ident'>pos</span>),
-            <span class='ident'>ListingAnchor</span>::<span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(())
+            <span class='ident'>ListingAnchor</span>::<span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(()),
         }
     }
 }
@@ -252,7 +252,7 @@
     <span class='doccomment'>/// resubmission or the API will raise an error. See `LinkPost::resubmit()` for an example.</span>
     <span class='kw'>pub</span> <span class='ident'>link</span>: <span class='ident'>String</span>,
     <span class='doccomment'>/// True if resubmitting this link is intended.</span>
-    <span class='kw'>pub</span> <span class='ident'>resubmit</span>: <span class='ident'>bool</span>
+    <span class='kw'>pub</span> <span class='ident'>resubmit</span>: <span class='ident'>bool</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>LinkPost</span> {
@@ -262,7 +262,7 @@
         <span class='ident'>LinkPost</span> {
             <span class='ident'>title</span>: <span class='ident'>title</span>.<span class='ident'>to_owned</span>(),
             <span class='ident'>link</span>: <span class='ident'>link</span>.<span class='ident'>to_owned</span>(),
-            <span class='ident'>resubmit</span>: <span class='bool-val'>false</span>
+            <span class='ident'>resubmit</span>: <span class='boolvalue'>false</span>,
         }
     }
 
@@ -274,7 +274,7 @@
     <span class='doccomment'>/// let post = LinkPost::new(&quot;Look at this!&quot;, &quot;http://example.com/foo&quot;).resubmit();</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>resubmit</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>LinkPost</span> {
-        <span class='self'>self</span>.<span class='ident'>resubmit</span> <span class='op'>=</span> <span class='bool-val'>true</span>;
+        <span class='self'>self</span>.<span class='ident'>resubmit</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
         <span class='self'>self</span>
     }
 }
@@ -284,7 +284,7 @@
     <span class='doccomment'>/// The title of the link post to create</span>
     <span class='kw'>pub</span> <span class='ident'>title</span>: <span class='ident'>String</span>,
     <span class='doccomment'>/// The markdown post body.</span>
-    <span class='kw'>pub</span> <span class='ident'>text</span>: <span class='ident'>String</span>
+    <span class='kw'>pub</span> <span class='ident'>text</span>: <span class='ident'>String</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>SelfPost</span> {
@@ -293,7 +293,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>title</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>text</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>SelfPost</span> {
         <span class='ident'>SelfPost</span> {
             <span class='ident'>title</span>: <span class='ident'>title</span>.<span class='ident'>to_owned</span>(),
-            <span class='ident'>text</span>: <span class='ident'>text</span>.<span class='ident'>to_owned</span>()
+            <span class='ident'>text</span>: <span class='ident'>text</span>.<span class='ident'>to_owned</span>(),
         }
     }
 }

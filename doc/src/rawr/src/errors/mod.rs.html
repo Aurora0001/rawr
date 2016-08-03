@@ -93,6 +93,8 @@
 <span id="49">49</span>
 <span id="50">50</span>
 <span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>error</span>::<span class='ident'>Error</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>::{<span class='ident'>Display</span>, <span class='prelude-ty'>Result</span> <span class='kw'>as</span> <span class='ident'>FmtResult</span>, <span class='ident'>Formatter</span>};
@@ -114,7 +116,7 @@
     <span class='ident'>HyperError</span>(<span class='ident'>hyper</span>::<span class='ident'>Error</span>),
     <span class='doccomment'>/// Occurs if JSON deserialization fails. This will always be a bug, so please report it</span>
     <span class='doccomment'>/// if it does occur, but the error type is provided so you can fail gracefully.</span>
-    <span class='ident'>JSONError</span>(<span class='ident'>serde_json</span>::<span class='ident'>Error</span>)
+    <span class='ident'>JSONError</span>(<span class='ident'>serde_json</span>::<span class='ident'>Error</span>),
 }
 
 <span class='kw'>impl</span> <span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>APIError</span> {
@@ -128,8 +130,10 @@
         <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
             <span class='ident'>APIError</span>::<span class='ident'>HTTPError</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;The API returned a non-success error code&quot;</span>,
             <span class='ident'>APIError</span>::<span class='ident'>HyperError</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;An error occurred while processing the HTTP response&quot;</span>,
-            <span class='ident'>APIError</span>::<span class='ident'>JSONError</span>(_) <span class='op'>=&gt;</span> <span class='string'>&quot;The JSON sent by Reddit did not match what rawr was expecting&quot;</span>,
-            _ <span class='op'>=&gt;</span> <span class='string'>&quot;This error should not have occurred. Please file a bug&quot;</span>
+            <span class='ident'>APIError</span>::<span class='ident'>JSONError</span>(_) <span class='op'>=&gt;</span> {
+                <span class='string'>&quot;The JSON sent by Reddit did not match what rawr was expecting&quot;</span>
+            }
+            _ <span class='op'>=&gt;</span> <span class='string'>&quot;This error should not have occurred. Please file a bug&quot;</span>,
         }
     }
 }

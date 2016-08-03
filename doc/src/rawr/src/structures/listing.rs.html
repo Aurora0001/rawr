@@ -220,6 +220,23 @@
 <span id="176">176</span>
 <span id="177">177</span>
 <span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>vec</span>::<span class='ident'>IntoIter</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>VecDeque</span>;
@@ -274,16 +291,19 @@
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Listing</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RedditClient</span>,
     <span class='ident'>query_stem</span>: <span class='ident'>String</span>,
-    <span class='ident'>data</span>: <span class='ident'>listing</span>::<span class='ident'>ListingData</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Submission</span><span class='op'>&gt;</span>
+    <span class='ident'>data</span>: <span class='ident'>listing</span>::<span class='ident'>ListingData</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Submission</span><span class='op'>&gt;</span>,
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>Listing</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Internal method. Use other functions that return Listings, such as `Subreddit.hot()`.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>RedditClient</span>, <span class='ident'>query_stem</span>: <span class='ident'>String</span>, <span class='ident'>data</span>: <span class='ident'>listing</span>::<span class='ident'>ListingData</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Submission</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Listing</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>RedditClient</span>,
+               <span class='ident'>query_stem</span>: <span class='ident'>String</span>,
+               <span class='ident'>data</span>: <span class='ident'>listing</span>::<span class='ident'>ListingData</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Submission</span><span class='op'>&gt;</span>)
+               <span class='op'>-&gt;</span> <span class='ident'>Listing</span> {
         <span class='ident'>Listing</span> {
             <span class='ident'>client</span>: <span class='ident'>client</span>,
             <span class='ident'>query_stem</span>: <span class='ident'>query_stem</span>,
-            <span class='ident'>data</span>: <span class='ident'>data</span>
+            <span class='ident'>data</span>: <span class='ident'>data</span>,
         }
     }
 }
@@ -307,10 +327,13 @@
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>after</span>() {
             <span class='prelude-val'>Some</span>(<span class='ident'>after_id</span>) <span class='op'>=&gt;</span> {
                 <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&amp;after={}&quot;</span>, <span class='self'>self</span>.<span class='ident'>query_stem</span>, <span class='ident'>after_id</span>);
-                <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Listing</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='bool-val'>false</span>)
-                    .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> <span class='prelude-val'>Ok</span>(<span class='ident'>Listing</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='self'>self</span>.<span class='ident'>query_stem</span>.<span class='ident'>to_owned</span>(), <span class='ident'>res</span>.<span class='ident'>data</span>)))
-            },
-            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>APIError</span>::<span class='ident'>ExhaustedListing</span>)
+                <span class='self'>self</span>.<span class='ident'>client</span>
+                    .<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Listing</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='boolvalue'>false</span>)
+                    .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> {
+                        <span class='prelude-val'>Ok</span>(<span class='ident'>Listing</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='self'>self</span>.<span class='ident'>query_stem</span>.<span class='ident'>to_owned</span>(), <span class='ident'>res</span>.<span class='ident'>data</span>))
+                    })
+            }
+            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>APIError</span>::<span class='ident'>ExhaustedListing</span>),
         }
     }
 }
@@ -346,7 +369,7 @@
     <span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RedditClient</span>,
     <span class='ident'>set</span>: <span class='ident'>VecDeque</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
     <span class='ident'>current_iter</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>IntoIter</span><span class='op'>&lt;</span><span class='ident'>Submission</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>,
-    <span class='ident'>url</span>: <span class='ident'>String</span>
+    <span class='ident'>url</span>: <span class='ident'>String</span>,
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>PostStream</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
@@ -356,7 +379,7 @@
             <span class='ident'>set</span>: <span class='ident'>VecDeque</span>::<span class='ident'>new</span>(),
             <span class='ident'>current_iter</span>: <span class='prelude-val'>None</span>,
             <span class='ident'>client</span>: <span class='ident'>client</span>,
-            <span class='ident'>url</span>: <span class='ident'>url</span>
+            <span class='ident'>url</span>: <span class='ident'>url</span>,
         }
     }
 }
@@ -370,7 +393,14 @@
             <span class='kw'>if</span> <span class='ident'>next_iter</span>.<span class='ident'>is_some</span>() {
                 <span class='kw'>let</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='ident'>next_iter</span>.<span class='ident'>unwrap</span>();
                 <span class='kw'>let</span> <span class='ident'>name</span> <span class='op'>=</span> <span class='ident'>res</span>.<span class='ident'>name</span>().<span class='ident'>to_owned</span>();
-                <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>set</span>.<span class='ident'>contains</span>(<span class='kw-2'>&amp;</span><span class='ident'>name</span>) {
+                <span class='comment'>// VecDeque.contains is not stable yet!</span>
+                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>contains</span> <span class='op'>=</span> <span class='boolvalue'>false</span>;
+                <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>set</span> {
+                    <span class='kw'>if</span> <span class='ident'>item</span> <span class='op'>==</span> <span class='kw-2'>&amp;</span><span class='ident'>name</span> {
+                        <span class='ident'>contains</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
+                    }
+                }
+                <span class='kw'>if</span> <span class='ident'>contains</span> {
                     <span class='self'>self</span>.<span class='ident'>current_iter</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>iter</span>);
                     <span class='self'>self</span>.<span class='ident'>next</span>()
                 } <span class='kw'>else</span> {
@@ -386,11 +416,15 @@
             }
         } <span class='kw'>else</span> {
             <span class='ident'>thread</span>::<span class='ident'>sleep</span>(<span class='ident'>Duration</span>::<span class='ident'>new</span>(<span class='number'>5</span>, <span class='number'>0</span>));
-            <span class='kw'>let</span> <span class='ident'>req</span>: <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Listing</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>get_json</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>url</span>, <span class='bool-val'>false</span>);
+            <span class='kw'>let</span> <span class='ident'>req</span>: <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>Listing</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>get_json</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>url</span>, <span class='boolvalue'>false</span>);
             <span class='kw'>let</span> <span class='ident'>current_iter</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Ok</span>(<span class='ident'>res</span>) <span class='op'>=</span> <span class='ident'>req</span> {
-                <span class='prelude-val'>Some</span>(<span class='ident'>res</span>.<span class='ident'>data</span>.<span class='ident'>children</span>.<span class='ident'>into_iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>i</span><span class='op'>|</span> {
-                    <span class='ident'>Submission</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='ident'>i</span>.<span class='ident'>data</span>)
-                }).<span class='ident'>rev</span>().<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Submission</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>().<span class='ident'>into_iter</span>())
+                <span class='prelude-val'>Some</span>(<span class='ident'>res</span>.<span class='ident'>data</span>
+                    .<span class='ident'>children</span>
+                    .<span class='ident'>into_iter</span>()
+                    .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>i</span><span class='op'>|</span> <span class='ident'>Submission</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='ident'>i</span>.<span class='ident'>data</span>))
+                    .<span class='ident'>rev</span>()
+                    .<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Submission</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>()
+                    .<span class='ident'>into_iter</span>())
             } <span class='kw'>else</span> {
                 <span class='prelude-val'>None</span>
             };

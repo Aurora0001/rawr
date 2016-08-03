@@ -1,0 +1,512 @@
+use responses::BasicThing;
+/// API response for /user/username/about
+pub type UserAbout = BasicThing<UserAboutData>;
+
+#[derive(Debug)]
+pub struct UserAboutData {
+    pub name: String,
+    pub is_friend: bool,
+    pub hide_from_robots: bool,
+    pub id: String,
+    pub created: i64,
+    pub created_utc: i64,
+    pub link_karma: i64,
+    pub comment_karma: i64,
+    pub is_gold: bool,
+    pub is_mod: bool,
+    pub has_verified_email: bool,
+}
+#[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+const _IMPL_DESERIALIZE_FOR_UserAboutData: () =
+    {
+        extern crate serde as _serde;
+        #[automatically_derived]
+        impl _serde::de::Deserialize for UserAboutData {
+            fn deserialize<__D>(deserializer: &mut __D)
+             -> ::std::result::Result<UserAboutData, __D::Error> where
+             __D: _serde::de::Deserializer {
+                {
+                    #[allow(non_camel_case_types)]
+                    enum __Field {
+                        __field0,
+                        __field1,
+                        __field2,
+                        __field3,
+                        __field4,
+                        __field5,
+                        __field6,
+                        __field7,
+                        __field8,
+                        __field9,
+                        __field10,
+                        __ignore,
+                    }
+                    impl _serde::de::Deserialize for __Field {
+                        #[inline]
+                        fn deserialize<__D>(deserializer: &mut __D)
+                         -> ::std::result::Result<__Field, __D::Error> where
+                         __D: _serde::de::Deserializer {
+                            struct __FieldVisitor<__D> {
+                                phantom: ::std::marker::PhantomData<__D>,
+                            }
+                            impl <__D> _serde::de::Visitor for
+                             __FieldVisitor<__D> where
+                             __D: _serde::de::Deserializer {
+                                type
+                                Value
+                                =
+                                __Field;
+                                fn visit_usize<__E>(&mut self, value: usize)
+                                 -> ::std::result::Result<__Field, __E> where
+                                 __E: _serde::de::Error {
+                                    match value {
+                                        0usize => { Ok(__Field::__field0) }
+                                        1usize => { Ok(__Field::__field1) }
+                                        2usize => { Ok(__Field::__field2) }
+                                        3usize => { Ok(__Field::__field3) }
+                                        4usize => { Ok(__Field::__field4) }
+                                        5usize => { Ok(__Field::__field5) }
+                                        6usize => { Ok(__Field::__field6) }
+                                        7usize => { Ok(__Field::__field7) }
+                                        8usize => { Ok(__Field::__field8) }
+                                        9usize => { Ok(__Field::__field9) }
+                                        10usize => { Ok(__Field::__field10) }
+                                        _ => Ok(__Field::__ignore),
+                                    }
+                                }
+                                fn visit_str<__E>(&mut self, value: &str)
+                                 -> ::std::result::Result<__Field, __E> where
+                                 __E: _serde::de::Error {
+                                    match value {
+                                        "name" => { Ok(__Field::__field0) }
+                                        "is_friend" => {
+                                            Ok(__Field::__field1)
+                                        }
+                                        "hide_from_robots" => {
+                                            Ok(__Field::__field2)
+                                        }
+                                        "id" => { Ok(__Field::__field3) }
+                                        "created" => { Ok(__Field::__field4) }
+                                        "created_utc" => {
+                                            Ok(__Field::__field5)
+                                        }
+                                        "link_karma" => {
+                                            Ok(__Field::__field6)
+                                        }
+                                        "comment_karma" => {
+                                            Ok(__Field::__field7)
+                                        }
+                                        "is_gold" => { Ok(__Field::__field8) }
+                                        "is_mod" => { Ok(__Field::__field9) }
+                                        "has_verified_email" => {
+                                            Ok(__Field::__field10)
+                                        }
+                                        _ => Ok(__Field::__ignore),
+                                    }
+                                }
+                                fn visit_bytes<__E>(&mut self, value: &[u8])
+                                 -> ::std::result::Result<__Field, __E> where
+                                 __E: _serde::de::Error {
+                                    match value {
+                                        b"name" => { Ok(__Field::__field0) }
+                                        b"is_friend" => {
+                                            Ok(__Field::__field1)
+                                        }
+                                        b"hide_from_robots" => {
+                                            Ok(__Field::__field2)
+                                        }
+                                        b"id" => { Ok(__Field::__field3) }
+                                        b"created" => {
+                                            Ok(__Field::__field4)
+                                        }
+                                        b"created_utc" => {
+                                            Ok(__Field::__field5)
+                                        }
+                                        b"link_karma" => {
+                                            Ok(__Field::__field6)
+                                        }
+                                        b"comment_karma" => {
+                                            Ok(__Field::__field7)
+                                        }
+                                        b"is_gold" => {
+                                            Ok(__Field::__field8)
+                                        }
+                                        b"is_mod" => { Ok(__Field::__field9) }
+                                        b"has_verified_email" => {
+                                            Ok(__Field::__field10)
+                                        }
+                                        _ => Ok(__Field::__ignore),
+                                    }
+                                }
+                            }
+                            deserializer.deserialize_struct_field(__FieldVisitor::<__D>{phantom:
+                                                                                            ::std::marker::PhantomData,})
+                        }
+                    }
+                    struct __Visitor<__D: _serde::de::Deserializer>(::std::marker::PhantomData<__D>);
+                    impl <__D: _serde::de::Deserializer> _serde::de::Visitor
+                     for __Visitor<__D> {
+                        type
+                        Value
+                        =
+                        UserAboutData;
+                        #[inline]
+                        fn visit_seq<__V>(&mut self, mut visitor: __V)
+                         -> ::std::result::Result<UserAboutData, __V::Error>
+                         where __V: _serde::de::SeqVisitor {
+                            {
+                                let __field0 =
+                                    match try!(visitor . visit :: < String > (
+                                                )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(0usize));
+                                        }
+                                    };
+                                let __field1 =
+                                    match try!(visitor . visit :: < bool > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(1usize));
+                                        }
+                                    };
+                                let __field2 =
+                                    match try!(visitor . visit :: < bool > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(2usize));
+                                        }
+                                    };
+                                let __field3 =
+                                    match try!(visitor . visit :: < String > (
+                                                )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(3usize));
+                                        }
+                                    };
+                                let __field4 =
+                                    match try!(visitor . visit :: < i64 > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(4usize));
+                                        }
+                                    };
+                                let __field5 =
+                                    match try!(visitor . visit :: < i64 > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(5usize));
+                                        }
+                                    };
+                                let __field6 =
+                                    match try!(visitor . visit :: < i64 > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(6usize));
+                                        }
+                                    };
+                                let __field7 =
+                                    match try!(visitor . visit :: < i64 > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(7usize));
+                                        }
+                                    };
+                                let __field8 =
+                                    match try!(visitor . visit :: < bool > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(8usize));
+                                        }
+                                    };
+                                let __field9 =
+                                    match try!(visitor . visit :: < bool > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(9usize));
+                                        }
+                                    };
+                                let __field10 =
+                                    match try!(visitor . visit :: < bool > (
+                                               )) {
+                                        Some(value) => { value }
+                                        None => {
+                                            try!(visitor . end (  ));
+                                            return Err(_serde::de::Error::invalid_length(10usize));
+                                        }
+                                    };
+                                try!(visitor . end (  ));
+                                Ok(UserAboutData{name: __field0,
+                                                 is_friend: __field1,
+                                                 hide_from_robots: __field2,
+                                                 id: __field3,
+                                                 created: __field4,
+                                                 created_utc: __field5,
+                                                 link_karma: __field6,
+                                                 comment_karma: __field7,
+                                                 is_gold: __field8,
+                                                 is_mod: __field9,
+                                                 has_verified_email:
+                                                     __field10,})
+                            }
+                        }
+                        #[inline]
+                        fn visit_map<__V>(&mut self, mut visitor: __V)
+                         -> ::std::result::Result<UserAboutData, __V::Error>
+                         where __V: _serde::de::MapVisitor {
+                            {
+                                let mut __field0: Option<String> = None;
+                                let mut __field1: Option<bool> = None;
+                                let mut __field2: Option<bool> = None;
+                                let mut __field3: Option<String> = None;
+                                let mut __field4: Option<i64> = None;
+                                let mut __field5: Option<i64> = None;
+                                let mut __field6: Option<i64> = None;
+                                let mut __field7: Option<i64> = None;
+                                let mut __field8: Option<bool> = None;
+                                let mut __field9: Option<bool> = None;
+                                let mut __field10: Option<bool> = None;
+                                while let Some(key) =
+                                          try!(visitor . visit_key :: <
+                                               __Field > (  )) {
+                                    match key {
+                                        __Field::__field0 => {
+                                            if __field0.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("name"));
+                                            }
+                                            __field0 =
+                                                Some(try!(visitor .
+                                                          visit_value :: <
+                                                          String > (  )));
+                                        }
+                                        __Field::__field1 => {
+                                            if __field1.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("is_friend"));
+                                            }
+                                            __field1 =
+                                                Some(try!(visitor .
+                                                          visit_value :: <
+                                                          bool > (  )));
+                                        }
+                                        __Field::__field2 => {
+                                            if __field2.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("hide_from_robots"));
+                                            }
+                                            __field2 =
+                                                Some(try!(visitor .
+                                                          visit_value :: <
+                                                          bool > (  )));
+                                        }
+                                        __Field::__field3 => {
+                                            if __field3.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("id"));
+                                            }
+                                            __field3 =
+                                                Some(try!(visitor .
+                                                          visit_value :: <
+                                                          String > (  )));
+                                        }
+                                        __Field::__field4 => {
+                                            if __field4.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("created"));
+                                            }
+                                            __field4 =
+                                                Some(try!(visitor .
+                                                          visit_value :: < i64
+                                                          > (  )));
+                                        }
+                                        __Field::__field5 => {
+                                            if __field5.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("created_utc"));
+                                            }
+                                            __field5 =
+                                                Some(try!(visitor .
+                                                          visit_value :: < i64
+                                                          > (  )));
+                                        }
+                                        __Field::__field6 => {
+                                            if __field6.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("link_karma"));
+                                            }
+                                            __field6 =
+                                                Some(try!(visitor .
+                                                          visit_value :: < i64
+                                                          > (  )));
+                                        }
+                                        __Field::__field7 => {
+                                            if __field7.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("comment_karma"));
+                                            }
+                                            __field7 =
+                                                Some(try!(visitor .
+                                                          visit_value :: < i64
+                                                          > (  )));
+                                        }
+                                        __Field::__field8 => {
+                                            if __field8.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("is_gold"));
+                                            }
+                                            __field8 =
+                                                Some(try!(visitor .
+                                                          visit_value :: <
+                                                          bool > (  )));
+                                        }
+                                        __Field::__field9 => {
+                                            if __field9.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("is_mod"));
+                                            }
+                                            __field9 =
+                                                Some(try!(visitor .
+                                                          visit_value :: <
+                                                          bool > (  )));
+                                        }
+                                        __Field::__field10 => {
+                                            if __field10.is_some() {
+                                                return Err(<__V::Error as
+                                                               _serde::de::Error>::duplicate_field("has_verified_email"));
+                                            }
+                                            __field10 =
+                                                Some(try!(visitor .
+                                                          visit_value :: <
+                                                          bool > (  )));
+                                        }
+                                        _ => {
+                                            try!(visitor . visit_value :: <
+                                                 _serde :: de :: impls ::
+                                                 IgnoredAny > (  ));
+                                        }
+                                    }
+                                }
+                                try!(visitor . end (  ));
+                                let __field0 =
+                                    match __field0 {
+                                        Some(__field0) => __field0,
+                                        None =>
+                                        try!(visitor . missing_field ( "name"
+                                             )),
+                                    };
+                                let __field1 =
+                                    match __field1 {
+                                        Some(__field1) => __field1,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "is_friend" )),
+                                    };
+                                let __field2 =
+                                    match __field2 {
+                                        Some(__field2) => __field2,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "hide_from_robots" )),
+                                    };
+                                let __field3 =
+                                    match __field3 {
+                                        Some(__field3) => __field3,
+                                        None =>
+                                        try!(visitor . missing_field ( "id"
+                                             )),
+                                    };
+                                let __field4 =
+                                    match __field4 {
+                                        Some(__field4) => __field4,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "created" )),
+                                    };
+                                let __field5 =
+                                    match __field5 {
+                                        Some(__field5) => __field5,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "created_utc" )),
+                                    };
+                                let __field6 =
+                                    match __field6 {
+                                        Some(__field6) => __field6,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "link_karma" )),
+                                    };
+                                let __field7 =
+                                    match __field7 {
+                                        Some(__field7) => __field7,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "comment_karma" )),
+                                    };
+                                let __field8 =
+                                    match __field8 {
+                                        Some(__field8) => __field8,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "is_gold" )),
+                                    };
+                                let __field9 =
+                                    match __field9 {
+                                        Some(__field9) => __field9,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "is_mod" )),
+                                    };
+                                let __field10 =
+                                    match __field10 {
+                                        Some(__field10) => __field10,
+                                        None =>
+                                        try!(visitor . missing_field (
+                                             "has_verified_email" )),
+                                    };
+                                Ok(UserAboutData{name: __field0,
+                                                 is_friend: __field1,
+                                                 hide_from_robots: __field2,
+                                                 id: __field3,
+                                                 created: __field4,
+                                                 created_utc: __field5,
+                                                 link_karma: __field6,
+                                                 comment_karma: __field7,
+                                                 is_gold: __field8,
+                                                 is_mod: __field9,
+                                                 has_verified_email:
+                                                     __field10,})
+                            }
+                        }
+                    }
+                    const FIELDS: &'static [&'static str] =
+                        &["name", "is_friend", "hide_from_robots", "id",
+                          "created", "created_utc", "link_karma",
+                          "comment_karma", "is_gold", "is_mod",
+                          "has_verified_email"];
+                    deserializer.deserialize_struct("UserAboutData", FIELDS,
+                                                    __Visitor::<__D>(::std::marker::PhantomData))
+                }
+            }
+        }
+    };

@@ -288,6 +288,36 @@
 <span id="244">244</span>
 <span id="245">245</span>
 <span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>vec</span>::<span class='ident'>IntoIter</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>VecDeque</span>;
@@ -329,14 +359,18 @@
     <span class='ident'>comment_hashes</span>: <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>usize</span><span class='op'>&gt;</span>,
     <span class='ident'>more</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>More</span><span class='op'>&gt;</span>,
     <span class='ident'>link_id</span>: <span class='ident'>String</span>,
-    <span class='ident'>parent</span>: <span class='ident'>String</span>
+    <span class='ident'>parent</span>: <span class='ident'>String</span>,
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>CommentList</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Creates a `CommentList` by storing all comments in the `CommentList.comments` list</span>
     <span class='doccomment'>/// and all &#39;more&#39; items in the `CommentList.more` list. Do not use this method - instead, use</span>
     <span class='doccomment'>/// `Submission.replies()` or `Comment.replies()`.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RedditClient</span>, <span class='ident'>link_id</span>: <span class='ident'>String</span>, <span class='ident'>parent</span>: <span class='ident'>String</span>, <span class='ident'>comment_list</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>BasicThing</span><span class='op'>&lt;</span><span class='ident'>Value</span><span class='op'>&gt;&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>CommentList</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RedditClient</span>,
+               <span class='ident'>link_id</span>: <span class='ident'>String</span>,
+               <span class='ident'>parent</span>: <span class='ident'>String</span>,
+               <span class='ident'>comment_list</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>BasicThing</span><span class='op'>&lt;</span><span class='ident'>Value</span><span class='op'>&gt;&gt;</span>)
+               <span class='op'>-&gt;</span> <span class='ident'>CommentList</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>new_items</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>new_mores</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>hashes</span> <span class='op'>=</span> <span class='ident'>HashMap</span>::<span class='ident'>new</span>();
@@ -360,7 +394,7 @@
             <span class='ident'>more</span>: <span class='ident'>new_mores</span>,
             <span class='ident'>comment_hashes</span>: <span class='ident'>hashes</span>,
             <span class='ident'>link_id</span>: <span class='ident'>link_id</span>,
-            <span class='ident'>parent</span>: <span class='ident'>parent</span>
+            <span class='ident'>parent</span>: <span class='ident'>parent</span>,
         }
     }
 
@@ -372,7 +406,7 @@
             <span class='ident'>parent</span>: <span class='ident'>String</span>::<span class='ident'>new</span>(),
             <span class='ident'>comments</span>: <span class='macro'>vec</span><span class='macro'>!</span>[],
             <span class='ident'>more</span>: <span class='macro'>vec</span><span class='macro'>!</span>[],
-            <span class='ident'>comment_hashes</span>: <span class='ident'>HashMap</span>::<span class='ident'>new</span>()
+            <span class='ident'>comment_hashes</span>: <span class='ident'>HashMap</span>::<span class='ident'>new</span>(),
         }
     }
 
@@ -384,32 +418,42 @@
     }
 
     <span class='kw'>fn</span> <span class='ident'>fetch_more</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>more_item</span>: <span class='ident'>More</span>) <span class='op'>-&gt;</span> <span class='ident'>CommentList</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_type=json&amp;link_id={}&amp;children={}&quot;</span>, <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>link_id</span>, <span class='kw-2'>&amp;</span><span class='ident'>more_item</span>.<span class='ident'>children</span>.<span class='ident'>join</span>(<span class='string'>&quot;,&quot;</span>));
+        <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_type=json&amp;raw_json=1&amp;link_id={}&amp;children={}&quot;</span>,
+                             <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>link_id</span>,
+                             <span class='kw-2'>&amp;</span><span class='ident'>more_item</span>.<span class='ident'>children</span>.<span class='ident'>join</span>(<span class='string'>&quot;,&quot;</span>));
         <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='string'>&quot;/api/morechildren&quot;</span>;
-        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>ensure_authenticated</span>(<span class='op'>||</span> {
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>post</span>(<span class='ident'>url</span>, <span class='bool-val'>false</span>).<span class='ident'>body</span>(<span class='kw-2'>&amp;</span><span class='ident'>params</span>).<span class='ident'>send</span>());
-            <span class='kw'>if</span> <span class='ident'>res</span>.<span class='ident'>status</span>.<span class='ident'>is_success</span>() {
-                <span class='comment'>// The &quot;data&quot; attribute is sometimes not present, so we have to unwrap it all</span>
-                <span class='comment'>// manually</span>
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>result_str</span> <span class='op'>=</span> <span class='ident'>String</span>::<span class='ident'>new</span>();
-                <span class='ident'>res</span>.<span class='ident'>read_to_string</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>result_str</span>).<span class='ident'>unwrap</span>();
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>new_listing</span>: <span class='ident'>Value</span> <span class='op'>=</span> <span class='ident'>from_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>result_str</span>).<span class='ident'>unwrap</span>();
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>new_listing</span> <span class='op'>=</span> <span class='ident'>new_listing</span>.<span class='ident'>as_object_mut</span>().<span class='ident'>unwrap</span>();
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>json</span> <span class='op'>=</span> <span class='ident'>new_listing</span>.<span class='ident'>remove</span>(<span class='string'>&quot;json&quot;</span>).<span class='ident'>unwrap</span>();
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>json</span> <span class='op'>=</span> <span class='ident'>json</span>.<span class='ident'>as_object_mut</span>().<span class='ident'>unwrap</span>();
-                <span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='ident'>json</span>.<span class='ident'>remove</span>(<span class='string'>&quot;data&quot;</span>);
-                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>mut</span> <span class='ident'>data</span>) <span class='op'>=</span> <span class='ident'>data</span> {
-                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>things</span> <span class='op'>=</span> <span class='ident'>data</span>.<span class='ident'>as_object_mut</span>().<span class='ident'>unwrap</span>();
-                    <span class='kw'>let</span> <span class='ident'>things</span> <span class='op'>=</span> <span class='ident'>things</span>.<span class='ident'>remove</span>(<span class='string'>&quot;things&quot;</span>).<span class='ident'>unwrap</span>();
-                    <span class='kw'>let</span> <span class='ident'>things</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>BasicThing</span><span class='op'>&lt;</span><span class='ident'>Value</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='ident'>from_value</span>(<span class='ident'>things</span>).<span class='ident'>unwrap</span>();
-                    <span class='prelude-val'>Ok</span>(<span class='ident'>CommentList</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='self'>self</span>.<span class='ident'>link_id</span>.<span class='ident'>to_owned</span>(), <span class='self'>self</span>.<span class='ident'>parent</span>.<span class='ident'>to_owned</span>(), <span class='ident'>things</span>))
+        <span class='self'>self</span>.<span class='ident'>client</span>
+            .<span class='ident'>ensure_authenticated</span>(<span class='op'>||</span> {
+                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>post</span>(<span class='ident'>url</span>, <span class='boolvalue'>false</span>).<span class='ident'>body</span>(<span class='kw-2'>&amp;</span><span class='ident'>params</span>).<span class='ident'>send</span>());
+                <span class='kw'>if</span> <span class='ident'>res</span>.<span class='ident'>status</span>.<span class='ident'>is_success</span>() {
+                    <span class='comment'>// The &quot;data&quot; attribute is sometimes not present, so we have to unwrap it all</span>
+                    <span class='comment'>// manually</span>
+                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>result_str</span> <span class='op'>=</span> <span class='ident'>String</span>::<span class='ident'>new</span>();
+                    <span class='ident'>res</span>.<span class='ident'>read_to_string</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>result_str</span>).<span class='ident'>unwrap</span>();
+                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>new_listing</span>: <span class='ident'>Value</span> <span class='op'>=</span> <span class='ident'>from_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>result_str</span>).<span class='ident'>unwrap</span>();
+                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>new_listing</span> <span class='op'>=</span> <span class='ident'>new_listing</span>.<span class='ident'>as_object_mut</span>().<span class='ident'>unwrap</span>();
+                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>json</span> <span class='op'>=</span> <span class='ident'>new_listing</span>.<span class='ident'>remove</span>(<span class='string'>&quot;json&quot;</span>).<span class='ident'>unwrap</span>();
+                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>json</span> <span class='op'>=</span> <span class='ident'>json</span>.<span class='ident'>as_object_mut</span>().<span class='ident'>unwrap</span>();
+                    <span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='ident'>json</span>.<span class='ident'>remove</span>(<span class='string'>&quot;data&quot;</span>);
+                    <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>mut</span> <span class='ident'>data</span>) <span class='op'>=</span> <span class='ident'>data</span> {
+                        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>things</span> <span class='op'>=</span> <span class='ident'>data</span>.<span class='ident'>as_object_mut</span>().<span class='ident'>unwrap</span>();
+                        <span class='kw'>let</span> <span class='ident'>things</span> <span class='op'>=</span> <span class='ident'>things</span>.<span class='ident'>remove</span>(<span class='string'>&quot;things&quot;</span>).<span class='ident'>unwrap</span>();
+                        <span class='kw'>let</span> <span class='ident'>things</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>BasicThing</span><span class='op'>&lt;</span><span class='ident'>Value</span><span class='op'>&gt;&gt;</span> <span class='op'>=</span> <span class='ident'>from_value</span>(<span class='ident'>things</span>).<span class='ident'>unwrap</span>();
+                        <span class='prelude-val'>Ok</span>(<span class='ident'>CommentList</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>,
+                                            <span class='self'>self</span>.<span class='ident'>link_id</span>.<span class='ident'>to_owned</span>(),
+                                            <span class='self'>self</span>.<span class='ident'>parent</span>.<span class='ident'>to_owned</span>(),
+                                            <span class='ident'>things</span>))
+                    } <span class='kw'>else</span> {
+                        <span class='prelude-val'>Ok</span>(<span class='ident'>CommentList</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>,
+                                            <span class='self'>self</span>.<span class='ident'>link_id</span>.<span class='ident'>to_owned</span>(),
+                                            <span class='self'>self</span>.<span class='ident'>parent</span>.<span class='ident'>to_owned</span>(),
+                                            <span class='macro'>vec</span><span class='macro'>!</span>[]))
+                    }
                 } <span class='kw'>else</span> {
-                    <span class='prelude-val'>Ok</span>(<span class='ident'>CommentList</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='self'>self</span>.<span class='ident'>link_id</span>.<span class='ident'>to_owned</span>(), <span class='self'>self</span>.<span class='ident'>parent</span>.<span class='ident'>to_owned</span>(), <span class='macro'>vec</span><span class='macro'>!</span>[]))
+                    <span class='prelude-val'>Err</span>(<span class='ident'>APIError</span>::<span class='ident'>HTTPError</span>(<span class='ident'>res</span>.<span class='ident'>status</span>))
                 }
-            } <span class='kw'>else</span> {
-                <span class='prelude-val'>Err</span>(<span class='ident'>APIError</span>::<span class='ident'>HTTPError</span>(<span class='ident'>res</span>.<span class='ident'>status</span>))
-            }
-        }).<span class='ident'>unwrap</span>()
+            })
+            .<span class='ident'>unwrap</span>()
     }
 
     <span class='kw'>fn</span> <span class='ident'>merge_more_comments</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>list</span>: <span class='ident'>CommentList</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>) {
@@ -419,7 +463,9 @@
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>merge_comment</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>item</span>: <span class='ident'>Comment</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>, <span class='kw-2'>mut</span> <span class='ident'>orphanage</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Comment</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>) {
+    <span class='kw'>fn</span> <span class='ident'>merge_comment</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>,
+                     <span class='kw-2'>mut</span> <span class='ident'>item</span>: <span class='ident'>Comment</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+                     <span class='kw-2'>mut</span> <span class='ident'>orphanage</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>String</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Comment</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>) {
         {
             <span class='kw'>if</span> <span class='ident'>item</span>.<span class='ident'>parent</span>() <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>parent</span> {
                 <span class='self'>self</span>.<span class='ident'>add_reply</span>(<span class='ident'>item</span>);
@@ -483,7 +529,7 @@
     <span class='ident'>set</span>: <span class='ident'>VecDeque</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
     <span class='ident'>current_iter</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>IntoIter</span><span class='op'>&lt;</span><span class='ident'>Comment</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>,
     <span class='ident'>id</span>: <span class='ident'>String</span>,
-    <span class='ident'>link_name</span>: <span class='ident'>String</span>
+    <span class='ident'>link_name</span>: <span class='ident'>String</span>,
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>CommentStream</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
@@ -494,7 +540,7 @@
             <span class='ident'>current_iter</span>: <span class='prelude-val'>None</span>,
             <span class='ident'>client</span>: <span class='ident'>client</span>,
             <span class='ident'>link_name</span>: <span class='ident'>link_name</span>,
-            <span class='ident'>id</span>: <span class='ident'>id</span>
+            <span class='ident'>id</span>: <span class='ident'>id</span>,
         }
     }
 }
@@ -508,7 +554,14 @@
             <span class='kw'>if</span> <span class='ident'>next_iter</span>.<span class='ident'>is_some</span>() {
                 <span class='kw'>let</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='ident'>next_iter</span>.<span class='ident'>unwrap</span>();
                 <span class='kw'>let</span> <span class='ident'>name</span> <span class='op'>=</span> <span class='ident'>res</span>.<span class='ident'>name</span>().<span class='ident'>to_owned</span>();
-                <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>set</span>.<span class='ident'>contains</span>(<span class='kw-2'>&amp;</span><span class='ident'>name</span>) {
+                <span class='comment'>// VecDeque.contains is not stable yet!</span>
+                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>contains</span> <span class='op'>=</span> <span class='boolvalue'>false</span>;
+                <span class='kw'>for</span> <span class='ident'>item</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>set</span> {
+                    <span class='kw'>if</span> <span class='ident'>item</span> <span class='op'>==</span> <span class='kw-2'>&amp;</span><span class='ident'>name</span> {
+                        <span class='ident'>contains</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
+                    }
+                }
+                <span class='kw'>if</span> <span class='ident'>contains</span> {
                     <span class='self'>self</span>.<span class='ident'>current_iter</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>iter</span>);
                     <span class='self'>self</span>.<span class='ident'>next</span>()
                 } <span class='kw'>else</span> {
@@ -524,11 +577,18 @@
             }
         } <span class='kw'>else</span> {
             <span class='ident'>thread</span>::<span class='ident'>sleep</span>(<span class='ident'>Duration</span>::<span class='ident'>new</span>(<span class='number'>5</span>, <span class='number'>0</span>));
-            <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/comments/{}?sort=new&quot;</span>, <span class='self'>self</span>.<span class='ident'>id</span>);
-            <span class='kw'>let</span> <span class='ident'>req</span>: <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>CommentResponse</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>get_json</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='bool-val'>false</span>);
+            <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/comments/{}?sort=new&amp;raw_json=1&quot;</span>, <span class='self'>self</span>.<span class='ident'>id</span>);
+            <span class='kw'>let</span> <span class='ident'>req</span>: <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>listing</span>::<span class='ident'>CommentResponse</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>get_json</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='boolvalue'>false</span>);
             <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Ok</span>(<span class='ident'>req</span>) <span class='op'>=</span> <span class='ident'>req</span> {
-                <span class='kw'>let</span> <span class='ident'>current_iter</span> <span class='op'>=</span> <span class='ident'>CommentList</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='self'>self</span>.<span class='ident'>link_name</span>.<span class='ident'>to_owned</span>(), <span class='self'>self</span>.<span class='ident'>link_name</span>.<span class='ident'>to_owned</span>(), <span class='ident'>req</span>.<span class='number'>1</span>.<span class='ident'>data</span>.<span class='ident'>children</span>)
-                    .<span class='ident'>take</span>(<span class='number'>5</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Comment</span><span class='op'>&gt;&gt;</span>().<span class='ident'>into_iter</span>().<span class='ident'>rev</span>().<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Comment</span><span class='op'>&gt;&gt;</span>();
+                <span class='kw'>let</span> <span class='ident'>current_iter</span> <span class='op'>=</span> <span class='ident'>CommentList</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>,
+                                                    <span class='self'>self</span>.<span class='ident'>link_name</span>.<span class='ident'>to_owned</span>(),
+                                                    <span class='self'>self</span>.<span class='ident'>link_name</span>.<span class='ident'>to_owned</span>(),
+                                                    <span class='ident'>req</span>.<span class='number'>1</span>.<span class='ident'>data</span>.<span class='ident'>children</span>)
+                    .<span class='ident'>take</span>(<span class='number'>5</span>)
+                    .<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Comment</span><span class='op'>&gt;&gt;</span>()
+                    .<span class='ident'>into_iter</span>()
+                    .<span class='ident'>rev</span>()
+                    .<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Comment</span><span class='op'>&gt;&gt;</span>();
                 <span class='self'>self</span>.<span class='ident'>current_iter</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>current_iter</span>.<span class='ident'>into_iter</span>());
             }
             <span class='self'>self</span>.<span class='ident'>next</span>()

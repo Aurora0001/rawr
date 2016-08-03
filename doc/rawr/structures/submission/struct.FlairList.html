@@ -47,14 +47,15 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-4405' class='srclink' href='../../../src/rawr/src/structures/submission.rs.html#364-367' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-4418' class='srclink' href='../../../src/rawr/src/structures/submission.rs.html#379-382' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct FlairList {
     pub flairs: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../../rawr/responses/struct.FlairChoice.html' title='rawr::responses::FlairChoice'>FlairChoice</a>&gt;,
 }</pre><div class='docblock'><p>A list of flairs that can be assigned to a post. To access the complete list, use
 <code>FlairList.flairs</code>, which is a list of <code>FlairChoice</code> objects.</p>
-</div><h2 class='fields'>Fields</h2><span id='structfield.flairs' class='structfield'><code>flairs: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../../rawr/responses/struct.FlairChoice.html' title='rawr::responses::FlairChoice'>FlairChoice</a>&gt;</code>
-                           </span><span class='stab '></span><div class='docblock'><p>The list of flairs available.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../../rawr/structures/submission/struct.FlairList.html' title='rawr::structures::submission::FlairList'>FlairList</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4407' class='srclink' href='../../../src/rawr/src/structures/submission.rs.html#369-401' title='goto source code'>[src]</a></span></h3>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.flairs'><code>flairs</code></td><td><div class='docblock'><p>The list of flairs available.</p>
+</div></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../../rawr/structures/submission/struct.FlairList.html' title='rawr::structures::submission::FlairList'>FlairList</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4420' class='srclink' href='../../../src/rawr/src/structures/submission.rs.html#384-413' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(choices: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../../rawr/responses/struct.FlairChoice.html' title='rawr::responses::FlairChoice'>FlairChoice</a>&gt;) -&gt; <a class='struct' href='../../../rawr/structures/submission/struct.FlairList.html' title='rawr::structures::submission::FlairList'>FlairList</a></code></h4>
 <div class='docblock'><p>Creates a <code>FlairList</code> from a vector of <code>FlairChoice</code> objects.</p>
 </div><h4 id='method.find_text' class='method'><code>fn <a href='#method.find_text' class='fnname'>find_text</a>(self, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>

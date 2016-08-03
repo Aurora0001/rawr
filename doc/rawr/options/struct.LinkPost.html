@@ -47,20 +47,21 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-5024' class='srclink' href='../../src/rawr/src/options/mod.rs.html#76-84' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-5056' class='srclink' href='../../src/rawr/src/options/mod.rs.html#76-84' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct LinkPost {
     pub title: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     pub link: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     pub resubmit: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
 }</pre><div class='docblock'><p>Options used when creating a link post. See <code>structures::subreddit</code> for examples of usage.</p>
-</div><h2 class='fields'>Fields</h2><span id='structfield.title' class='structfield'><code>title: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The title of the link post to create</p>
-</div><span id='structfield.link' class='structfield'><code>link: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>The URL of the link to post. If this has been posted before, you <strong>must</strong> mark this as a
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.title'><code>title</code></td><td><div class='docblock'><p>The title of the link post to create</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.link'><code>link</code></td><td><div class='docblock'><p>The URL of the link to post. If this has been posted before, you <strong>must</strong> mark this as a
 resubmission or the API will raise an error. See <code>LinkPost::resubmit()</code> for an example.</p>
-</div><span id='structfield.resubmit' class='structfield'><code>resubmit: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code>
-                           </span><span class='stab '></span><div class='docblock'><p>True if resubmitting this link is intended.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../rawr/options/struct.LinkPost.html' title='rawr::options::LinkPost'>LinkPost</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-5028' class='srclink' href='../../src/rawr/src/options/mod.rs.html#86-108' title='goto source code'>[src]</a></span></h3>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.resubmit'><code>resubmit</code></td><td><div class='docblock'><p>True if resubmitting this link is intended.</p>
+</div></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../rawr/options/struct.LinkPost.html' title='rawr::options::LinkPost'>LinkPost</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-5060' class='srclink' href='../../src/rawr/src/options/mod.rs.html#86-108' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(title: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, link: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../../rawr/options/struct.LinkPost.html' title='rawr::options::LinkPost'>LinkPost</a></code></h4>
 <div class='docblock'><p>Creates a new <code>LinkPost</code> structure that contains the options for a link post.
 The post is not actually sent at this point.</p>
