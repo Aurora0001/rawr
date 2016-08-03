@@ -120,12 +120,12 @@ impl RedditClient {
     /// Provides an interface to the specified subreddit which can be used to access
     /// subreddit-related API endpoints such as post listings.
     pub fn subreddit(&self, name: &str) -> Subreddit {
-        Subreddit::create_new(self, name)
+        Subreddit::create_new(self, &self.url_escape(name.to_owned()))
     }
 
     /// Gets the specified user in order to get user-related data such as the 'about' page.
     pub fn user(&self, name: &str) -> User {
-        User::new(self, name)
+        User::new(self, &self.url_escape(name.to_owned()))
     }
 
     /// Creates a full URL using the correct access point (API or OAuth) from the stem.
@@ -263,7 +263,7 @@ impl RedditClient {
     /// assert_eq!(post.title(), "[C#] Abstract vs Interface");
     /// ```
     pub fn get_by_id(&self, id: &str) -> LazySubmission {
-        LazySubmission::new(self, id)
+        LazySubmission::new(self, &self.url_escape(id.to_owned()))
     }
 
     /// Gets a `MessageInterface` object which allows access to the message listings (e.g. `inbox`,
