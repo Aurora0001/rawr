@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/structures/user.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
+
+    <title>user.rs.html -- source</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content source"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+</pre><pre class='rust '>
+<span class='kw'>use</span> <span class='ident'>structures</span>::<span class='ident'>submission</span>::<span class='ident'>FlairList</span>;
+<span class='kw'>use</span> <span class='ident'>structures</span>::<span class='ident'>listing</span>::<span class='ident'>Listing</span>;
+<span class='kw'>use</span> <span class='ident'>client</span>::<span class='ident'>RedditClient</span>;
+<span class='kw'>use</span> <span class='ident'>responses</span>::<span class='ident'>FlairSelectorResponse</span>;
+<span class='kw'>use</span> <span class='ident'>responses</span>::<span class='ident'>user</span>::{<span class='ident'>UserAbout</span> <span class='kw'>as</span> <span class='ident'>_UserAbout</span>, <span class='ident'>UserAboutData</span>};
+<span class='kw'>use</span> <span class='ident'>responses</span>::<span class='ident'>listing</span>::<span class='ident'>Listing</span> <span class='kw'>as</span> <span class='ident'>_Listing</span>;
+<span class='kw'>use</span> <span class='ident'>traits</span>::<span class='ident'>Created</span>;
+<span class='kw'>use</span> <span class='ident'>errors</span>::<span class='ident'>APIError</span>;
+
+<span class='doccomment'>/// Interface to a Reddit user, which can be used to access their karma and moderator status.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>User</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RedditClient</span>,
+    <span class='doccomment'>/// The name of the user that this struct represents.</span>
+    <span class='kw'>pub</span> <span class='ident'>name</span>: <span class='ident'>String</span>,
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>User</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// Internal method. Use `RedditClient.user(NAME)` instead.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RedditClient</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='ident'>User</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+        <span class='ident'>User</span> {
+            <span class='ident'>client</span>: <span class='ident'>client</span>,
+            <span class='ident'>name</span>: <span class='ident'>name</span>.<span class='ident'>to_owned</span>(),
+        }
+    }
+    <span class='doccomment'>/// Gets information about this user.</span>
+    <span class='doccomment'>/// # Example</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use rawr::client::RedditClient;</span>
+    <span class='doccomment'>/// use rawr::auth::AnonymousAuthenticator;</span>
+    <span class='doccomment'>/// let client = RedditClient::new(&quot;rawr&quot;, AnonymousAuthenticator::new());</span>
+    <span class='doccomment'>/// let user = client.user(&quot;Aurora0001&quot;).about().expect(&quot;User request failed&quot;);</span>
+    <span class='doccomment'>/// assert_eq!(user.id(), &quot;eqyvc&quot;);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>about</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>UserAbout</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
+        <span class='ident'>UserAbout</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='self'>self</span>.<span class='ident'>name</span>)
+    }
+
+    <span class='doccomment'>/// Gets a list of possible **user** flairs that can be added in this subreddit.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// User flairs apply on a per-subreddit basis, and some may not permit user flairs at all.</span>
+    <span class='doccomment'>/// If you do not have the privileges to set the flair for this user, you will receive</span>
+    <span class='doccomment'>/// a 403 error.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>flair_options</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>subreddit</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>FlairList</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>body</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;user={}&quot;</span>, <span class='self'>self</span>.<span class='ident'>name</span>);
+        <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/r/{}/api/flairselector&quot;</span>, <span class='ident'>subreddit</span>);
+        <span class='self'>self</span>.<span class='ident'>client</span>
+            .<span class='ident'>post_json</span>::<span class='op'>&lt;</span><span class='ident'>FlairSelectorResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>body</span>, <span class='boolvalue'>false</span>)
+            .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> <span class='prelude-val'>Ok</span>(<span class='ident'>FlairList</span>::<span class='ident'>new</span>(<span class='ident'>res</span>.<span class='ident'>choices</span>)))
+    }
+
+    <span class='doccomment'>/// Sets the flair for this user in the specified subreddit, using the specified template</span>
+    <span class='doccomment'>/// string. You can get the template string from `flair_options`; either:</span>
+    <span class='doccomment'>/// - use the returned `FlairList` and call the method `find_text` which will return the</span>
+    <span class='doccomment'>/// template ID of the flair with the specified text.</span>
+    <span class='doccomment'>/// - iterate through the `FlairList`, and get the `FlairChoice.flair_template_id` value.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>flair</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>subreddit</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>template</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>APIError</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>body</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;api_type=json&amp;user={}&amp;flair_template_id={}&quot;</span>,
+                           <span class='self'>self</span>.<span class='ident'>name</span>,
+                           <span class='ident'>template</span>);
+        <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/r/{}/api/selectflair&quot;</span>, <span class='ident'>subreddit</span>);
+        <span class='self'>self</span>.<span class='ident'>client</span>.<span class='ident'>post_success</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>body</span>, <span class='boolvalue'>false</span>)
+    }
+
+    <span class='doccomment'>/// Gets a list of *submissions* that the specified user has submitted. This endpoint is a</span>
+    <span class='doccomment'>/// listing and will continue yielding items until every item has been exhausted.</span>
+    <span class='doccomment'>/// # Examples</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use rawr::prelude::*;</span>
+    <span class='doccomment'>/// let client = RedditClient::new(&quot;rawr&quot;, AnonymousAuthenticator::new());</span>
+    <span class='doccomment'>/// let user = client.user(&quot;Aurora0001&quot;);</span>
+    <span class='doccomment'>/// let submissions = user.submissions().expect(&quot;Could not fetch!&quot;);</span>
+    <span class='doccomment'>/// let mut i = 0;</span>
+    <span class='doccomment'>/// for submission in submissions.take(5) {</span>
+    <span class='doccomment'>///     i += 1;</span>
+    <span class='doccomment'>/// }</span>
+    <span class='doccomment'>/// assert_eq!(i, 5);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>submissions</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Listing</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/user/{}/submitted?raw_json=1&quot;</span>, <span class='self'>self</span>.<span class='ident'>name</span>);
+        <span class='self'>self</span>.<span class='ident'>client</span>
+            .<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>_Listing</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='boolvalue'>false</span>)
+            .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> <span class='prelude-val'>Ok</span>(<span class='ident'>Listing</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>client</span>, <span class='ident'>url</span>, <span class='ident'>res</span>.<span class='ident'>data</span>)))
+    }
+    <span class='comment'>// TODO: implement comment, overview, gilded listings etc.</span>
+}
+
+<span class='doccomment'>/// Information about a user from /r/username/about, such as karma and ID.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>UserAbout</span> {
+    <span class='ident'>data</span>: <span class='ident'>UserAboutData</span>,
+}
+
+<span class='kw'>impl</span> <span class='ident'>UserAbout</span> {
+    <span class='doccomment'>/// Internal method. Use `RedditClient.user(NAME).about()` instead.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>RedditClient</span>, <span class='ident'>name</span>: <span class='ident'>String</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>UserAbout</span>, <span class='ident'>APIError</span><span class='op'>&gt;</span> {
+        <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;/user/{}/about?raw_json=1&quot;</span>, <span class='ident'>name</span>);
+        <span class='ident'>client</span>.<span class='ident'>get_json</span>::<span class='op'>&lt;</span><span class='ident'>_UserAbout</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='boolvalue'>false</span>)
+            .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>res</span><span class='op'>|</span> <span class='prelude-val'>Ok</span>(<span class='ident'>UserAbout</span> { <span class='ident'>data</span>: <span class='ident'>res</span>.<span class='ident'>data</span> }))
+    }
+
+    <span class='doccomment'>/// Gets the user&#39;s link karma (including self post karma as of July 19th, 2016).</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>link_karma</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>i64</span> {
+        <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>link_karma</span>
+    }
+
+    <span class='doccomment'>/// Gets the user&#39;s comment karma.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>comment_karma</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>i64</span> {
+        <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>comment_karma</span>
+    }
+
+    <span class='doccomment'>/// Gets the user ID, not including kind, e.g. &#39;eqyvc&#39;.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>id</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
+        <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>id</span>
+    }
+}
+
+<span class='kw'>impl</span> <span class='ident'>Created</span> <span class='kw'>for</span> <span class='ident'>UserAbout</span> {
+    <span class='kw'>fn</span> <span class='ident'>created</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>i64</span> {
+        <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>created</span>
+    }
+
+    <span class='kw'>fn</span> <span class='ident'>created_utc</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>i64</span> {
+        <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>created_utc</span>
+    }
+}
+</pre>
+</section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../../";
+        window.currentCrate = "rawr";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../../jquery.js"></script>
+    <script src="../../../../main.js"></script>
+    
+    <script defer src="../../../../search-index.js"></script>
+</body>
+</html>

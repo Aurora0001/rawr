@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AnonymousAuthenticator","An anonymous login authenticator."],["PasswordAuthenticator","Authenticates using a username and password with OAuth. See the module-level documentation for usage."]],"trait":[["Authenticator","Trait for any method of authenticating with the Reddit API."]]});

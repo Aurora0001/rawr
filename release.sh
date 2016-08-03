@@ -5,6 +5,7 @@ cp -r ./target/doc ../doc
 git checkout gh-pages
 rm -r ./doc
 cp -r ../doc ./
+git pull origin gh-pages
 git add .
 git commit -m "Update documentation."
 git push origin gh-pages

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `SubredditAboutData` struct in crate `rawr`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, SubredditAboutData">
+
+    <title>rawr::responses::listing::SubredditAboutData - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>rawr</a>::<wbr><a href='../index.html'>responses</a>::<wbr><a href='index.html'>listing</a></p><script>window.sidebarCurrent = {name: 'SubredditAboutData', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>rawr</a>::<wbr><a href='../index.html'>responses</a>::<wbr><a href='index.html'>listing</a>::<wbr><a class='struct' href=''>SubredditAboutData</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-235' class='srclink' href='../../../src/rawr/src/responses/mod.rs.out.html#19-45' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct SubredditAboutData {
+    pub subscribers: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>,
+    pub accounts_active: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>,
+    pub subreddit_type: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub title: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub url: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub wiki_enabled: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+    pub over18: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+    pub public_description: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub public_description_html: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub public_traffic: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+    pub name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub display_name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub description: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub description_html: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub created: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a>,
+    pub created_utc: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a>,
+    pub quarantine: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+    pub submission_type: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub lang: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub submit_text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub submit_text_html: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub submit_text_label: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+    pub submit_link_label: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+    pub comment_score_hide_mins: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>,
+}</pre><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.subscribers'><code>subscribers</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.accounts_active'><code>accounts_active</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.subreddit_type'><code>subreddit_type</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.title'><code>title</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.url'><code>url</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.wiki_enabled'><code>wiki_enabled</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.over18'><code>over18</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.public_description'><code>public_description</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.public_description_html'><code>public_description_html</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.public_traffic'><code>public_traffic</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.name'><code>name</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.id'><code>id</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.display_name'><code>display_name</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.description'><code>description</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.description_html'><code>description_html</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.created'><code>created</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.created_utc'><code>created_utc</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.quarantine'><code>quarantine</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.submission_type'><code>submission_type</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.lang'><code>lang</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.submit_text'><code>submit_text</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.submit_text_html'><code>submit_text_html</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.submit_text_label'><code>submit_text_label</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.submit_link_label'><code>submit_link_label</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.comment_score_hide_mins'><code>comment_score_hide_mins</code></td><td></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../../rawr/responses/listing/struct.SubredditAboutData.html' title='rawr::responses::listing::SubredditAboutData'>SubredditAboutData</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-261' class='srclink' href='../../../src/rawr/src/responses/mod.rs.out.html#18' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "rawr";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

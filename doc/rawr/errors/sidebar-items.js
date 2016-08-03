@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["APIError","Error type that occurs when an API request fails for some reason."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["auth",""],["comment",""],["listing",""],["messages",""],["user",""]],"struct":[["BasicThing","A base structure that can represent both 'Thing' objects and 'Listing' objects, which both return a `kind` and `data`."],["CurrentFlairResponse",""],["FlairChoice",""],["FlairSelectorResponse",""],["ThingList",""]]});

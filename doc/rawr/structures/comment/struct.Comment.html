@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Comment` struct in crate `rawr`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Comment">
+
+    <title>rawr::structures::comment::Comment - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>rawr</a>::<wbr><a href='../index.html'>structures</a>::<wbr><a href='index.html'>comment</a></p><script>window.sidebarCurrent = {name: 'Comment', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>rawr</a>::<wbr><a href='../index.html'>structures</a>::<wbr><a href='index.html'>comment</a>::<wbr><a class='struct' href=''>Comment</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-4051' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#12-16' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Comment&lt;'a&gt; {
+    // some fields omitted
+}</pre><div class='docblock'><p>Structure representing a comment and its associated data (e.g. replies)</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4125' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#128-165' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(client: &amp;<a class='struct' href='../../../rawr/client/struct.RedditClient.html' title='rawr::client::RedditClient'>RedditClient</a>, data: <a class='struct' href='../../../rawr/responses/comment/struct.Comment.html' title='rawr::responses::comment::Comment'>_Comment</a>) -&gt; <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a></code></h4>
+<div class='docblock'><p>Internal method. Use <code>Submission.replies()</code> or <code>Comment.replies()</code> to get a listing, then
+select the desired comment instead.</p>
+</div><h4 id='method.parent' class='method'><code>fn <a href='#method.parent' class='fnname'>parent</a>(&amp;self) -&gt; &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></h4>
+<div class='docblock'><p>Gets the full ID of the parent submission/comment (kind + id e.g. &#39;t1_4te6jf&#39;)</p>
+</div><h4 id='method.add_reply' class='method'><code>fn <a href='#method.add_reply' class='fnname'>add_reply</a>(&amp;mut self, item: <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;)</code></h4>
+<div class='docblock'><p>Adds a reply to this comment&#39;s reply list. This is an internal method - to make the client
+reply to this post, use <code>Comment.reply(MESSAGE)</code>.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Votable.html' title='rawr::traits::Votable'>Votable</a> for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4056' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#18-38' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.score' class='method'><code>fn <a href='../../../rawr/traits/trait.Votable.html#tymethod.score' class='fnname'>score</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code></h4>
+<div class='docblock'><p>The (fuzzed) points score of the object.</p>
+</div><h4 id='method.likes' class='method'><code>fn <a href='../../../rawr/traits/trait.Votable.html#tymethod.likes' class='fnname'>likes</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;</code></h4>
+<div class='docblock'><p>Indicates the logged-in user&#39;s current vote on this object: - Some(true) = Upvoted - Some(false) = Downvoted - None = No vote <a href="../../../rawr/traits/trait.Votable.html#tymethod.likes">Read more</a></p>
+</div><h4 id='method.upvote' class='method'><code>fn <a href='../../../rawr/traits/trait.Votable.html#tymethod.upvote' class='fnname'>upvote</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Upvotes the specified post, if possible.</p>
+</div><h4 id='method.downvote' class='method'><code>fn <a href='../../../rawr/traits/trait.Votable.html#tymethod.downvote' class='fnname'>downvote</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Downvotes the specified post, if possible.</p>
+</div><h4 id='method.cancel_vote' class='method'><code>fn <a href='../../../rawr/traits/trait.Votable.html#tymethod.cancel_vote' class='fnname'>cancel_vote</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Removes the vote on the specified post, if possible.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Created.html' title='rawr::traits::Created'>Created</a> for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4068' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#40-48' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.created' class='method'><code>fn <a href='../../../rawr/traits/trait.Created.html#tymethod.created' class='fnname'>created</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code></h4>
+<div class='docblock'><p>The timestamp of the time when the post was created, as would be shown to the logged-in user. <a href="../../../rawr/traits/trait.Created.html#tymethod.created">Read more</a></p>
+</div><h4 id='method.created_utc' class='method'><code>fn <a href='../../../rawr/traits/trait.Created.html#tymethod.created_utc' class='fnname'>created_utc</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a></code></h4>
+<div class='docblock'><p>The timestamp of post creation, in UTC.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Editable.html' title='rawr::traits::Editable'>Editable</a> for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4074' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#50-81' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.edited' class='method'><code>fn <a href='../../../rawr/traits/trait.Editable.html#tymethod.edited' class='fnname'>edited</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<div class='docblock'><p><code>true</code> if edited, otherwise <code>false</code>.</p>
+</div><h4 id='method.edited_time' class='method'><code>fn <a href='../../../rawr/traits/trait.Editable.html#tymethod.edited_time' class='fnname'>edited_time</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a>&gt;</code></h4>
+<div class='docblock'><p>Returns <code>Some(edited timestamp in logged-in user&#39;s time zone)</code> if edited, otherwise <code>None</code>.</p>
+</div><h4 id='method.edit' class='method'><code>fn <a href='../../../rawr/traits/trait.Editable.html#tymethod.edit' class='fnname'>edit</a>(&amp;mut self, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Edits the specified post (if possible) with the new text (in <strong>Markdown</strong> format)</p>
+</div><h4 id='method.body' class='method'><code>fn <a href='../../../rawr/traits/trait.Editable.html#tymethod.body' class='fnname'>body</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
+<div class='docblock'><p>Gets the body of a comment or message or the self text of a post, if available. In the case of link posts, this will be <code>None</code>. <a href="../../../rawr/traits/trait.Editable.html#tymethod.body">Read more</a></p>
+</div><h4 id='method.body_html' class='method'><code>fn <a href='../../../rawr/traits/trait.Editable.html#tymethod.body_html' class='fnname'>body_html</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
+<div class='docblock'><p>Gets the comment/message body HTML or self text HTML if available.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Content.html' title='rawr::traits::Content'>Content</a> for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4094' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#83-108' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.author' class='method'><code>fn <a href='../../../rawr/traits/trait.Content.html#tymethod.author' class='fnname'>author</a>(&amp;self) -&gt; <a class='struct' href='../../../rawr/structures/user/struct.User.html' title='rawr::structures::user::User'>User</a></code></h4>
+<div class='docblock'><p>The author of the object.</p>
+</div><h4 id='method.author_flair_text' class='method'><code>fn <a href='../../../rawr/traits/trait.Content.html#tymethod.author_flair_text' class='fnname'>author_flair_text</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
+<div class='docblock'><p>The flair text of the user flair, if present.</p>
+</div><h4 id='method.author_flair_css' class='method'><code>fn <a href='../../../rawr/traits/trait.Content.html#tymethod.author_flair_css' class='fnname'>author_flair_css</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
+<div class='docblock'><p>The flair CSS class of the user flair, if present.</p>
+</div><h4 id='method.subreddit' class='method'><code>fn <a href='../../../rawr/traits/trait.Content.html#tymethod.subreddit' class='fnname'>subreddit</a>(&amp;self) -&gt; <a class='struct' href='../../../rawr/structures/subreddit/struct.Subreddit.html' title='rawr::structures::subreddit::Subreddit'>Subreddit</a></code></h4>
+<div class='docblock'><p>For submissions (link/self posts), this is the subreddit where it was posted. For comments, this is the subreddit of the parent submission. <a href="../../../rawr/traits/trait.Content.html#tymethod.subreddit">Read more</a></p>
+</div><h4 id='method.delete' class='method'><code>fn <a href='../../../rawr/traits/trait.Content.html#tymethod.delete' class='fnname'>delete</a>(self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Deletes the specified object, if possible. <strong>This may be irreversible. Use with caution.</strong></p>
+</div><h4 id='method.name' class='method'><code>fn <a href='../../../rawr/traits/trait.Content.html#tymethod.name' class='fnname'>name</a>(&amp;self) -&gt; &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></h4>
+<div class='docblock'><p>Gets the full ID of this comment (kind + id)</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Commentable.html' title='rawr::traits::Commentable'>Commentable</a>&lt;'a&gt; for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4111' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#110-126' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.reply_count' class='method'><code>fn <a href='../../../rawr/traits/trait.Commentable.html#tymethod.reply_count' class='fnname'>reply_count</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a></code></h4>
+<div class='docblock'><p>The number of comments on this object. Prefer this to <code>replies().count()</code>.</p>
+</div><h4 id='method.reply' class='method'><code>fn <a href='../../../rawr/traits/trait.Commentable.html#tymethod.reply' class='fnname'>reply</a>(&amp;self, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Sends a reply with the specified body.</p>
+</div><h4 id='method.replies' class='method'><code>fn <a href='../../../rawr/traits/trait.Commentable.html#tymethod.replies' class='fnname'>replies</a>(self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../../../rawr/structures/comment_list/struct.CommentList.html' title='rawr::structures::comment_list::CommentList'>CommentList</a>&lt;'a&gt;, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Gets all replies as a self-paginating <code>CommentList</code>, which can be iterated through as necessary. Comments cannot be batched like submission listings, so there may be multiple requests on large threads to get all comments. <a href="../../../rawr/traits/trait.Commentable.html#tymethod.replies">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Reportable.html' title='rawr::traits::Reportable'>Reportable</a> for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4144' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#167-178' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.report' class='method'><code>fn <a href='../../../rawr/traits/trait.Reportable.html#tymethod.report' class='fnname'>report</a>(&amp;self, reason: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Reports the object for the specified reason (must be less than 100 characters).</p>
+</div><h4 id='method.report_count' class='method'><code>fn <a href='../../../rawr/traits/trait.Reportable.html#tymethod.report_count' class='fnname'>report_count</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>&gt;</code></h4>
+<div class='docblock'><p>Gets the number of reports for this post. If you do not have the rights to view this value, this will return <code>None</code>. <a href="../../../rawr/traits/trait.Reportable.html#tymethod.report_count">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Stickable.html' title='rawr::traits::Stickable'>Stickable</a> for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4155' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#180-202' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.stickied' class='method'><code>fn <a href='../../../rawr/traits/trait.Stickable.html#tymethod.stickied' class='fnname'>stickied</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<div class='docblock'><p>Returns the <strong>current</strong> sticky state of the submission.</p>
+</div><h4 id='method.stick' class='method'><code>fn <a href='../../../rawr/traits/trait.Stickable.html#tymethod.stick' class='fnname'>stick</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Makes the selected post a sticky, provided that you have the correct privileges. For comments, this will also distinguish the post as [M]. <a href="../../../rawr/traits/trait.Stickable.html#tymethod.stick">Read more</a></p>
+</div><h4 id='method.unstick' class='method'><code>fn <a href='../../../rawr/traits/trait.Stickable.html#tymethod.unstick' class='fnname'>unstick</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Makes this sticky post a normal post, provided that you have the correct privileges. For comments, this will also remove the [M] distinguish. <a href="../../../rawr/traits/trait.Stickable.html#tymethod.unstick">Read more</a></p>
+</div><h4 id='method.toggle_sticky' class='method'><code>fn <a href='../../../rawr/traits/trait.Stickable.html#method.toggle_sticky' class='fnname'>toggle_sticky</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Toggles the sticky state (i.e. becomes sticky if it is not one, and becomes normal if it is a sticky) <a href="../../../rawr/traits/trait.Stickable.html#method.toggle_sticky">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='../../../rawr/traits/trait.Distinguishable.html' title='rawr::traits::Distinguishable'>Distinguishable</a> for <a class='struct' href='../../../rawr/structures/comment/struct.Comment.html' title='rawr::structures::comment::Comment'>Comment</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4171' class='srclink' href='../../../src/rawr/src/structures/comment.rs.html#204-226' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.distinguished' class='method'><code>fn <a href='../../../rawr/traits/trait.Distinguishable.html#tymethod.distinguished' class='fnname'>distinguished</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
+<div class='docblock'><p>Indicates whether the user has used a special flag for themselves, e.g. [M] or [A]. Possible values: <a href="../../../rawr/traits/trait.Distinguishable.html#tymethod.distinguished">Read more</a></p>
+</div><h4 id='method.distinguish' class='method'><code>fn <a href='../../../rawr/traits/trait.Distinguishable.html#tymethod.distinguish' class='fnname'>distinguish</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Sets the post to have a [M] distinguish.</p>
+</div><h4 id='method.undistinguish' class='method'><code>fn <a href='../../../rawr/traits/trait.Distinguishable.html#tymethod.undistinguish' class='fnname'>undistinguish</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Removes any distinguish on the comment. This will also unsticky a comment, if it is stickied. <a href="../../../rawr/traits/trait.Distinguishable.html#tymethod.undistinguish">Read more</a></p>
+</div><h4 id='method.toggle_distinguish' class='method'><code>fn <a href='../../../rawr/traits/trait.Distinguishable.html#method.toggle_distinguish' class='fnname'>toggle_distinguish</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../../../rawr/errors/enum.APIError.html' title='rawr::errors::APIError'>APIError</a>&gt;</code></h4>
+<div class='docblock'><p>Distinguishes if undistinguished, and vice versa.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "rawr";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>
