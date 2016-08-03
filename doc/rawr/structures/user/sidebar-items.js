@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["User","Interface to a Reddit user, which can be used to access their karma and moderator status."],["UserAbout","Information about a user from /r/username/about, such as karma and ID."]]});

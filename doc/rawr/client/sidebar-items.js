@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["RedditClient","A client to connect to Reddit. See the module-level documentation for examples."]]});

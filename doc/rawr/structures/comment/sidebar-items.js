@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Comment","Structure representing a comment and its associated data (e.g. replies)"]]});

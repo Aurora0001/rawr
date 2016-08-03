@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["UserAboutData",""]],"type":[["UserAbout","API response for /user/username/about"]]});

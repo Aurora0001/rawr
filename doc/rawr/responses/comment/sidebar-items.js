@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Comment","A deserializable structure representing a comment. This is created when the client returns JSON representing a comment and this is wrapped in a `models::comment::Comment` for ease-of-use."],["More",""],["MoreComments",""],["MoreCommentsInner",""]],"type":[["CommentListing","The 'listing' format for comments."]]});

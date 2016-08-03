@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Subreddit","The `Subreddit` struct represents a subreddit and allows access to post listings and data about the subreddit."],["SubredditAbout","Information about a subreddit such as subscribers, sidebar text and active users."]]});
