@@ -1,6 +1,6 @@
 [package]
 name = "rawr"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Aurora0001 <aurora01@safe-mail.net>"]
 license = "MIT"
 documentation = "https://aurora0001.github.io/rawr/doc/rawr/index.html"

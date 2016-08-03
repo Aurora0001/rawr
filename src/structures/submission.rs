@@ -1,5 +1,5 @@
 use traits::{Votable, Created, Editable, Content, Commentable, Stickable, Lockable, Flairable,
-             Reportable, Visible, Distinguishable};
+             Reportable, Visible, Distinguishable, Approvable};
 use structures::comment_list::{CommentList, CommentStream};
 use structures::user::User;
 use structures::subreddit::Subreddit;
@@ -14,8 +14,6 @@ pub struct Submission<'a> {
     data: listing::Submission,
     client: &'a RedditClient,
 }
-
-impl<'a> Eq for Submission<'a> {}
 
 impl<'a> PartialEq for Submission<'a> {
     fn eq(&self, other: &Submission) -> bool {
@@ -118,6 +116,28 @@ impl<'a> Content for Submission<'a> {
 
     fn name(&self) -> &str {
         &self.data.name
+    }
+}
+
+impl<'a> Approvable for Submission<'a> {
+    fn approve(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/approve", &body, false)
+    }
+
+    fn remove(&self, spam: bool) -> Result<(), APIError> {
+        let body = format!("id={}&spam={}", self.data.name, spam);
+        self.client.post_success("/api/remove", &body, false)
+    }
+
+    fn ignore_reports(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/ignore_reports", &body, false)
+    }
+
+    fn unignore_reports(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/unignore_reports", &body, false)
     }
 }
 

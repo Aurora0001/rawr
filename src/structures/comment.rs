@@ -1,6 +1,6 @@
 use serde_json::from_value;
 use traits::{Votable, Created, Editable, Content, Commentable, Reportable, Stickable,
-             Distinguishable};
+             Distinguishable, Approvable};
 use structures::comment_list::CommentList;
 use structures::subreddit::Subreddit;
 use structures::user::User;
@@ -104,6 +104,28 @@ impl<'a> Content for Comment<'a> {
 
     fn name(&self) -> &str {
         &self.data.name
+    }
+}
+
+impl<'a> Approvable for Comment<'a> {
+    fn approve(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/approve", &body, false)
+    }
+
+    fn remove(&self, spam: bool) -> Result<(), APIError> {
+        let body = format!("id={}&spam={}", self.data.name, spam);
+        self.client.post_success("/api/remove", &body, false)
+    }
+
+    fn ignore_reports(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/ignore_reports", &body, false)
+    }
+
+    fn unignore_reports(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/unignore_reports", &body, false)
     }
 }
 

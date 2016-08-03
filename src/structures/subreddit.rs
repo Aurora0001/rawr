@@ -201,6 +201,20 @@ impl<'a> Subreddit<'a> {
             .get_json::<listing::SubredditAbout>(&url, false)
             .and_then(|res| Ok(SubredditAbout::new(res.data)))
     }
+
+    /// Subscribes to the specified subredit, returning the result to show whether the API call
+    /// succeeded or not.
+    pub fn subscribe(&self) -> Result<(), APIError> {
+        let body = format!("action=sub&sr_name={}", self.name);
+        self.client.post_success("/api/subscribe", &body, false)
+    }
+
+    /// Unsubscribes to the specified subreddit, returning the result to show whether the API call
+    /// succeeded or not.
+    pub fn unsubscribe(&self) -> Result<(), APIError> {
+        let body = format!("action=unsub&sr_name={}", self.name);
+        self.client.post_success("/api/subscribe", &body, false)
+    }
 }
 
 /// Information about a subreddit such as subscribers, sidebar text and active users.

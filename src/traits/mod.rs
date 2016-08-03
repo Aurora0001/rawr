@@ -77,6 +77,21 @@ pub trait Content {
     fn name(&self) -> &str;
 }
 
+/// An object that can be approved or removed by a moderator.
+pub trait Approvable {
+    /// Approves the message, clearing any previous reports of the message. If this was removed
+    /// (either by a moderator or the spam filter), the item will be restored to the appropriate
+    /// listings.
+    fn approve(&self) -> Result<(), APIError>;
+    /// Removes the message so that it is no longer visible in listings. If the spam parameter is
+    /// set to true, this will be flagged for the site-wide spam filter.
+    fn remove(&self, spam: bool) -> Result<(), APIError>;
+    /// Ignores reports on this item so they do not appear in this subreddit's modmail.
+    fn ignore_reports(&self) -> Result<(), APIError>;
+    /// Stops ignoring reports on this item, so they appear in the modmail once again.
+    fn unignore_reports(&self) -> Result<(), APIError>;
+}
+
 /// An object that can be commented upon and may have comments.
 pub trait Commentable<'a> {
     /// The number of comments on this object. Prefer this to `replies().count()`.
