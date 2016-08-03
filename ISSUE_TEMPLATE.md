@@ -11,8 +11,7 @@ is easy to follow! Make sure you add the following details in your bug report so
 
 **rawr version**: <e.g. v0.1.0>
 
-**Description of Issue:** <Include a clear and concise description of what the problem is. Please include what the expected behaviour was 
-and what actually happened.>
+**Description of Issue:** <Include a clear and concise description of what the problem is. Please include what the expected behaviour was and what actually happened.>
 
 **Steps to Reproduce:** <If possible, include a [minimal, complete, verifiable example](http://stackoverflow.com/help/mcve).>
 
