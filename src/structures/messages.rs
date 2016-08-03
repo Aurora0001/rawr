@@ -136,7 +136,7 @@ impl<'a> MessageInterface<'a> {
 
     /// Gets a list of all received messages that have not been deleted.
     pub fn inbox(&self, opts: ListingOptions) -> Result<MessageListing<'a>, APIError> {
-        let uri = format!("/message/inbox?limit={}", opts.batch);
+        let uri = format!("/message/inbox?raw_json=1&limit={}", opts.batch);
         let full_uri = format!("{}&{}", uri, opts.anchor);
         self.client
             .get_json::<_MessageListing>(&full_uri, false)
@@ -145,7 +145,7 @@ impl<'a> MessageInterface<'a> {
 
     /// Gets all messages that have **not** been marked as read.
     pub fn unread(&self, opts: ListingOptions) -> Result<MessageListing<'a>, APIError> {
-        let uri = format!("/message/unread?limit={}", opts.batch);
+        let uri = format!("/message/unread?raw_json=1&limit={}", opts.batch);
         let full_uri = format!("{}&{}", uri, opts.anchor);
         self.client
             .get_json::<_MessageListing>(&full_uri, false)

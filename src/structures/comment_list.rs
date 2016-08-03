@@ -97,7 +97,7 @@ impl<'a> CommentList<'a> {
     }
 
     fn fetch_more(&mut self, more_item: More) -> CommentList<'a> {
-        let params = format!("api_type=json&link_id={}&children={}",
+        let params = format!("api_type=json&raw_json=1&link_id={}&children={}",
                              &self.link_id,
                              &more_item.children.join(","));
         let url = "/api/morechildren";
@@ -256,7 +256,7 @@ impl<'a> Iterator for CommentStream<'a> {
             }
         } else {
             thread::sleep(Duration::new(5, 0));
-            let url = format!("/comments/{}?sort=new", self.id);
+            let url = format!("/comments/{}?sort=new&raw_json=1", self.id);
             let req: Result<listing::CommentResponse, APIError> = self.client.get_json(&url, false);
             if let Ok(req) = req {
                 let current_iter = CommentList::new(self.client,

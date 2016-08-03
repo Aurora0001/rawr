@@ -432,7 +432,7 @@ impl<'a> LazySubmission<'a> {
     /// Fetches the `Submission` with this ID, in order to access post title, body, link and
     /// creation time.
     pub fn get(self) -> Result<Submission<'a>, APIError> {
-        let url = format!("/by_id/{}", self.id);
+        let url = format!("/by_id/{}?raw_json=1", self.id);
         let listing = self.client
             .get_json::<listing::Listing>(&url, false)
             .and_then(|res| Ok(Listing::new(self.client, url, res.data)));
@@ -441,7 +441,7 @@ impl<'a> LazySubmission<'a> {
 
     /// Fetches a `CommentList` with replies to this submission.
     pub fn replies(self) -> Result<CommentList<'a>, APIError> {
-        let url = format!("/comments/{}", self.id.split('_').nth(1).unwrap());
+        let url = format!("/comments/{}?raw_json=1", self.id.split('_').nth(1).unwrap());
         self.client
             .get_json::<listing::CommentResponse>(&url, false)
             .and_then(|res| {

@@ -25,7 +25,7 @@ impl<'a> Subreddit<'a> {
     fn get_feed(&self, ty: &str, opts: ListingOptions) -> Result<Listing, APIError> {
         // We do not include the after/before parameter here so the pagination can adjust it later
         // on.
-        let uri = format!("/r/{}/{}limit={}", self.name, ty, opts.batch);
+        let uri = format!("/r/{}/{}limit={}&raw_json=1", self.name, ty, opts.batch);
         let full_uri = format!("{}&{}", uri, opts.anchor);
         self.client
             .get_json::<listing::Listing>(&full_uri, false)
@@ -196,7 +196,7 @@ impl<'a> Subreddit<'a> {
     /// assert_eq!(learn_programming.display_name(), "learnprogramming");
     /// ```
     pub fn about(&self) -> Result<SubredditAbout, APIError> {
-        let url = format!("/r/{}/about", self.name);
+        let url = format!("/r/{}/about?raw_json=1", self.name);
         self.client
             .get_json::<listing::SubredditAbout>(&url, false)
             .and_then(|res| Ok(SubredditAbout::new(res.data)))

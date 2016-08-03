@@ -76,7 +76,7 @@ impl<'a> User<'a> {
     /// assert_eq!(i, 5);
     /// ```
     pub fn submissions(&self) -> Result<Listing, APIError> {
-        let url = format!("/user/{}/submitted?", self.name);
+        let url = format!("/user/{}/submitted?raw_json=1", self.name);
         self.client
             .get_json::<_Listing>(&url, false)
             .and_then(|res| Ok(Listing::new(self.client, url, res.data)))
@@ -92,7 +92,7 @@ pub struct UserAbout {
 impl UserAbout {
     /// Internal method. Use `RedditClient.user(NAME).about()` instead.
     pub fn new(client: &RedditClient, name: String) -> Result<UserAbout, APIError> {
-        let url = format!("/user/{}/about", name);
+        let url = format!("/user/{}/about?raw_json=1", name);
         client.get_json::<_UserAbout>(&url, false)
             .and_then(|res| Ok(UserAbout { data: res.data }))
     }
