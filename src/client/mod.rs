@@ -236,6 +236,7 @@ impl RedditClient {
     /// # let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
     /// assert_eq!(client.url_escape(String::from("test&co")), String::from("test%26co"));
     /// assert_eq!(client.url_escape(String::from("👍")), String::from("%F0%9F%91%8D"));
+    /// assert_eq!(client.url_escape(String::from("\n")), String::from("%0A"))
     /// ```
     pub fn url_escape(&self, item: String) -> String {
         let mut res = String::new();
@@ -245,7 +246,7 @@ impl RedditClient {
                 '*' | '-' | '.' | '0'...'9' | 'A'...'Z' | '_' | 'a'...'z' => res.push(character),
                 _ => {
                     for val in character.to_string().as_bytes() {
-                        res = res + &format!("%{:X}", val);
+                        res = res + &format!("%{:02X}", val);
                     }
                 }
             }

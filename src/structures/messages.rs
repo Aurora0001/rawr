@@ -1,6 +1,7 @@
 use std::vec::IntoIter;
 use std::thread;
 use std::time::Duration;
+use serde_json;
 
 use client::RedditClient;
 use errors::APIError;
@@ -10,7 +11,9 @@ use responses::messages::{Message as MessageData, MessageListing as _MessageList
 use structures::user::User;
 use structures::subreddit::Subreddit;
 use structures::comment_list::CommentList;
-use traits::{Created, Commentable, Content, Editable, PageListing};
+use structures::comment::Comment;
+use responses::comment::NewComment;
+use traits::{Approvable, Created, Commentable, Content, Editable, PageListing};
 
 /// A representation of a private message from Reddit.
 pub struct Message<'a> {
@@ -26,6 +29,11 @@ impl<'a> Message<'a> {
             client: client,
             data: data,
         }
+    }
+
+    /// Gets the full name (kind + id, e.g. 't1_a5bzp') of the parent of this submission.
+    pub fn parent_id(&self) -> Option<String> {
+        self.data.parent_id.to_owned()
     }
 
     /// Marks this message as read, so it will not show in the unread queue.
@@ -46,11 +54,17 @@ impl<'a> Commentable<'a> for Message<'a> {
                 function is unavailable.");
     }
 
-    fn reply(&self, text: &str) -> Result<(), APIError> {
+    fn reply(&self, text: &str) -> Result<Comment, APIError> {
         let body = format!("api_type=json&text={}&thing_id={}",
                            self.client.url_escape(text.to_owned()),
                            self.name());
-        self.client.post_success("/api/comment", &body, false)
+        self.client.post_json::<NewComment>("/api/comment", &body, false)
+           .and_then(|res| {
+               let data = res.json.data.things.into_iter().next().ok_or_else(|| {
+                   serde_json::Error::Syntax(serde_json::ErrorCode::MissingField("things[0]"), 0, 0)
+               });
+               Ok(Comment::new(self.client, try!(data).data))
+           })
     }
 }
 
@@ -93,6 +107,28 @@ impl<'a> Content for Message<'a> {
     }
 }
 
+impl<'a> Approvable for Message<'a> {
+    fn approve(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/approve", &body, false)
+    }
+
+    fn remove(&self, spam: bool) -> Result<(), APIError> {
+        let body = format!("id={}&spam={}", self.data.name, spam);
+        self.client.post_success("/api/remove", &body, false)
+    }
+
+    fn ignore_reports(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/ignore_reports", &body, false)
+    }
+
+    fn unignore_reports(&self) -> Result<(), APIError> {
+        let body = format!("id={}", self.data.name);
+        self.client.post_success("/api/unignore_reports", &body, false)
+    }
+}
+
 impl<'a> Editable for Message<'a> {
     fn edited(&self) -> bool {
         panic!("Reddit does not provide access to the edit time for messages.");
@@ -132,6 +168,18 @@ impl<'a> MessageInterface<'a> {
     /// Internal method. Use `RedditClient.messages()` instead.
     pub fn new(client: &RedditClient) -> MessageInterface {
         MessageInterface { client: client }
+    }
+
+    /// Composes a private message to send to a user.
+    /// # Examples
+    /// ```rust,no_run
+    /// use rawr::prelude::*;
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// client.messages().compose("Aurora0001", "Test", "Hi!");
+    // ```
+    pub fn compose(&self, recipient: &str, subject: &str, body: &str) -> Result<(), APIError> {
+        let body = format!("api_type=json&subject={}&text={}&to={}", subject, body, recipient);
+        self.client.post_success("/api/compose", &body, false)
     }
 
     /// Gets a list of all received messages that have not been deleted.

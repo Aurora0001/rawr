@@ -1,3 +1,4 @@
+use serde_json;
 use serde_json::from_value;
 use traits::{Votable, Created, Editable, Content, Commentable, Reportable, Stickable,
              Distinguishable, Approvable};
@@ -5,7 +6,7 @@ use structures::comment_list::CommentList;
 use structures::subreddit::Subreddit;
 use structures::user::User;
 use client::RedditClient;
-use responses::comment::{Comment as _Comment, CommentListing};
+use responses::comment::{Comment as _Comment, CommentListing, NewComment};
 use errors::APIError;
 
 /// Structure representing a comment and its associated data (e.g. replies)
@@ -135,11 +136,17 @@ impl<'a> Commentable<'a> for Comment<'a> {
                 to manually count with `replies().len()`, which may take some time.");
     }
 
-    fn reply(&self, text: &str) -> Result<(), APIError> {
+    fn reply(&self, text: &str) -> Result<Comment, APIError> {
         let body = format!("api_type=json&text={}&thing_id={}",
                            self.client.url_escape(text.to_owned()),
                            self.name());
-        self.client.post_success("/api/comment", &body, false)
+        self.client.post_json::<NewComment>("/api/comment", &body, false)
+           .and_then(|res| {
+               let data = res.json.data.things.into_iter().next().ok_or_else(|| {
+                   serde_json::Error::Syntax(serde_json::ErrorCode::MissingField("things[0]"), 0, 0)
+               });
+               Ok(Comment::new(self.client, try!(data).data))
+           })
     }
 
     fn replies(self) -> Result<CommentList<'a>, APIError> {

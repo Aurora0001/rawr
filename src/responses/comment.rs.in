@@ -5,6 +5,11 @@ use responses::listing::ListingData;
 /// The 'listing' format for comments.
 pub type CommentListing = BasicThing<ListingData<Value>>;
 
+pub type MoreComments = JSONWrapper<ThingList>;
+
+pub type NewComment = JSONWrapper<CommentThings>;
+
+
 /// A deserializable structure representing a comment. This is created when the client returns
 /// JSON representing a comment and this is wrapped in a `models::comment::Comment` for
 /// ease-of-use.
@@ -103,12 +108,17 @@ pub struct More {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct MoreComments {
-    pub json: MoreCommentsInner
+pub struct JSONWrapper<T> {
+    pub json: JSONInner<T>
 }
 
 #[derive(Deserialize, Debug)]
-pub struct MoreCommentsInner {
+pub struct JSONInner<T> {
     pub errors: Vec<Value>,
-    pub data: ThingList
+    pub data: T
+}
+
+#[derive(Deserialize, Debug)]
+pub struct CommentThings {
+  pub things: Vec<BasicThing<Comment>>
 }

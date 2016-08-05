@@ -1,12 +1,15 @@
+use serde_json;
 use traits::{Votable, Created, Editable, Content, Commentable, Stickable, Lockable, Flairable,
              Reportable, Visible, Distinguishable, Approvable};
 use structures::comment_list::{CommentList, CommentStream};
 use structures::user::User;
+use structures::comment::Comment;
 use structures::subreddit::Subreddit;
 use structures::listing::Listing;
 use client::RedditClient;
 use responses::listing;
 use responses::{FlairChoice, FlairSelectorResponse};
+use responses::comment::NewComment;
 use errors::APIError;
 
 /// Structure representing a link post or self post (a submission) on Reddit.
@@ -146,12 +149,18 @@ impl<'a> Commentable<'a> for Submission<'a> {
         self.data.num_comments
     }
 
-    fn reply(&self, text: &str) -> Result<(), APIError> {
-        // TODO: url escape properly
+    fn reply(&self, text: &str) -> Result<Comment, APIError> {
         let body = format!("api_type=json&text={}&thing_id={}",
                            self.client.url_escape(text.to_owned()),
                            self.name());
-        self.client.post_success("/api/comment", &body, false)
+        //
+        self.client.post_json::<NewComment>("/api/comment", &body, false)
+           .and_then(|res| {
+               let data = res.json.data.things.into_iter().next().ok_or_else(|| {
+                   serde_json::Error::Syntax(serde_json::ErrorCode::MissingField("things[0]"), 0, 0)
+               });
+               Ok(Comment::new(self.client, try!(data).data))
+           })
     }
 
     fn replies(self) -> Result<CommentList<'a>, APIError> {
