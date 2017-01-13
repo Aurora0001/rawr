@@ -286,7 +286,7 @@ impl RedditClient {
 impl Drop for RedditClient {
     fn drop(&mut self) {
         if self.auto_logout {
-            self.get_authenticator().logout(&self.client, &self.user_agent).unwrap();
+            let _ = self.get_authenticator().logout(&self.client, &self.user_agent);
         }
     }
 }
