@@ -48,7 +48,7 @@ impl<'a> Subreddit<'a> {
     /// use rawr::client::RedditClient;
     /// use rawr::options::ListingOptions;
     /// use rawr::auth::AnonymousAuthenticator;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let sub = client.subreddit("askreddit");
     /// let hot = sub.hot(ListingOptions::default());
     /// ```
@@ -61,7 +61,7 @@ impl<'a> Subreddit<'a> {
     /// # Examples
     /// ```rust,no_run
     /// use rawr::prelude::*;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let askreddit = client.subreddit("askreddit");
     /// for post in askreddit.new_stream() {
     ///
@@ -79,7 +79,7 @@ impl<'a> Subreddit<'a> {
     /// use rawr::options::ListingOptions;
     /// use rawr::traits::Content;
     /// use rawr::auth::AnonymousAuthenticator;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let sub = client.subreddit("programming");
     /// let mut new = sub.new(ListingOptions::default()).expect("Could not get new feed");
     /// assert_eq!(new.next().unwrap().subreddit().name, "programming");
@@ -95,7 +95,7 @@ impl<'a> Subreddit<'a> {
     /// use rawr::client::RedditClient;
     /// use rawr::options::ListingOptions;
     /// use rawr::auth::AnonymousAuthenticator;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let sub = client.subreddit("thanksobama");
     /// let rising = sub.rising(ListingOptions::default()).unwrap();
     /// assert_eq!(rising.count(), 0);
@@ -113,7 +113,7 @@ impl<'a> Subreddit<'a> {
     /// use rawr::client::RedditClient;
     /// use rawr::options::{ListingOptions, TimeFilter};
     /// use rawr::auth::AnonymousAuthenticator;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let sub = client.subreddit("thanksobama");
     /// let mut top = sub.top(ListingOptions::default(), TimeFilter::AllTime)
     ///     .expect("Request failed");
@@ -148,7 +148,7 @@ impl<'a> Subreddit<'a> {
     /// use rawr::auth::PasswordAuthenticator;
     /// use rawr::client::RedditClient;
     /// use rawr::options::LinkPost;
-    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d"));
+    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d")).unwrap();
     /// let sub = client.subreddit("rust");
     /// let post = LinkPost::new("rawr!", "http://example.com");
     /// sub.submit_link(post).expect("Posting failed!");
@@ -170,7 +170,7 @@ impl<'a> Subreddit<'a> {
     /// use rawr::auth::PasswordAuthenticator;
     /// use rawr::client::RedditClient;
     /// use rawr::options::SelfPost;
-    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d"));
+    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d")).unwrap();
     /// let sub = client.subreddit("rust");
     /// let post = SelfPost::new("I love rawr!", "You should download it *right now*!");
     /// sub.submit_text(post).expect("Posting failed!");
@@ -190,7 +190,7 @@ impl<'a> Subreddit<'a> {
     /// ```
     /// use rawr::client::RedditClient;
     /// use rawr::auth::AnonymousAuthenticator;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let learn_programming = client.subreddit("learnprogramming").about()
     ///     .expect("Could not fetch 'about' data");
     /// assert_eq!(learn_programming.display_name(), "learnprogramming");

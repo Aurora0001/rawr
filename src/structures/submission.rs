@@ -192,7 +192,7 @@ impl<'a> Submission<'a> {
     /// # Examples
     /// ```rust,no_run
     /// use rawr::prelude::*;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let sub = client.subreddit("all");
     /// let mut listing = sub.hot(ListingOptions::default()).expect("Could not fetch listing!");
     /// let post = listing.nth(0).unwrap();
@@ -423,7 +423,7 @@ impl FlairList {
     /// use rawr::auth::PasswordAuthenticator;
     /// use rawr::options::ListingOptions;
     /// use rawr::traits::Flairable;
-    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d"));
+    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d")).unwrap();
     /// let sub = client.subreddit("learnprogramming");
     /// let post = sub.hot(ListingOptions::default()).unwrap().next().unwrap();
     /// // NOTE: this would 403 unless you are a moderator or the creator of the post.

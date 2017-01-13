@@ -23,7 +23,7 @@ use traits::Content;
 /// use rawr::options::ListingOptions;
 /// use rawr::traits::Commentable;
 /// use rawr::auth::AnonymousAuthenticator;
-/// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+/// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
 /// let announcements = client.subreddit("announcements");
 /// let announcement = announcements.hot(ListingOptions::default())
 ///     .expect("Could not fetch announcements")

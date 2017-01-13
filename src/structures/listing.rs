@@ -16,7 +16,7 @@ use errors::APIError;
 /// use rawr::client::RedditClient;
 /// use rawr::options::ListingOptions;
 /// use rawr::auth::AnonymousAuthenticator;
-/// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+/// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
 /// let sub = client.subreddit("redditdev");
 /// let mut hot = sub.hot(ListingOptions::default()).expect("Could not get hot posts");
 /// for post in hot.take(500) {

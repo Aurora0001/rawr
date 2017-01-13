@@ -27,7 +27,7 @@ impl<'a> User<'a> {
     /// ```
     /// use rawr::client::RedditClient;
     /// use rawr::auth::AnonymousAuthenticator;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let user = client.user("Aurora0001").about().expect("User request failed");
     /// assert_eq!(user.id(), "eqyvc");
     /// ```
@@ -66,7 +66,7 @@ impl<'a> User<'a> {
     /// # Examples
     /// ```
     /// use rawr::prelude::*;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let user = client.user("Aurora0001");
     /// let submissions = user.submissions().expect("Could not fetch!");
     /// let mut i = 0;
