@@ -174,7 +174,7 @@ impl<'a> MessageInterface<'a> {
     /// # Examples
     /// ```rust,no_run
     /// use rawr::prelude::*;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// client.messages().compose("Aurora0001", "Test", "Hi!");
     // ```
     pub fn compose(&self, recipient: &str, subject: &str, body: &str) -> Result<(), APIError> {
@@ -206,7 +206,7 @@ impl<'a> MessageInterface<'a> {
     /// # Examples
     /// ```rust,no_run
     /// use rawr::prelude::*;
-    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d"));
+    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d")).unwrap();
     /// for message in client.messages().unread_stream() {
     ///     println!("New message received.");
     /// }

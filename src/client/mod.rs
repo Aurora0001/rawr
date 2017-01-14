@@ -60,7 +60,7 @@ impl RedditClient {
     /// Creates an instance of the `RedditClient` using the provided user agent.
     pub fn new(user_agent: &str,
                authenticator: Arc<Mutex<Box<Authenticator + Send>>>)
-               -> RedditClient {
+               -> Result<RedditClient, APIError> {
         // Connection pooling is problematic if there are pauses/sleeps in the program, so we
         // choose to disable it by using a non-pooling connector.
         let client = Client::with_connector(DefaultConnector::default());
@@ -72,10 +72,9 @@ impl RedditClient {
             auto_logout: true,
         };
 
-        this.get_authenticator()
-            .login(&this.client, &this.user_agent)
-            .expect("Authentication failed. Did you use the correct username/password?");
-        this
+        try!(this.get_authenticator()
+            .login(&this.client, &this.user_agent));
+        Ok(this)
     }
 
     /// Disables the automatic logout that occurs when the client drops out of scope.
@@ -88,7 +87,8 @@ impl RedditClient {
     /// ```rust,no_run
     /// use rawr::client::RedditClient;
     /// use rawr::auth::PasswordAuthenticator;
-    /// let mut client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d"));
+    /// let mut client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c",
+    /// "d")).unwrap();
     /// client.set_auto_logout(false); // Auto-logout disabled. Set to `true` to enable.
     /// ```
     pub fn set_auto_logout(&mut self, val: bool) {
@@ -233,7 +233,7 @@ impl RedditClient {
     /// ```
     /// # use rawr::client::RedditClient;
     /// # use rawr::auth::AnonymousAuthenticator;
-    /// # let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// # let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// assert_eq!(client.url_escape(String::from("test&co")), String::from("test%26co"));
     /// assert_eq!(client.url_escape(String::from("👍")), String::from("%F0%9F%91%8D"));
     /// assert_eq!(client.url_escape(String::from("\n")), String::from("%0A"))
@@ -259,7 +259,7 @@ impl RedditClient {
     /// # Examples
     /// ```
     /// use rawr::prelude::*;
-    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+    /// let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
     /// let post = client.get_by_id("t3_4uule8").get().expect("Could not get post.");
     /// assert_eq!(post.title(), "[C#] Abstract vs Interface");
     /// ```
@@ -272,7 +272,7 @@ impl RedditClient {
     /// # Examples
     /// ```rust,no_run
     /// use rawr::prelude::*;
-    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d"));
+    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d")).unwrap();
     /// let messages = client.messages();
     /// for message in messages.unread(ListingOptions::default()) {
     ///
@@ -286,7 +286,7 @@ impl RedditClient {
 impl Drop for RedditClient {
     fn drop(&mut self) {
         if self.auto_logout {
-            self.get_authenticator().logout(&self.client, &self.user_agent).unwrap();
+            let _ = self.get_authenticator().logout(&self.client, &self.user_agent);
         }
     }
 }

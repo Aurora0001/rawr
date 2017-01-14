@@ -18,7 +18,7 @@
 //! ```rust,no_run
 //! use rawr::client::RedditClient;
 //! use rawr::auth::AnonymousAuthenticator;
-//! let client = RedditClient::new("my user agent", AnonymousAuthenticator::new());
+//! let client = RedditClient::new("my user agent", AnonymousAuthenticator::new()).unwrap();
 //! ```
 //!
 //! It is important that you pick a good user agent. The ideal format is
@@ -31,7 +31,7 @@
 //! ```rust,no_run
 //! # use rawr::client::RedditClient;
 //! # use rawr::auth::AnonymousAuthenticator;
-//! let client = RedditClient::new("?:rawr:doc-tests", AnonymousAuthenticator::new());
+//! let client = RedditClient::new("?:rawr:doc-tests", AnonymousAuthenticator::new()).unwrap();
 //! let all = client.subreddit("all");
 //! ```
 //!
@@ -53,7 +53,7 @@
 //! # use rawr::client::RedditClient;
 //! # use rawr::auth::AnonymousAuthenticator;
 //! use rawr::options::ListingOptions;
-//! # let client = RedditClient::new("?:rawr:doc-tests", AnonymousAuthenticator::new());
+//! # let client = RedditClient::new("?:rawr:doc-tests", AnonymousAuthenticator::new()).unwrap();
 //! # let all = client.subreddit("all");
 //! let listing = all.hot(ListingOptions::default()).expect("Request unsuccessful");
 //! ```
@@ -75,7 +75,7 @@
 //! # use rawr::client::RedditClient;
 //! # use rawr::auth::AnonymousAuthenticator;
 //! # use rawr::options::ListingOptions;
-//! # let client = RedditClient::new("?:rawr:doc-tests", AnonymousAuthenticator::new());
+//! # let client = RedditClient::new("?:rawr:doc-tests", AnonymousAuthenticator::new()).unwrap();
 //! # let all = client.subreddit("all");
 //! let listing = all.hot(ListingOptions::default()).expect("Could not fetch posts");
 //! for post in listing {
@@ -96,7 +96,7 @@
 //! # use rawr::client::RedditClient;
 //! # use rawr::options::ListingOptions;
 //! use rawr::traits::{Commentable, Content};
-//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
 //! let all = client.subreddit("all");
 //! for post in all.hot(ListingOptions::default()).expect("Request failed") {
 //!     if let Some(comment) = post.replies().expect("Could not get replies").next() {
@@ -123,7 +123,7 @@
 //! # use rawr::client::RedditClient;
 //! # use rawr::options::ListingOptions;
 //! # use rawr::traits::{Commentable, Content};
-//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
 //! let all = client.subreddit("all");
 //! let mut listing = all.hot(ListingOptions::default()).expect("Request failed");
 //! if let Some(top_post) = listing.next() {
@@ -165,7 +165,7 @@
 //! # use rawr::options::ListingOptions;
 //! # use rawr::traits::{Commentable, Content};
 //! use rawr::options::LinkPost;
-//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
 //! let programming = client.subreddit("programming");
 //! let post = LinkPost::new("I love Rust!", "https://rust-lang.org");
 //! programming.submit_link(post).expect("Could not submit link!");
@@ -180,7 +180,7 @@
 //! # use rawr::options::ListingOptions;
 //! # use rawr::traits::{Commentable, Content};
 //! use rawr::options::SelfPost;
-//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+//! # let client = RedditClient::new("rawr", AnonymousAuthenticator::new()).unwrap();
 //! let programming = client.subreddit("programming");
 //! let post = SelfPost::new("I love Rust!", "It's great! **Wow**!");
 //! programming.submit_text(post).expect("Could not submit link!");
@@ -226,7 +226,8 @@ mod tests {
     use auth::AnonymousAuthenticator;
     #[test]
     fn hot_length() {
-        let client = RedditClient::new("rawr", AnonymousAuthenticator::new());
+        let client = RedditClient::new("rawr", AnonymousAuthenticator::new())
+            .unwrap();
         let r_all = client.subreddit("all");
         let hot = r_all.hot(ListingOptions::default()).expect("Request failed!");
         let hot_list = hot.take(26).collect::<Vec<Submission>>();
