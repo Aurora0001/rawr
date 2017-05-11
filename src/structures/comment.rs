@@ -1,4 +1,3 @@
-use serde_json;
 use serde_json::from_value;
 use traits::{Votable, Created, Editable, Content, Commentable, Reportable, Stickable,
              Distinguishable, Approvable};
@@ -50,7 +49,7 @@ impl<'a> Created for Comment<'a> {
 
 impl<'a> Editable for Comment<'a> {
     fn edited(&self) -> bool {
-        match self.data.edited.as_boolean() {
+        match self.data.edited.as_bool() {
             Some(edited) => edited,
             None => true,
         }
@@ -140,13 +139,17 @@ impl<'a> Commentable<'a> for Comment<'a> {
         let body = format!("api_type=json&text={}&thing_id={}",
                            self.client.url_escape(text.to_owned()),
                            self.name());
-        self.client.post_json::<NewComment>("/api/comment", &body, false)
-           .and_then(|res| {
-               let data = res.json.data.things.into_iter().next().ok_or_else(|| {
-                   serde_json::Error::Syntax(serde_json::ErrorCode::MissingField("things[0]"), 0, 0)
-               });
-               Ok(Comment::new(self.client, try!(data).data))
-           })
+        self.client
+            .post_json::<NewComment>("/api/comment", &body, false)
+            .and_then(|res| {
+                let data: Result<_, APIError> = res.json
+                    .data
+                    .things
+                    .into_iter()
+                    .next()
+                    .ok_or_else(|| APIError::MissingField("things[0]"));
+                Ok(Comment::new(self.client, data?.data))
+            })
     }
 
     fn replies(self) -> Result<CommentList<'a>, APIError> {

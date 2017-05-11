@@ -6,7 +6,6 @@ license = "MIT"
 documentation = "https://aurora0001.github.io/rawr/doc/rawr/index.html"
 repository = "https://github.com/Aurora0001/rawr"
 description = "Rust API Wrapper for Reddit"
-build = "build.rs"
 exclude = [
   "**/*.out",
   "**/*.lock",
@@ -14,10 +13,9 @@ exclude = [
   "**/*.sh"
 ]
 
-[build-dependencies]
-serde_codegen = "0.8"
-
 [dependencies]
-hyper = "0.9.10"
-serde = "0.7.14"
-serde_json = "0.7.4"
+hyper = "0.10"
+hyper-native-tls = "0.2"
+serde = "1.0"
+serde_json = "1.0"
+serde_derive = "1.0"

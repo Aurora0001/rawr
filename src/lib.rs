@@ -201,7 +201,10 @@
 
 extern crate serde;
 extern crate serde_json;
+#[macro_use]
+extern crate serde_derive;
 extern crate hyper;
+extern crate hyper_native_tls;
 
 pub mod auth;
 pub mod client;
@@ -217,6 +220,8 @@ pub mod structures;
 pub mod options;
 /// Basic `rawr` structures to import with `use rawr::prelude::*`;
 pub mod prelude;
+
+mod util;
 
 #[cfg(test)]
 mod tests {

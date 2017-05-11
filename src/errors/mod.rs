@@ -19,6 +19,9 @@ pub enum APIError {
     /// Occurs if JSON deserialization fails. This will always be a bug, so please report it
     /// if it does occur, but the error type is provided so you can fail gracefully.
     JSONError(serde_json::Error),
+
+    /// TODO docs
+    MissingField(&'static str),
 }
 
 impl Display for APIError {

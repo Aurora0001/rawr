@@ -1,4 +1,3 @@
-use serde_json;
 use traits::{Votable, Created, Editable, Content, Commentable, Stickable, Lockable, Flairable,
              Reportable, Visible, Distinguishable, Approvable};
 use structures::comment_list::{CommentList, CommentStream};
@@ -59,7 +58,7 @@ impl<'a> Created for Submission<'a> {
 
 impl<'a> Editable for Submission<'a> {
     fn edited(&self) -> bool {
-        match self.data.edited.as_boolean() {
+        match self.data.edited.as_bool() {
             Some(edited) => edited,
             None => true,
         }
@@ -154,13 +153,17 @@ impl<'a> Commentable<'a> for Submission<'a> {
                            self.client.url_escape(text.to_owned()),
                            self.name());
         //
-        self.client.post_json::<NewComment>("/api/comment", &body, false)
-           .and_then(|res| {
-               let data = res.json.data.things.into_iter().next().ok_or_else(|| {
-                   serde_json::Error::Syntax(serde_json::ErrorCode::MissingField("things[0]"), 0, 0)
-               });
-               Ok(Comment::new(self.client, try!(data).data))
-           })
+        self.client
+            .post_json::<NewComment>("/api/comment", &body, false)
+            .and_then(|res| {
+                let data = res.json
+                    .data
+                    .things
+                    .into_iter()
+                    .next()
+                    .ok_or_else(|| APIError::MissingField("things[0]"));
+                Ok(Comment::new(self.client, try!(data).data))
+            })
     }
 
     fn replies(self) -> Result<CommentList<'a>, APIError> {
@@ -470,7 +473,8 @@ impl<'a> LazySubmission<'a> {
 
     /// Fetches a `CommentList` with replies to this submission.
     pub fn replies(self) -> Result<CommentList<'a>, APIError> {
-        let url = format!("/comments/{}?raw_json=1", self.id.split('_').nth(1).unwrap());
+        let url = format!("/comments/{}?raw_json=1",
+                          self.id.split('_').nth(1).unwrap());
         self.client
             .get_json::<listing::CommentResponse>(&url, false)
             .and_then(|res| {
