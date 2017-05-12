@@ -1,7 +1,6 @@
 use std::vec::IntoIter;
 use std::thread;
 use std::time::Duration;
-use serde_json;
 
 use client::RedditClient;
 use errors::APIError;
@@ -58,13 +57,17 @@ impl<'a> Commentable<'a> for Message<'a> {
         let body = format!("api_type=json&text={}&thing_id={}",
                            self.client.url_escape(text.to_owned()),
                            self.name());
-        self.client.post_json::<NewComment>("/api/comment", &body, false)
-           .and_then(|res| {
-               let data = res.json.data.things.into_iter().next().ok_or_else(|| {
-                   serde_json::Error::Syntax(serde_json::ErrorCode::MissingField("things[0]"), 0, 0)
-               });
-               Ok(Comment::new(self.client, try!(data).data))
-           })
+        self.client
+            .post_json::<NewComment>("/api/comment", &body, false)
+            .and_then(|res| {
+                let data = res.json
+                    .data
+                    .things
+                    .into_iter()
+                    .next()
+                    .ok_or_else(|| APIError::MissingField("things[0]"));
+                Ok(Comment::new(self.client, try!(data).data))
+            })
     }
 }
 
@@ -178,7 +181,10 @@ impl<'a> MessageInterface<'a> {
     /// client.messages().compose("Aurora0001", "Test", "Hi!");
     // ```
     pub fn compose(&self, recipient: &str, subject: &str, body: &str) -> Result<(), APIError> {
-        let body = format!("api_type=json&subject={}&text={}&to={}", subject, body, recipient);
+        let body = format!("api_type=json&subject={}&text={}&to={}",
+                           subject,
+                           body,
+                           recipient);
         self.client.post_success("/api/compose", &body, false)
     }
 

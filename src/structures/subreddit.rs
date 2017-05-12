@@ -117,7 +117,7 @@ impl<'a> Subreddit<'a> {
     /// let sub = client.subreddit("thanksobama");
     /// let mut top = sub.top(ListingOptions::default(), TimeFilter::AllTime)
     ///     .expect("Request failed");
-    /// assert_eq!(top.next().unwrap().title(), "Thanks Me");
+    /// assert_eq!(top.next().unwrap().title(), "Thanks Obama, for helping to protect the rights of over 9 million Americans.");
     /// ```
     pub fn top(&self, opts: ListingOptions, time: TimeFilter) -> Result<Listing, APIError> {
         let path = format!("top?{}&", time);

@@ -32,11 +32,12 @@ use std::io::Read;
 
 use hyper::client::{Client, RequestBuilder};
 use hyper::header::UserAgent;
-use hyper::net::DefaultConnector;
+use hyper::net::HttpsConnector;
 use hyper::status::StatusCode::Unauthorized;
+use hyper_native_tls::NativeTlsClient;
 
 use serde_json::from_str;
-use serde::Deserialize;
+use serde::de::DeserializeOwned;
 
 use structures::subreddit::Subreddit;
 use structures::user::User;
@@ -63,7 +64,9 @@ impl RedditClient {
                -> RedditClient {
         // Connection pooling is problematic if there are pauses/sleeps in the program, so we
         // choose to disable it by using a non-pooling connector.
-        let client = Client::with_connector(DefaultConnector::default());
+        let ssl = NativeTlsClient::new().expect("Failed to acquire TLS client");
+        let connector = HttpsConnector::new(ssl);
+        let client = Client::with_connector(connector);
 
         let this = RedditClient {
             client: client,
@@ -161,9 +164,9 @@ impl RedditClient {
     }
 
     /// Sends a GET request with the specified parameters, and returns the resulting
-    /// deserialized object.
+    /// deserializeOwnedd object.
     pub fn get_json<T>(&self, dest: &str, oauth_required: bool) -> Result<T, APIError>
-        where T: Deserialize
+        where T: DeserializeOwned
     {
         self.ensure_authenticated(|| {
             let mut response = try!(self.get(dest, oauth_required).send());
@@ -191,9 +194,9 @@ impl RedditClient {
     }
 
     /// Sends a post request with the specified parameters, and converts the resulting JSON
-    /// into a deserialized object.
+    /// into a deserializeOwnedd object.
     pub fn post_json<T>(&self, dest: &str, body: &str, oauth_required: bool) -> Result<T, APIError>
-        where T: Deserialize
+        where T: DeserializeOwned
     {
         self.ensure_authenticated(|| {
             let mut response = try!(self.post(dest, oauth_required).body(body).send());
