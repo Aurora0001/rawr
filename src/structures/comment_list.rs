@@ -110,9 +110,9 @@ impl<'a> CommentList<'a> {
                     let mut result_str = String::new();
                     res.read_to_string(&mut result_str).unwrap();
                     let mut new_listing: Value = from_str(&result_str).unwrap();
-                    let mut new_listing = new_listing.as_object_mut().unwrap();
+                    let new_listing = new_listing.as_object_mut().unwrap();
                     let mut json = new_listing.remove("json").unwrap();
-                    let mut json = json.as_object_mut().unwrap();
+                    let json = json.as_object_mut().unwrap();
                     let data = json.remove("data");
                     if let Some(mut data) = data {
                         let mut things = data.as_object_mut().unwrap();
