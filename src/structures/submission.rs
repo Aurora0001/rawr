@@ -13,6 +13,7 @@ use responses::comment::NewComment;
 use errors::APIError;
 
 /// Structure representing a link post or self post (a submission) on Reddit.
+#[derive(Clone)]
 pub struct Submission<'a> {
     data: listing::Submission,
     client: &'a RedditClient,
