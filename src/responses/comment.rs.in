@@ -13,7 +13,7 @@ pub type NewComment = JSONWrapper<CommentThings>;
 /// A deserializable structure representing a comment. This is created when the client returns
 /// JSON representing a comment and this is wrapped in a `models::comment::Comment` for
 /// ease-of-use.
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Comment {
     /// The Reddit ID for the subreddit where this was posted, **including the leading `t5_`**.
     pub subreddit_id: String,
@@ -100,7 +100,7 @@ pub struct Comment {
     pub parent_id: String
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct More {
     pub count: u64,
     pub parent_id: String,

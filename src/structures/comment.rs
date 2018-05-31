@@ -10,6 +10,7 @@ use responses::comment::{Comment as _Comment, CommentListing, NewComment};
 use errors::APIError;
 
 /// Structure representing a comment and its associated data (e.g. replies)
+#[derive(Clone)]
 pub struct Comment<'a> {
     data: _Comment,
     client: &'a RedditClient,

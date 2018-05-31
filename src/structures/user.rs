@@ -81,6 +81,28 @@ impl<'a> User<'a> {
             .get_json::<_Listing>(&url, false)
             .and_then(|res| Ok(Listing::new(self.client, url, res.data)))
     }
+
+    /// Gets a list of posts and comments that the specified user has saved. This endpoint is a
+    /// listing and will continue yielding items until every item has been exhausted. This
+    /// endpoint cannot be accessed anonymously.
+    /// # Examples
+    /// ```rust,no_run
+    /// use rawr::prelude::*;
+    /// let client = RedditClient::new("rawr", PasswordAuthenticator::new("a", "b", "c", "d"));
+    /// let user = client.user("Aurora0001");
+    /// let saved = user.saved().expect("Could not fetch!");
+    /// let mut i = 0;
+    /// for saved_item in saved.take(5) {
+    ///     i += 1;
+    /// }
+    /// assert_eq!(i, 5);
+    /// ```
+    pub fn saved(&self) -> Result<Listing, APIError> {
+        let url = format!("/user/{}/saved?raw_json=1", self.name);
+        self.client
+            .get_json::<_Listing>(&url, true)
+            .and_then(|res| Ok(Listing::new(self.client, url, res.data)))
+    }
     // TODO: implement comment, overview, gilded listings etc.
 }
 

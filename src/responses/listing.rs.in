@@ -54,7 +54,7 @@ pub struct ListingData<T> {
 }
 
 /// Represents all types of link posts and self posts on Reddit.
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Submission {
     /// The domain of the link (if link post) or self.subreddit (if self post).
     /// Domains do not include a protocol, e.g. `i.redd.it` or `self.learnprogramming`
