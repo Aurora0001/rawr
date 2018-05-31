@@ -32,6 +32,7 @@ use traits::Content;
 /// // fetches it for us!
 /// let comments = announcement.replies().expect("Could not get comments").take(100);
 /// ```
+#[derive(Clone)]
 pub struct CommentList<'a> {
     client: &'a RedditClient,
     comments: Vec<Comment<'a>>,
